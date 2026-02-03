@@ -1,0 +1,1018 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Antlr4.Runtime;
+using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+using System.Globalization;
+using UnityEngine.SceneManagement;
+
+namespace TS
+{
+    public class MissionImporter : MonoBehaviour
+    {
+        public List<TSObject> MissionObjects;
+
+        [Header("Prefabs")]
+        public GameObject interiorPrefab;
+        public GameObject movingPlatformPrefab;
+        public GameObject triggerGoToTarget;
+        public GameObject inBoundsTrigger;
+        public GameObject helpTriggerInstance;
+        public GameObject outOfBoundsTrigger;
+        [Space]
+        public GameObject finishSignPrefab;
+        public GameObject signPlainPrefab;
+        public GameObject signPlainUpPrefab;
+        public GameObject signPlainDownPrefab;
+        public GameObject signPlainLeftPrefab;
+        public GameObject signPlainRightPrefab;
+        public GameObject signCautionPrefab;
+        public GameObject signCautionCautionPrefab;
+        public GameObject signCautionDangerPrefab;
+        public GameObject gemPrefab;
+        [Space]
+        public GameObject antiGravityPrefab;
+        public GameObject superJumpPrefab;
+        public GameObject superSpeedPrefab;
+        public GameObject superBouncePrefab;
+        public GameObject shockAbsorberPrefab;
+        public GameObject gyrocopterPrefab;
+        public GameObject timeTravelPrefab;
+        [Space]
+        public GameObject trapdoorPrefab;
+        public GameObject roundBumperPrefab;
+        public GameObject triangleBumperPrefab;
+        public GameObject ductFanPrefab;
+        public GameObject tornadoPrefab;
+        public GameObject oilSlickPrefab;
+        public GameObject landMinePrefab;
+
+        [Header("References")]
+        public GameObject globalMarble;
+        public GameObject startPad;
+        public GameObject finishPad;
+        public Light directionalLight;
+
+        private float[] sunColor;
+
+        void Start()
+        {
+            ImportMission();
+        }
+
+        void ImportMission()
+        {
+            if (string.IsNullOrEmpty(MissionInfo.instance.MissionPath))
+                return;
+
+            var lexer = new TSLexer(
+                new AntlrFileStream(Path.Combine(Application.streamingAssetsPath, MissionInfo.instance.MissionPath))
+            );
+            var parser = new TSParser(new CommonTokenStream(lexer));
+            var file = parser.start();
+
+            if (parser.NumberOfSyntaxErrors > 0)
+            {
+                Debug.LogError("Could not parse mission file");
+                return;
+            }
+
+            MissionObjects = new List<TSObject>();
+
+            foreach (var decl in file.decl())
+            {
+                var objectDecl = decl.stmt()?.expression_stmt()?.stmt_expr()?.object_decl();
+                if (objectDecl == null)
+                    continue;
+
+                MissionObjects.Add(ProcessObject(objectDecl));
+            }
+
+            if (MissionObjects.Count == 0)
+                return;
+
+            var mission = MissionObjects[0];
+            var children = mission.GetFirstChildrens();
+
+            foreach (var obj in mission.RecursiveChildren())
+            {
+                if (obj.ClassName == "Sun")
+                {
+                    var direction = ConvertDirection(ParseVectorString(obj.GetField("direction")));
+                    sunColor = ParseVectorString(obj.GetField("color"));
+                    var ambient = ParseVectorString(obj.GetField("ambient"));
+
+                    directionalLight.transform.localRotation = direction;
+                    directionalLight.color = new Color(sunColor[0], sunColor[1], sunColor[2], 1f);
+
+                    RenderSettings.ambientLight = new Color(ambient[0], ambient[1], ambient[2], 1f);
+                }
+
+                //Gem
+                else if (obj.ClassName == "Item")
+                {
+                    string objectName = obj.GetField("dataBlock");
+
+                    if (objectName.StartsWith("GemItem"))
+                    {
+                        var gobj = Instantiate(gemPrefab, transform, false);
+                        gobj.name = "Gem";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = scale;
+                    }
+
+                    else if (objectName == "AntiGravityItem")
+                    {
+                        var gobj = Instantiate(antiGravityPrefab, transform, false);
+                        gobj.name = "AntiGravityItem";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+
+                    else if (objectName == "SuperJumpItem")
+                    {
+                        var gobj = Instantiate(superJumpPrefab, transform, false);
+                        gobj.name = "SuperJumpItem";
+                        gobj.GetComponent<Powerups>().rotateMesh = false;
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        string showInfo = obj.GetField("showHelpOnPickup");
+                        if (!string.IsNullOrEmpty(showInfo))
+                        {
+                            bool showInfotutorial = int.Parse(showInfo) == 1;
+                            gobj.GetComponent<Powerups>().showHelpOnPickup = showInfotutorial;
+                        }
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+
+                    else if (objectName == "SuperSpeedItem")
+                    {
+                        var gobj = Instantiate(superSpeedPrefab, transform, false);
+                        gobj.name = "SuperSpeedItem";
+                        gobj.GetComponent<Powerups>().rotateMesh = false;
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        string showInfo = obj.GetField("showHelpOnPickup");
+                        if (!string.IsNullOrEmpty(showInfo))
+                        {
+                            bool showInfotutorial = int.Parse(showInfo) == 1;
+                            gobj.GetComponent<Powerups>().showHelpOnPickup = showInfotutorial;
+                        }
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+
+                    else if (objectName == "SuperBounceItem")
+                    {
+                        var gobj = Instantiate(superBouncePrefab, transform, false);
+                        gobj.name = "SuperBounceItem";
+                        gobj.GetComponent<Powerups>().rotateMesh = false;
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        string showInfo = obj.GetField("showHelpOnPickup");
+                        if (!string.IsNullOrEmpty(showInfo))
+                        {
+                            bool showInfotutorial = int.Parse(showInfo) == 1;
+                            gobj.GetComponent<Powerups>().showHelpOnPickup = showInfotutorial;
+                        }
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+
+                    else if (objectName == "ShockAbsorberItem")
+                    {
+                        var gobj = Instantiate(shockAbsorberPrefab, transform, false);
+                        gobj.name = "ShockAbsorberItem";
+                        gobj.GetComponent<Powerups>().rotateMesh = false;
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        string showInfo = obj.GetField("showHelpOnPickup");
+                        if (!string.IsNullOrEmpty(showInfo))
+                        {
+                            bool showInfotutorial = int.Parse(showInfo) == 1;
+                            gobj.GetComponent<Powerups>().showHelpOnPickup = showInfotutorial;
+                        }
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+
+                    else if (objectName == "HelicopterItem")
+                    {
+                        var gobj = Instantiate(gyrocopterPrefab, transform, false);
+                        gobj.name = "HelicopterItem";
+                        gobj.GetComponent<Powerups>().rotateMesh = false;
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        string showInfo = obj.GetField("showHelpOnPickup");
+                        if (!string.IsNullOrEmpty(showInfo))
+                        {
+                            bool showInfotutorial = int.Parse(showInfo) == 1;
+                            gobj.GetComponent<Powerups>().showHelpOnPickup = showInfotutorial;
+                        }
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+
+                    else if (objectName == "TimeTravelItem")
+                    {
+                        var gobj = Instantiate(timeTravelPrefab, transform, false);
+                        gobj.name = "TimeTravelItem";
+                        gobj.GetComponent<Powerups>().rotateMesh = false;
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+
+                        string timeBonus = obj.GetField("timeBonus");
+                        if (!string.IsNullOrEmpty(timeBonus))
+                            gobj.GetComponent<TimeTravel>().timeBonus = (float)int.Parse(timeBonus) / 1000;
+                        else
+                            gobj.GetComponent<TimeTravel>().timeBonus = 5;
+                    }
+                }
+
+                //Interior
+                else if (obj.ClassName == "InteriorInstance")
+                {
+                    var gobj = Instantiate(interiorPrefab, transform, false);
+                    gobj.name = "InteriorInstance";
+
+                    var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                    var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                    var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                    gobj.transform.localPosition = position;
+                    gobj.transform.localRotation = rotation;
+                    gobj.transform.localScale = scale;
+
+                    var difPath = ResolvePath(obj.GetField("interiorFile"), MissionInfo.instance.MissionPath);
+                    var dif = gobj.GetComponent<Dif>();
+                    dif.filePath = difPath;
+
+                    if (!dif.GenerateMesh(-1))
+                        Destroy(gobj.gameObject);
+                }
+
+                //Shapes
+                else if (obj.ClassName == "StaticShape")
+                {
+                    string objectName = obj.GetField("dataBlock");
+
+                    if (objectName == "StartPad")
+                    {
+                        Vector3 position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        Quaternion rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        Vector3 scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        Transform spMesh = startPad.transform.Find("Mesh");
+                        Transform forwardPoint = spMesh.Find("Forward");
+
+                        // Position
+                        startPad.transform.localPosition = position;
+                        startPad.transform.localRotation = rotation;
+
+                        spMesh.transform.parent = null;
+                        spMesh.transform.localRotation = rotation;
+
+                        Vector3 localScale = spMesh.localScale;
+                        spMesh.localScale = new Vector3(
+                            scale.x * localScale.x,
+                            scale.y * localScale.y,
+                            scale.z * localScale.z
+                        );
+
+                        startPad.transform.LookAt(forwardPoint);
+                        startPad.transform.localRotation = Quaternion.Euler(-90, startPad.transform.localRotation.eulerAngles.y, startPad.transform.localRotation.eulerAngles.z);
+                    }
+
+                    else if (objectName == "EndPad")
+                    {
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+
+                        finishPad.transform.localPosition = position;
+                        finishPad.transform.localRotation = rotation;
+                    }
+
+                    //Signs
+                    else if (objectName == "SignFinish")
+                    {
+                        var gobj = Instantiate(finishSignPrefab, transform, false);
+                        gobj.name = "SignFinish";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+
+                    //Signs MBG
+                    else if (objectName == "SignPlain")
+                    {
+                        var gobj = Instantiate(signPlainPrefab, transform, false);
+                        gobj.name = "SignPlain";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "SignPlainUp")
+                    {
+                        var gobj = Instantiate(signPlainUpPrefab, transform, false);
+                        gobj.name = "SignPlainUp";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "SignPlainDown")
+                    {
+                        var gobj = Instantiate(signPlainDownPrefab, transform, false);
+                        gobj.name = "SignPlainDown";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "SignPlainLeft")
+                    {
+                        var gobj = Instantiate(signPlainLeftPrefab, transform, false);
+                        gobj.name = "SignPlainLeft";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "SignPlainRight")
+                    {
+                        var gobj = Instantiate(signPlainRightPrefab, transform, false);
+                        gobj.name = "SignPlainRight";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "SignCaution")
+                    {
+                        var gobj = Instantiate(signCautionPrefab, transform, false);
+                        gobj.name = "SignCaution";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "SignCautionCaution")
+                    {
+                        var gobj = Instantiate(signCautionCautionPrefab, transform, false);
+                        gobj.name = "SignCautionCaution";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "SignCautionDanger")
+                    {
+                        var gobj = Instantiate(signCautionDangerPrefab, transform, false);
+                        gobj.name = "SignCautionDanger";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+
+                    //Hazards
+                    else if (objectName.ToLower() == "trapdoor")
+                    {
+                        var gobj = Instantiate(trapdoorPrefab, transform, false);
+                        gobj.name = "Trapdoor";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f); ;
+                        gobj.transform.localScale = new Vector3(scale.x * gobj.transform.localScale.x,
+                                                                scale.y * gobj.transform.localScale.y,
+                                                                scale.z * gobj.transform.localScale.z
+                                                                );
+                    }
+
+                    else if (objectName.ToLower() == "ductfan")
+                    {
+                        var gobj = Instantiate(ductFanPrefab, transform, false);
+                        gobj.name = "DuctFan";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f); ;
+                        gobj.transform.localScale = new Vector3(scale.x * gobj.transform.localScale.x,
+                                                                scale.y * gobj.transform.localScale.y,
+                                                                scale.z * gobj.transform.localScale.z
+                                                                );
+                    }
+
+                    else if (objectName.ToLower() == "tornado")
+                    {
+                        var gobj = Instantiate(tornadoPrefab, transform, false);
+                        gobj.name = "Tornado";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f); ;
+                        gobj.transform.localScale = new Vector3(scale.x * gobj.transform.localScale.x,
+                                                                scale.y * gobj.transform.localScale.y,
+                                                                scale.z * gobj.transform.localScale.z
+                                                                );
+                    }
+
+                    else if (objectName.ToLower() == "landmine")
+                    {
+                        var gobj = Instantiate(landMinePrefab, transform, false);
+                        gobj.name = "LandMine";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f); ;
+                        gobj.transform.localScale = new Vector3(scale.x * gobj.transform.localScale.x,
+                                                                scale.y * gobj.transform.localScale.y,
+                                                                scale.z * gobj.transform.localScale.z
+                                                                );
+                    }
+
+                    else if (objectName.ToLower() == "roundbumper")
+                    {
+                        var gobj = Instantiate(roundBumperPrefab, transform, false);
+                        gobj.name = "RoundBumper";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f); ;
+                        gobj.transform.localScale = new Vector3(scale.x * gobj.transform.localScale.x,
+                                                                scale.y * gobj.transform.localScale.y,
+                                                                scale.z * gobj.transform.localScale.z
+                                                                );
+                    }
+
+                    else if (objectName.ToLower() == "trianglebumper")
+                    {
+                        var gobj = Instantiate(triangleBumperPrefab, transform, false);
+                        gobj.name = "TriangleBumper";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f); ;
+                        gobj.transform.localScale = new Vector3(scale.x * gobj.transform.localScale.x,
+                                                                scale.y * gobj.transform.localScale.y,
+                                                                scale.z * gobj.transform.localScale.z
+                                                                );
+                    }
+
+                    else if (objectName.ToLower() == "oilslick")
+                    {
+                        var gobj = Instantiate(oilSlickPrefab, transform, false);
+                        gobj.name = "OilSlick";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f); ;
+                        gobj.transform.localScale = new Vector3(scale.x * gobj.transform.localScale.x,
+                                                                scale.y * gobj.transform.localScale.y,
+                                                                scale.z * gobj.transform.localScale.z
+                                                                );
+                    }
+                }
+
+                //Triggers
+                else if (obj.ClassName == "Trigger")
+                {
+                    string objectName = obj.GetField("dataBlock");
+
+                    if (objectName == "InBoundsTrigger")
+                    {
+                        var ibtObj = Instantiate(inBoundsTrigger, transform, false);
+                        ibtObj.name = "InBoundsTrigger";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var polyhedronScale = PolyhedronToBoxSize(ParseVectorString(obj.GetField("polyhedron")));
+
+                        ibtObj.transform.localPosition = position;
+                        ibtObj.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                        ibtObj.transform.localScale = Vector3.Scale(scale, polyhedronScale);
+                    }
+
+                    else if (objectName == "OutOfBoundsTrigger")
+                    {
+                        var oobtObj = Instantiate(outOfBoundsTrigger, transform, false);
+                        oobtObj.name = "OutOfBoundsTrigger";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var polyhedronScale = PolyhedronToBoxSize(ParseVectorString(obj.GetField("polyhedron")));
+
+                        oobtObj.transform.localPosition = position;
+                        oobtObj.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                        oobtObj.transform.localScale = Vector3.Scale(scale, polyhedronScale);
+                    }
+
+                    else
+                    {
+                        if (objectName == "HelpTrigger")
+                        {
+                            var htObj = Instantiate(helpTriggerInstance, transform, false);
+                            htObj.name = "HelpTrigger";
+
+                            htObj.GetComponent<HelpTrigger>().helpText = obj.GetField("text");
+
+                            var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                            var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                            var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                            var polyhedronScale = PolyhedronToBoxSize(ParseVectorString(obj.GetField("polyhedron")));
+
+                            htObj.transform.localPosition = position;
+                            htObj.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                            htObj.transform.localScale = Vector3.Scale(scale, polyhedronScale);
+                        }
+                    }
+                }
+
+                //Moving platforms
+                if (obj.ClassName == "SimGroup")
+                {
+                    // Grab the PathedInterior child
+                    var pathedInterior = obj.GetFirstChildrens()
+                        .FirstOrDefault(o => o.ClassName == "PathedInterior");
+
+                    if (pathedInterior == null)
+                        continue;
+
+                    MovingPlatform movingPlatform = null;
+                    int indexStr = -1;
+
+                    if (pathedInterior != null)
+                    {
+                        var gobj = Instantiate(movingPlatformPrefab, transform, false);
+                        gobj.name = "PathedInterior";
+
+                        var position = ConvertPoint(ParseVectorString(pathedInterior.GetField("basePosition")));
+                        var rotation = ConvertRotation(ParseVectorString(pathedInterior.GetField("baseRotation")));
+                        var scale = ConvertScale(ParseVectorString(pathedInterior.GetField("baseScale")));
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = scale;
+
+                        var resource = pathedInterior.GetField("interiorResource");
+                        var difPath = ResolvePath(resource, MissionInfo.instance.MissionPath);
+
+                        var dif = gobj.GetComponent<Dif>();
+                        dif.filePath = difPath;
+
+                        // Parse interiorIndex from mission file
+                        indexStr = int.Parse(pathedInterior.GetField("interiorIndex"));
+                        dif.GenerateMesh(indexStr);
+
+                        movingPlatform = gobj.GetComponent<MovingPlatform>();
+
+                        string initialPosition = pathedInterior.GetField("initialPosition");
+                        if (!string.IsNullOrEmpty(initialPosition))
+                            movingPlatform.initialPosition = (float)int.Parse(initialPosition) / 1000;
+                        else
+                            movingPlatform.initialPosition = 0;
+
+                        string initialTargetPosition = pathedInterior.GetField("initialTargetPosition");
+                        if (!string.IsNullOrEmpty(initialTargetPosition))
+                        {
+                            int itp = 0;
+                            if (int.TryParse(initialTargetPosition, out itp))
+                            {
+                                movingPlatform.initialTargetPosition = (itp >= 0) ? (float)itp / 1000 : itp;
+                                if (itp >= 0)
+                                    movingPlatform.movementMode = MovementMode.Triggered;
+                                else
+                                    movingPlatform.movementMode = MovementMode.Constant;
+                            }
+                        }
+                        else
+                        {
+                            movingPlatform.initialTargetPosition = 0;
+                            movingPlatform.movementMode = MovementMode.Triggered;
+                        }
+                    }
+
+                    //if ITP = 0, put the triggergototargets
+                    if (movingPlatform.movementMode == MovementMode.Triggered)
+                    {
+                        var tgtts = obj.GetFirstChildrens()
+                            .Where(o => o.ClassName == "Trigger")
+                            .ToList();
+
+                        foreach (var trigger in tgtts)
+                        {
+                            if (!string.IsNullOrEmpty(trigger.GetField("targetTime")))
+                            {
+                                var tgttObj = Instantiate(triggerGoToTarget, transform, false);
+                                tgttObj.name = "TriggerGoToTarget";
+
+                                var position = ConvertPoint(ParseVectorString(trigger.GetField("position")));
+                                var rotation = ConvertRotation(ParseVectorString(trigger.GetField("rotation")), false);
+                                var scale = ConvertScale(ParseVectorString(trigger.GetField("scale")));
+
+                                var polyhedronScale = PolyhedronToBoxSize(ParseVectorString(trigger.GetField("polyhedron")));
+
+                                tgttObj.transform.localPosition = position;
+                                tgttObj.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                                tgttObj.transform.localScale = Vector3.Scale(scale, polyhedronScale);
+
+                                TriggerGoToTarget tgtt = tgttObj.GetComponent<TriggerGoToTarget>();
+                                tgtt.movingPlatform = movingPlatform;
+                                tgtt.targetTime = (float)int.Parse(trigger.GetField("targetTime")) / 1000;
+                            }
+                        }
+                    }
+
+                    // Grab all markers inside any Path child
+                    var markers = obj.RecursiveChildren()
+                        .Where(o => o.ClassName == "Marker")
+                        .ToList();
+
+                    movingPlatform.sequenceNumbers = new SequenceNumber[markers.Count];
+                    List<SmoothingType> smoothingTypes = new List<SmoothingType>();
+
+                    for (int i = 0; i < markers.Count; i++)
+                    {
+                        Vector3 pos = ConvertPoint(ParseVectorString(markers[i].GetField("position")));
+                        int seq = i;
+                        int msToNext = int.Parse(markers[i].GetField("msToNext"));
+
+                        SmoothingType smoothingType = (SmoothingType)Enum.Parse(typeof(SmoothingType), markers[i].GetField("smoothingType"));
+                        smoothingTypes.Add(smoothingType);
+
+                        GameObject markerInstance = Instantiate(new GameObject(), transform, false);
+                        markerInstance.name = "Marker Interior " + indexStr + " (" + seq + ")";
+                        markerInstance.transform.position = pos;
+
+                        SequenceNumber sequence = new SequenceNumber();
+                        sequence.marker = markerInstance;
+                        sequence.secondsToNext = (float)msToNext / 1000;
+
+                        movingPlatform.sequenceNumbers[seq] = sequence;
+                    }
+
+                    SmoothingType smoothing = smoothingTypes
+                        .GroupBy(x => x)
+                        .OrderByDescending(g => g.Count())
+                        .First()
+                        .Key;
+
+                    movingPlatform.smoothing = smoothing;
+                    movingPlatform.InitMovingPlatform();
+                }
+            }
+
+            StartCoroutine(DelayBeforeRespawn());
+        }
+
+        IEnumerator DelayBeforeRespawn()
+        {
+            while (!GameManager.instance.startPad)
+                yield return null;
+
+            globalMarble.GetComponent<Movement>().GenerateMeshData();
+
+            Time.timeScale = 1f;
+            GameManager.instance.InitGemCount();
+
+            GameManager.instance.SetSoundVolumes();
+            GameManager.instance.PlayLevelMusic();
+
+            directionalLight.GetComponent<Light>().shadows = PlayerPrefs.GetInt("Graphics_Shadow", 1) == 1 ? LightShadows.Soft : LightShadows.None;
+            directionalLight.intensity = 0.25f;
+
+            AsyncOperation unloadOp = SceneManager.UnloadSceneAsync("Loading");
+            while (!unloadOp.isDone)
+                yield return null;
+
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(MissionInfo.instance.skybox));
+
+            CameraController.instance.GetComponent<Camera>().enabled = true;
+            GameUIManager.instance.GetComponent<Canvas>().enabled = true;
+
+            Invoke(nameof(EnableSounds), 0.1f);
+
+            Marble.onRespawn?.Invoke();
+        }
+
+        void EnableSounds()
+        {
+            var sounds = Marble.instance.transform.Find("Sounds");
+            var audioSources = sounds.GetComponentsInChildren<AudioSource>(true);
+            var rolling = audioSources.First(a => a.name == "Rolling");
+            var sliding = audioSources.First(a => a.name == "Sliding");
+            rolling.Play();
+            sliding.Play();
+        }
+
+        // -------------------------    
+        // Conversion helpers
+        // -------------------------
+        float ConvertIntensity(float[] torqueColor)
+        {
+            // Torque stores brightness in RGB
+            float intensity = Mathf.Max(
+                torqueColor[0],
+                torqueColor[1],
+                torqueColor[2]
+            );
+
+            if (intensity <= 0f)
+                intensity = 1f;
+
+            return intensity;
+        }
+
+        Quaternion ConvertDirection(float[] torqueDir)
+        {
+            // Torque Z-up → Unity Y-up
+            Vector3 unityDir = new Vector3(
+                torqueDir[0],
+                torqueDir[2],
+                torqueDir[1]
+            );
+
+            unityDir.Normalize();
+
+            // Unity directional lights shine along -forward
+            return Quaternion.LookRotation(unityDir, Vector3.up);
+        }
+
+        private Vector3 ConvertPoint(float[] p)
+        {
+            return new Vector3(p[0], p[2], p[1]);
+        }
+
+        private Quaternion ConvertRotation(float[] torqueRotation, bool additionalRotate = true)
+        {
+            // Torque point is an angle axis in torquespace
+            float angle = torqueRotation[3];
+            Vector3 axis = new Vector3(torqueRotation[0], -torqueRotation[1], torqueRotation[2]);
+            Quaternion rot = Quaternion.AngleAxis(angle, axis);
+
+            if (additionalRotate)
+                rot = Quaternion.Euler(-90.0f, 0, 0) * rot;
+
+            return rot;
+        }
+
+        private Vector3 ConvertScale(float[] s)
+        {
+            return new Vector3(s[0], s[1], s[2]);
+        }
+
+        private Vector3 PolyhedronToBoxSize(float[] poly)
+        {
+            if (poly == null || poly.Length != 12)
+                throw new ArgumentException("Polyhedron must be 12 floats: origin + 3 edge vectors");
+
+            Vector3 d1 = new Vector3(poly[3], poly[4], poly[5]);
+            Vector3 d2 = new Vector3(poly[6], poly[7], poly[8]);
+            Vector3 d3 = new Vector3(poly[9], poly[10], poly[11]);
+
+            return new Vector3(
+                Mathf.Abs(d1.x) + Mathf.Abs(d2.x) + Mathf.Abs(d3.x),
+                Mathf.Abs(d1.y) + Mathf.Abs(d2.y) + Mathf.Abs(d3.y),
+                Mathf.Abs(d1.z) + Mathf.Abs(d2.z) + Mathf.Abs(d3.z)
+            );
+        }
+
+
+        private static readonly CultureInfo Invariant = CultureInfo.InvariantCulture;
+
+        private float[] ParseVectorString(string vs)
+        {
+            return vs
+                .Split(' ')
+                .Select(s => float.Parse(s, Invariant))
+                .ToArray();
+        }
+
+        private string ResolvePath(string assetPath, string misPath)
+        {
+            if (string.IsNullOrEmpty(assetPath))
+                return assetPath;
+
+            // Normalize slashes first
+            assetPath = assetPath.Replace('\\', '/');
+
+            // Remove trailing quote if present
+            if (assetPath.EndsWith("\""))
+                assetPath = assetPath.Substring(0, assetPath.Length - 1);
+
+            // Remove leading slashes
+            assetPath = assetPath.TrimStart('/');
+
+            // --- Resolve special prefixes ---
+            if (assetPath[0] == '.')
+            {
+                // Relative to mission file
+                assetPath = Path.GetDirectoryName(misPath).Replace('\\', '/')
+                            + assetPath.Substring(1);
+            }
+            else
+            {
+                // Replace anything before first '/' with "marble"
+                int slash = assetPath.IndexOf('/');
+                assetPath = slash >= 0
+                    ? "marble" + assetPath.Substring(slash)
+                    : "marble/" + assetPath;
+            }
+
+            // --- Fix lbinteriors_* folders ---
+            assetPath = assetPath
+                .Replace("/lbinteriors_mbp/", "/interiors_mbp/")
+                .Replace("/lbinteriors_mbg/", "/interiors_mbg/");
+
+            return assetPath;
+        }
+
+
+        public static TSObject ProcessObject(TSParser.Object_declContext objectDecl)
+        {
+            var obj = ScriptableObject.CreateInstance<TSObject>();
+
+            obj.ClassName = objectDecl.class_name_expr().GetText();
+            obj.Name = objectDecl.object_name().GetText();
+
+            var block = objectDecl.object_declare_block();
+            if (block == null)
+                return obj;
+
+            foreach (var assignList in block.slot_assign_list())
+            {
+                foreach (var slot in assignList.slot_assign())
+                {
+                    var key = slot.children[0].GetText().ToLower();
+                    var value = slot.expr().GetText();
+
+                    var str = slot.expr().STRATOM();
+                    if (str != null)
+                        value = str.GetText().Substring(1, value.Length - 2);
+
+                    // Torque allows duplicate keys; last one wins
+                    if (obj.Fields.ContainsKey(key))
+                        obj.Fields[key] = value;
+                    else
+                        obj.Fields.Add(key, value);
+                }
+            }
+
+            foreach (var sub in block.object_decl_list())
+            {
+                foreach (var subDecl in sub.object_decl())
+                {
+                    var child = ProcessObject(subDecl);
+                    child.Parent = obj;
+                    obj.Children.Add(child);
+                }
+            }
+
+            return obj;
+        }
+    }
+}

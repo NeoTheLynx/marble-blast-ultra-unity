@@ -1,0 +1,314 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Antlr4.Runtime;
+using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TS;
+
+public class MissionInfo : MonoBehaviour
+{
+    public static MissionInfo instance;
+    public void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    [HideInInspector] public string highScoreName;
+
+    [Header("Selected Mission Directory")]
+    [TextArea(1, 2)] public string MissionPath;
+    public string missionName;
+
+    [Header("Selected Mission Info")]
+    public int time;
+    public string levelName;
+    [TextArea(2, 10)] public string description;
+    [TextArea(2, 10)] public string startHelpText;
+    public int level;
+    public string artist;
+    public int goldTime;
+    public int ultimateTime;
+    public string skybox;
+
+    [Header("Load Mission")]
+    public List<Mission> missionsBeginner = new List<Mission>();
+    public List<Mission> missionsIntermediate = new List<Mission>();
+    public List<Mission> missionsAdvanced = new List<Mission>();
+    public List<Mission> missionsCustom = new List<Mission>();
+
+    List<TSObject> MissionObjects;
+
+    public void Start()
+    {
+        highScoreName = PlayerPrefs.GetString("HighScoreName", "");
+
+        LoadMissions(Type.beginner);
+        LoadMissions(Type.intermediate);
+        LoadMissions(Type.advanced);
+        LoadMissions(Type.custom);
+    }
+
+    public void LoadMissions(Type difficulty)
+    {
+        string basePath = Path.Combine(
+            Application.streamingAssetsPath,
+            "marble/data/missions/",
+            difficulty.ToString()
+        );
+
+        // 🔒 SAFETY 1: folder does not exist
+        if (!Directory.Exists(basePath))
+            return;
+
+        string[] misFiles = Directory.GetFiles(basePath, "*.mis");
+
+        // 🔒 SAFETY 2: folder exists but no missions
+        if (misFiles == null || misFiles.Length == 0)
+            return;
+
+        foreach (string misPath in misFiles)
+        {
+            string levelName = Path.GetFileNameWithoutExtension(misPath);
+
+            // Try jpg first, then png
+            string jpgPath = Path.Combine(basePath, levelName + ".jpg");
+            string pngPath = Path.Combine(basePath, levelName + ".png");
+
+            string imagePath = null;
+
+            if (File.Exists(jpgPath))
+                imagePath = jpgPath;
+            else if (File.Exists(pngPath))
+                imagePath = pngPath;
+
+            Sprite sprite;
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                byte[] imageData = File.ReadAllBytes(imagePath);
+
+                Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+                tex.LoadImage(imageData);
+
+                sprite = Sprite.Create(
+                    tex,
+                    new Rect(0, 0, tex.width, tex.height),
+                    new Vector2(0.5f, 0.5f),
+                    100f
+                );
+            }
+            else
+            {
+                sprite = null;
+            }
+
+
+            Mission newMission = new Mission
+            {
+                levelImage = sprite,
+                directory = "marble/data/missions/" + difficulty.ToString() + "/" + levelName + ".mis",
+                levelNumber = -1,
+            };
+
+            var lexer = new TSLexer(
+                new AntlrFileStream(Path.Combine(Application.streamingAssetsPath, misPath))
+            );
+            var parser = new TSParser(new CommonTokenStream(lexer));
+            var file = parser.start();
+
+            if (parser.NumberOfSyntaxErrors > 0)
+            {
+                Debug.LogError("Could not parse mission file");
+                continue;
+            }
+
+            MissionObjects = new List<TSObject>();
+
+            foreach (var decl in file.decl())
+            {
+                var objectDecl = decl.stmt()?.expression_stmt()?.stmt_expr()?.object_decl();
+                if (objectDecl == null)
+                    continue;
+
+                MissionObjects.Add(MissionImporter.ProcessObject(objectDecl));
+            }
+
+            if (MissionObjects.Count == 0)
+                return;
+
+            var mission = MissionObjects[0];
+            foreach (var obj in mission.GetFirstChildrens())
+            {
+                //Mission info
+                if (obj.ClassName == "ScriptObject" && obj.Name == "MissionInfo")
+                {
+                    int _time = -1;
+                    if (int.TryParse(obj.GetField("time"), out _time))
+                        if (_time != 0)
+                            newMission.time = _time;
+                        else
+                            newMission.time = -1;
+                    else
+                        newMission.time = -1;
+
+                    newMission.missionName = levelName.Replace("\\", "");
+                    newMission.levelName = (obj.GetField("name").Replace("\\", ""));
+                    newMission.description = (obj.GetField("desc").Replace("\\", ""));
+
+                    string startHelpText = obj.GetField("startHelpText");
+                    if (!string.IsNullOrEmpty(startHelpText))
+                        newMission.startHelpText = startHelpText.Replace("\\", "");
+
+                    int _level = 0;
+                    if (int.TryParse(obj.GetField("level"), out _level))
+                        newMission.levelNumber = _level;
+                    else
+                        newMission.levelNumber = 0;
+
+                    newMission.artist = (obj.GetField("artist"));
+
+                    int _goldTime = -1;
+                    if (int.TryParse(obj.GetField("goldTime"), out _goldTime))
+                        newMission.goldTime = _goldTime;
+                    else
+                        newMission.goldTime = -1;
+
+                    int _ultimateTime = -1;
+                    if (int.TryParse(obj.GetField("ultimateTime"), out _ultimateTime))
+                        newMission.ultimateTime = _ultimateTime;
+                    else
+                        newMission.ultimateTime = -1;
+                }
+
+                else if (obj.ClassName == "Sky")
+                {
+                    var skybox = ResolvePath(obj.GetField("materialList"), MissionInfo.instance.MissionPath);
+
+                    newMission.skyboxName = Path.GetFileNameWithoutExtension(skybox);
+                }
+            }
+
+            if (newMission.levelImage)
+                newMission.levelImage.name = levelName;
+
+            if (difficulty == Type.beginner)
+                missionsBeginner.Add(newMission);
+            else if (difficulty == Type.intermediate)
+                missionsIntermediate.Add(newMission);
+            else if (difficulty == Type.advanced)
+                missionsAdvanced.Add(newMission);
+            else if (difficulty == Type.custom)
+                missionsCustom.Add(newMission);
+        }
+
+        if (difficulty == Type.beginner)
+            missionsBeginner = SortMissionsByLevelNumber(missionsBeginner);
+        else if (difficulty == Type.intermediate)
+            missionsIntermediate = SortMissionsByLevelNumber(missionsIntermediate);
+        else if (difficulty == Type.advanced)
+            missionsAdvanced = SortMissionsByLevelNumber(missionsAdvanced);
+        else if (difficulty == Type.custom)
+            missionsCustom = SortMissionsByLevelNumber(missionsCustom);
+    }
+
+    public static List<Mission> SortMissionsByLevelNumber(List<Mission> missions)
+    {
+        if (missions == null || missions.Count == 0)
+            return new List<Mission>();
+
+        int maxIndex = missions.Count - 1;
+
+        var sortable = missions
+            .Where(m => m != null)
+            .Select(m => new
+            {
+                Mission = m,
+                NormalizedLevel = Mathf.Clamp(m.levelNumber, 0, (maxIndex + 1))
+            })
+            .ToList();
+
+        // 🔥 IMPORTANT PART:
+        // levelNumber ASC
+        // levelName DESC (so later alphabet inserts first)
+        sortable.Sort((a, b) =>
+        {
+            int numCompare = a.NormalizedLevel.CompareTo(b.NormalizedLevel);
+            if (numCompare != 0)
+                return numCompare;
+
+            return string.Compare(
+                b.Mission.levelName,
+                a.Mission.levelName,
+                StringComparison.OrdinalIgnoreCase
+            );
+        });
+
+        List<Mission> result = new List<Mission>();
+
+        foreach (var entry in sortable)
+        {
+            int targetIndex = Mathf.Clamp(
+                entry.NormalizedLevel,
+                0,
+                result.Count
+            );
+
+            result.Insert(targetIndex, entry.Mission);
+        }
+
+        for (int i = 0; i < result.Count; i++)
+            result[i].levelNumber = (i + 1);
+
+        return result;
+    }
+
+    private string ResolvePath(string assetPath, string misPath)
+    {
+        if (string.IsNullOrEmpty(assetPath))
+            return assetPath;
+
+        // Normalize slashes first
+        assetPath = assetPath.Replace('\\', '/');
+
+        // Remove trailing quote if present
+        if (assetPath.EndsWith("\""))
+            assetPath = assetPath.Substring(0, assetPath.Length - 1);
+
+        // Remove leading slashes
+        assetPath = assetPath.TrimStart('/');
+
+        // --- Resolve special prefixes ---
+        if (assetPath[0] == '.')
+        {
+            // Relative to mission file
+            assetPath = Path.GetDirectoryName(misPath).Replace('\\', '/')
+                        + assetPath.Substring(1);
+        }
+        else
+        {
+            // Replace anything before first '/' with "marble"
+            int slash = assetPath.IndexOf('/');
+            assetPath = slash >= 0
+                ? "marble" + assetPath.Substring(slash)
+                : "marble/" + assetPath;
+        }
+
+        // --- Fix lbinteriors_* folders ---
+        assetPath = assetPath
+            .Replace("/lbinteriors_mbp/", "/interiors_mbp/")
+            .Replace("/lbinteriors_mbg/", "/interiors_mbg/");
+
+        return assetPath;
+    }
+}
