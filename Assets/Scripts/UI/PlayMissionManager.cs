@@ -223,9 +223,9 @@ public class PlayMissionManager : MonoBehaviour
         levelDescriptionText.text = missions[number].description;
 
         if (missions[number].time != -1)
-            timeToQualifyText.text = "Time to Qualify: " + Utils.FormatTime(missions[number].time);
+            timeToQualifyText.text = "<color=#88BCEE>" + Utils.FormatTime(missions[number].time) + "</color>";
         else
-            timeToQualifyText.text = string.Empty;
+            timeToQualifyText.text = "None";
 
         RefreshTMPLayout(levelText);
         RefreshTMPLayout(levelDescriptionText);
@@ -244,7 +244,7 @@ public class PlayMissionManager : MonoBehaviour
             levelImage.color = Color.clear;
         }
 
-        currentLevelText.text = CapitalizeFirst(currentlySelectedType.ToString()) + " Level " + (number + 1);
+        currentLevelText.text = "Level " + (number + 1);
 
         notQualifiedImage.SetActive(qualifiedLevel < number);
         notQualifiedText.SetActive(qualifiedLevel < number);
@@ -265,16 +265,21 @@ public class PlayMissionManager : MonoBehaviour
         MissionInfo.instance.skybox = Application.CanStreamedLevelBeLoaded(skyboxName) ? skyboxName : "sky_day";
 
         bestTimesText.text = string.Empty;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 1; i++)
         {
             string _name = PlayerPrefs.GetString(MissionInfo.instance.levelName + "_Name_" + i, "Nardo Polo");
             float _time = PlayerPrefs.GetFloat(MissionInfo.instance.levelName + "_Time_" + i, -1);
-            bestTimesText.text += (i+1) + ". " + _name;
+            //bestTimesText.text += (i+1) + ". " + _name;
 
             if (_time < MissionInfo.instance.goldTime && _time != -1)
-                bestTimesText.text += "\t" + Utils.FormatTime(_time) + "<sprite name=\"gold\">\n";
+                bestTimesText.text += "<color=#FFD700>" + Utils.FormatTime(_time) + "</color>\n";
             else
-                bestTimesText.text += "\t" + Utils.FormatTime(_time) + "\n";
+                if(_time == -1){
+                    bestTimesText.text += "None";
+                } else {
+                    bestTimesText.text += "<color=#8DFF8D>" + Utils.FormatTime(_time) + "</color>\n";
+                }
+                
         }
     }
 
