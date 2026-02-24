@@ -71,16 +71,16 @@ public class Preview : MonoBehaviour
     //Load All Missions Into Mega Mission
     void LoadAllMissions()
     {
-                tempMisisons = MissionInfo.instance.missionsGoldBeginner;
-                previewMissions.AddRange(tempMisisons);
-                tempMisisons = MissionInfo.instance.missionsGoldIntermediate;
-                previewMissions.AddRange(tempMisisons);
-                tempMisisons = MissionInfo.instance.missionsGoldAdvanced;
-                previewMissions.AddRange(tempMisisons);
-                tempMisisons = MissionInfo.instance.missionsGoldCustom;
-                previewMissions.AddRange(tempMisisons);
+                tempMissions = MissionInfo.instance.missionsGoldBeginner;
+                previewMissions.AddRange(tempMissions);
+                tempMissions = MissionInfo.instance.missionsGoldIntermediate;
+                previewMissions.AddRange(tempMissions);
+                tempMissions = MissionInfo.instance.missionsGoldAdvanced;
+                previewMissions.AddRange(tempMissions);
+                tempMissions = MissionInfo.instance.missionsGoldCustom;
+                previewMissions.AddRange(tempMissions);
 
-                tempMisisons.Clear();
+                tempMissions.Clear();
                 GameObject previewInteriorPrefab = Resources.Load<GameObject>("Prefabs/Interior");
                 //Loop through missions to add them to mega scene
                 for (int index = 0; index < previewMissions.Count; index++)
