@@ -17,5 +17,7 @@ public class MainMenuManager : MonoBehaviour
         helpButton.onClick.AddListener(() => SceneManager.LoadScene("HelpCredits"));
         optionsButton.onClick.AddListener(() => SceneManager.LoadScene("Options"));
         quitButton.onClick.AddListener(() => Application.Quit());
+        bool previewState = Preview.instance.getIsInPreviewMode();
+        Debug.LogWarning("Preview State: " + previewState.ToString());
     }
 }
