@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 [ExecuteInEditMode]
 public class DifResource : IDisposable {
@@ -88,7 +89,9 @@ public class DifResource : IDisposable {
 	#endregion
 
 	private void create(int interiorIndex) {
-        if (File.Exists(fullPath) == false) {
+
+		fullPath = Regex.Replace(fullPath, @"\\", "").Replace("/'", "'");
+		if (File.Exists(fullPath) == false) {
             Debug.LogError("Dif file not found: \"" + fullPath + "\"");
             return;
         }

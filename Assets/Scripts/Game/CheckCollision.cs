@@ -118,8 +118,7 @@ public class CheckCollision : MonoBehaviour
         ApplyCollision(hit);
     }
 
-    private void OnManualCollisionStay(Collider collider, RaycastHit hit)
-    {
+    private void OnManualCollisionStay(Collider collider, RaycastHit hit) { 
         ApplyCollision(hit);
 
         Trapdoor t;

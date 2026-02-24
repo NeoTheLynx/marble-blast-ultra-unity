@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Text.RegularExpressions;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using DG.Tweening;
 
 public class GameUIManager : MonoBehaviour
 {
@@ -15,9 +14,12 @@ public class GameUIManager : MonoBehaviour
     }
 
     [SerializeField] Sprite[] numbers;
+    [SerializeField] Sprite[] numbersGreen;
+    [SerializeField] Sprite[] numbersRed;
     [SerializeField] Image[] timerNumbers;
     [SerializeField] TextMeshProUGUI centerText;
     [SerializeField] TextMeshProUGUI bottomText;
+    [SerializeField] TextMeshProUGUI fpsText;
     [SerializeField] Texture[] powerupIcon;
     [SerializeField] RawImage powerupHUD;
     [SerializeField] Image[] targetGem;
@@ -28,9 +30,64 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] GameObject setImage;
     [SerializeField] GameObject goImage;
     [SerializeField] GameObject outOfBoundsImage;
+    [Space]
+    public GameObject oobInsultMenu;
+    [SerializeField] TextMeshProUGUI oobInsultTitleText;
+    [SerializeField] TextMeshProUGUI oobInsultCaptionText;
+    [SerializeField] Button oobInsultCloseButton;
 
     Tween centerTextFade;
     Tween bottomTextFade;
+
+    Sprite[] timerColor;
+    float timer = 0f;
+
+    [HideInInspector] public bool isInitialized = false;
+
+    public void Init()
+    {
+        timerColor = new Sprite[numbers.Length];
+        oobInsultCloseButton.onClick.AddListener(() => {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            Time.timeScale = 1;
+            oobInsultMenu.SetActive(false);
+        });
+        isInitialized = true;
+    }
+
+    private void Update()
+    {
+        if (fpsText)
+        {
+            timer += Time.unscaledDeltaTime;
+
+            if (timer >= 0.5f)
+            {
+                fpsText.text = "FPS: " + RoundSmart((float)(1 / Time.unscaledDeltaTime));
+                timer = 0f;
+            }
+        }
+    }
+
+    float RoundSmart(float value)
+    {
+        int decimals = Mathf.Abs(value) >= 1000f ? 0 : 1;
+        return (float)System.Math.Round(value, decimals, System.MidpointRounding.AwayFromZero);
+    }
+
+    public void SetOutOfBoundsMessage(int oobCount, string message)
+    {
+        oobInsultMenu.SetActive(true);
+        Time.timeScale = 0;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        oobInsultTitleText.text = "Out of Bounds " + oobCount + " times";
+        oobInsultCaptionText.text = message;
+    }
 
     public void UpdateHUDMaterial()
     {
@@ -115,14 +172,14 @@ public class GameUIManager : MonoBehaviour
     {
         centerTextFade?.Kill();
 
-        _text = Utils.Resolve(_text).Replace("\\", "");
+        _text = Utils.Resolve(Regex.Unescape(_text));
 
         centerText.color = Color.white;
         centerText.text = _text;
         centerTextFade = centerText.DOColor(Color.white, 3f).OnComplete(() => { centerText.DOColor(Color.clear, 0.25f); });
     }
 
-    public void SetBottomText(string _text)
+    public void SetBottomText(string _text, float _time = 3f)
     {
         bottomTextFade?.Kill();
 
@@ -130,7 +187,24 @@ public class GameUIManager : MonoBehaviour
 
         bottomText.color = Color.yellow;
         bottomText.text = _text;
-        bottomTextFade = bottomText.DOColor(Color.yellow, 3f).OnComplete(() => { bottomText.DOColor(Color.clear, 0.25f); });
+        bottomTextFade = bottomText.DOColor(Color.yellow, _time).OnComplete(() => { bottomText.DOColor(Color.clear, 0.25f); });
+    }
+
+    public void TeleportFadeOutBottomText()
+    {
+        if (bottomText.text == "Teleporter has been activated, please wait.")
+        {
+            bottomTextFade?.Kill();
+            bottomTextFade = bottomText.DOColor(Color.clear, 0.25f);
+        }
+    }
+
+    public void SetTimerColor(bool isRed)
+    {
+        timerColor = isRed ? numbersRed : numbers;
+
+        if (GameManager.instance.timeTravelActive)
+            timerColor = numbersGreen;
     }
 
     public void SetTimerText(float _timeMs)
@@ -153,13 +227,24 @@ public class GameUIManager : MonoBehaviour
         int centiseconds = remainder / 10;
         int milliseconds = remainder % 10;
 
-        timerNumbers[0].sprite = numbers[decaminutes];
-        timerNumbers[1].sprite = numbers[minutes];
-        timerNumbers[2].sprite = numbers[decaseconds];
-        timerNumbers[3].sprite = numbers[seconds];
-        timerNumbers[4].sprite = numbers[deciseconds];
-        timerNumbers[5].sprite = numbers[centiseconds];
-        timerNumbers[6].sprite = numbers[milliseconds];
+        if (!GameManager.alarmIsPlaying)
+        {
+            timerColor = numbers;
+            if (!GameManager.gameStart || GameManager.gameFinish || GameManager.instance.timeTravelActive)
+                timerColor = numbersGreen;
+            else if (GameManager.notQualified)
+                timerColor = numbersRed;
+        }
+
+        timerNumbers[0].sprite = timerColor[decaminutes];
+        timerNumbers[1].sprite = timerColor[minutes];
+        timerNumbers[2].sprite = timerColor[decaseconds];
+        timerNumbers[3].sprite = timerColor[seconds];
+        timerNumbers[4].sprite = timerColor[deciseconds];
+        timerNumbers[5].sprite = timerColor[centiseconds];
+        timerNumbers[6].sprite = timerColor[milliseconds];
+        timerNumbers[7].sprite = timerColor[10];
+        timerNumbers[8].sprite = timerColor[11];
     }
 
     public void SetCenterImage(int index)

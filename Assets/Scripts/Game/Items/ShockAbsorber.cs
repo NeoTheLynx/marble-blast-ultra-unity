@@ -9,8 +9,10 @@ public class ShockAbsorber : Powerups
     public static OnUseShockAbsorber onUseShockAbsorber = new OnUseShockAbsorber();
     public static bool alreadyListened = false;
 
-    public void Start()
+    protected override void Start()
     {
+        base.Start();
+
         if (!alreadyListened)
         {
             alreadyListened = true;
@@ -22,6 +24,15 @@ public class ShockAbsorber : Powerups
     {
         alreadyListened = false;
         onUseShockAbsorber.RemoveAllListeners();
+    }
+
+    public void OnEnable()
+    {
+        if (!alreadyListened)
+        {
+            alreadyListened = true;
+            onUseShockAbsorber.AddListener(UsePowerup);
+        }
     }
 
     protected override void UsePowerup()

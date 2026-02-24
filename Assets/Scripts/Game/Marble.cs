@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
@@ -18,6 +17,8 @@ public class Marble : MonoBehaviour
     [SerializeField] AudioSource useSuperBounceSound;
     [SerializeField] AudioSource gyroSound;
     [SerializeField] AudioSource TTActiveSound;
+    public AudioSource teleportSound;
+    public AudioSource alarmSound;
 
     //things that stick to the marble
     public GameObject gyrocopterBlades;
@@ -26,7 +27,9 @@ public class Marble : MonoBehaviour
     public GameObject bounceParticle;
 
     public Movement movement;
-    public Transform startPoint;
+    public GameObject normalMesh;
+    public GameObject teleportMesh;
+
     public class OnRespawn : UnityEvent { };
     public static OnRespawn onRespawn = new OnRespawn();
 
@@ -51,16 +54,26 @@ public class Marble : MonoBehaviour
 
     private void Update()
     {
+        if (GameUIManager.instance.isInitialized && GameUIManager.instance.oobInsultMenu.activeSelf)
+            return;
+
         if (Input.GetKeyDown(KeyCode.R) && !GameManager.gameFinish)
         {
             if (!GameManager.isPaused)
+            {
+                GameManager.instance.IncrementOutOfBoundsCount();
                 onRespawn?.Invoke();
-            else
+            }
+            else 
+            { 
                 GameManager.instance.RestartLevel();
+            }
         }
 
-        if (GameManager.isPaused && Input.GetKeyDown(KeyCode.Return))
+        if (GameManager.isPaused && Input.GetKeyDown(KeyCode.Return)) {
             SceneManager.LoadScene("PlayMission");
+            EnablePreviews();
+        }
 
         if (Input.GetKeyDown(ControlBinding.instance.usePowerup) && !GameManager.isPaused && !GameManager.gameFinish && Movement.instance.canMove)
             UsePowerup();
@@ -69,6 +82,14 @@ public class Marble : MonoBehaviour
     public void LateUpdate()
     {
         gyrocopterBlades.transform.position = transform.position;
+    }
+
+    void DisablePreviews(){
+        Preview.instance.setIsInPreviewMode(false);
+    }
+
+    void EnablePreviews(){
+        Preview.instance.setIsInPreviewMode(true);
     }
 
     void UsePowerup()
@@ -89,7 +110,8 @@ public class Marble : MonoBehaviour
 
     public void Respawn()
     {
-        movement.SetPosition(startPoint.position);
+        movement.SetPosition(GameManager.instance.activeCheckpoint.position);
+        GravityModifier.ResetGravityGlobal(GameManager.instance.activeCheckpointGravityDir);
     }
 
     public void PlaySound(PowerupType _powerup)
@@ -149,9 +171,9 @@ public class Marble : MonoBehaviour
         GameManager.instance.shockAbsorberIsActive = false;
 
         if (GameManager.instance.shockAbsorberIsActive)
-            movement.bounceRestitution = 0;
+            movement.bounceRestitution = 0.01f;
         else if (GameManager.instance.superBounceIsActive)
-            movement.bounceRestitution = 1;
+            movement.bounceRestitution = 0.9f;
         else
             movement.bounceRestitution = 0.5f;
     }
@@ -168,6 +190,7 @@ public class Marble : MonoBehaviour
         {
             GameManager.instance.superBounceIsActive = true;
 
+            //marble is changed into super bounce material
             movement.bounceRestitution = 0.9f;
         }
     }
@@ -184,6 +207,8 @@ public class Marble : MonoBehaviour
         if (!GameManager.instance.shockAbsorberIsActive)
         {
             GameManager.instance.shockAbsorberIsActive = true;
+
+            //marble is changed into super bounce material
             movement.bounceRestitution = 0.01f;
         }
     }
@@ -206,13 +231,34 @@ public class Marble : MonoBehaviour
 
     public void ActivateTimeTravel(float _timeBonus)
     {
-        if (!GameManager.instance.timeTravelActive)
-        {
-            GameManager.instance.timeTravelStartTime = Time.time;
-            GameManager.instance.timeTravelActive = true;
-        }
-        GameManager.instance.timeTravelBonus += _timeBonus;
         PlaySound(PowerupType.TimeTravel);
+
+        if(_timeBonus > 0)
+        {
+            if (!GameManager.instance.timeTravelActive)
+            {
+                GameManager.instance.timeTravelStartTime = Time.time;
+                GameManager.instance.timeTravelActive = true;
+            }
+            GameManager.instance.timeTravelBonus += _timeBonus;
+        }
+        else
+        {
+            if (GameManager.instance.timeTravelActive)
+            {
+                GameManager.instance.timeTravelBonus += _timeBonus;
+                if (GameManager.instance.timeTravelBonus < 0)
+                {
+                    GameManager.instance.elapsedTime -= GameManager.instance.timeTravelBonus * 1000f;
+                    GameManager.instance.timeTravelBonus = 0;
+                }
+            }
+            else
+            {
+                GameManager.instance.elapsedTime -= _timeBonus * 1000f;
+            }
+        }
+        
     }
 
     public void InactivateTimeTravel()

@@ -43,18 +43,18 @@ public class ButtonSound : MonoBehaviour
     // --- Hover (called from EventTrigger or IPointerEnter) ---
     public void HoverSound()
     {
-        if (!IsInteractable()) return;
+        if (!IsInteractable() || !IsEnabled()) return;
 
         buttonFx = GetComponent<AudioSource>();
         buttonFx.volume = PlayerPrefs.GetFloat("Audio_SoundVolume", 0.5f);
 
-        if (hoverFx) buttonFx.PlayOneShot(hoverFx);
+        if (hoverFx && button.enabled == true) buttonFx.PlayOneShot(hoverFx);
     }
 
     // --- Button click ---
-    void PlayClickSound()
+    public void PlayClickSound()
     {
-        if (!IsInteractable()) return;
+        if (!IsInteractable() || !IsEnabled()) return;
 
         buttonFx = GetComponent<AudioSource>();
         buttonFx.volume = PlayerPrefs.GetFloat("Audio_SoundVolume", 0.5f);
@@ -65,7 +65,7 @@ public class ButtonSound : MonoBehaviour
     // --- Toggle click ---
     void OnToggleChanged(bool isOn)
     {
-        if (!IsInteractable()) return;
+        if (!IsInteractable() || !IsEnabled()) return;
 
         if (playToggleOnOnly && !isOn)
             return;
@@ -78,6 +78,13 @@ public class ButtonSound : MonoBehaviour
     {
         if (button) return button.interactable;
         if (toggle) return toggle.interactable;
+        return false;
+    }
+
+    bool IsEnabled()
+    {
+        if (button) return button.enabled;
+        if (toggle) return toggle.enabled;
         return false;
     }
 }

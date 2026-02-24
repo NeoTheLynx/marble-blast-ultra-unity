@@ -9,8 +9,10 @@ public class Gyrocopter : Powerups
     public static OnUseGyrocopter onUseGyrocopter = new OnUseGyrocopter();
     public static bool alreadyListened = false;
 
-    public void Start()
+    protected override void Start()
     {
+        base.Start();
+
         if (!alreadyListened)
         {
             alreadyListened = true;
@@ -22,6 +24,15 @@ public class Gyrocopter : Powerups
     {
         alreadyListened = false;
         onUseGyrocopter.RemoveAllListeners();
+    }
+
+    public void OnEnable()
+    {
+        if (!alreadyListened)
+        {
+            alreadyListened = true;
+            onUseGyrocopter.AddListener(UsePowerup);
+        }
     }
     protected override void UsePowerup()
     {

@@ -9,8 +9,10 @@ public class SuperBounce : Powerups
     public static OnUseSuperBounce onUseSuperBounce = new OnUseSuperBounce();
     public static bool alreadyListened = false;
 
-    public void Start()
+    protected override void Start()
     {
+        base.Start();
+
         if (!alreadyListened)
         {
             alreadyListened = true;
@@ -22,6 +24,15 @@ public class SuperBounce : Powerups
     {
         alreadyListened = false;
         onUseSuperBounce.RemoveAllListeners();
+    }
+
+    public void OnEnable()
+    {
+        if (!alreadyListened)
+        {
+            alreadyListened = true;
+            onUseSuperBounce.AddListener(UsePowerup);
+        }
     }
 
     protected override void UsePowerup()

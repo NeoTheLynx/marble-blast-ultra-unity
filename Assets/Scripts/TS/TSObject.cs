@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,7 +34,7 @@ namespace TS
 
         public string GetField(string field)
         {
-            return Fields.TryGetValue(field.ToLower(), out string value) ? value : string.Empty;
+            return Fields.TryGetValue(field.ToLower(), out string value) ? value : "";
         }
     }
 }

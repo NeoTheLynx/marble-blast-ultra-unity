@@ -5,14 +5,13 @@ using UnityEngine.Events;
 
 public class TimeTravel : Powerups
 {
-    public float timeBonus = 5f; 
-    public class OnGetTimeTravel : UnityEvent { };
-    public static OnGetTimeTravel onGetTimeTravel = new OnGetTimeTravel();
+    public float timeBonus = 5f;
 
-    public void Start()
+    protected override void Start()
     {
-        onGetTimeTravel.AddListener(UsePowerup);
-        bottomTextMsg = "You picked up a " + timeBonus + " second Time Travel Bonus!";
+        base.Start();
+
+        bottomTextMsg = "You picked up a " + timeBonus.ToString("0.###") + " second Time Modifier Bonus!";
     }
 
     protected override void UsePowerup()

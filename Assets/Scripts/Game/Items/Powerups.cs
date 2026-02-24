@@ -11,28 +11,24 @@ public enum PowerupType
     SuperSpeed,
     SuperBounce,
     ShockAbsorber,
-    MegaMarble,
-    MiniMarble,
     TimeTravel,
     AntiGravity,
-    Gyrocopter
+    Gyrocopter,
+    EasterEgg
 }
 
 public class Powerups : MonoBehaviour
 {
-    [SerializeField] PowerupType powerupType;
-    [SerializeField] string powerupName;
+    [SerializeField] public PowerupType powerupType;
+    [SerializeField] protected string powerupName;
     [SerializeField] bool autoUse;
-    [SerializeField] float respawnTime = 7f;
+    [SerializeField] protected float respawnTime = 7f;
     [SerializeField] protected AudioClip pickupSound;
     [SerializeField] protected AudioClip useSound;
 
     [Space]
     [SerializeField] MeshRenderer meshRenderer;
     [SerializeField] SkinnedMeshRenderer skinnedMeshRenderer;
-
-    [Space]
-    [SerializeField] protected Animator anim;
 
     [HideInInspector] public bool isActive = true;
     private float timeDeactivated;
@@ -42,21 +38,20 @@ public class Powerups : MonoBehaviour
 
     public bool showHelpOnPickup = false;
 
+    Transform mesh;
+
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         isActive = true;
+        mesh = transform.Find("Mesh");
+        rotateMesh = mesh;
     }
 
     public void PickupItem()
     {
         if (isActive)
         {
-            Deactivate();
-
-            if(showHelpOnPickup)
-                GameUIManager.instance.SetCenterText("Press the <func:bind mouseFire> to use the " + powerupName);
-
             if (autoUse)
             {
                 UsePowerup();
@@ -66,15 +61,20 @@ public class Powerups : MonoBehaviour
                 GameManager.instance.activePowerup = powerupType;
                 GameUIManager.instance.SetPowerupIcon(powerupType);
             }
+
+            Deactivate();
+
+            if(showHelpOnPickup)
+                GameUIManager.instance.SetCenterText("Press the <func:bind mouseFire> to use the " + powerupName);
         }
     }
 
-    protected void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (rotateMesh)
         {
-            var rot = transform.Find("Mesh").rotation;
-            transform.Find("Mesh").rotation = Quaternion.AngleAxis(Time.fixedDeltaTime * 120f, rot * Vector3.up) * rot;
+            var rot = mesh.rotation;
+            mesh.rotation = Quaternion.AngleAxis(Time.fixedDeltaTime * 120f, rot * Vector3.up) * rot;
         }
         else
         {
@@ -117,8 +117,8 @@ public class Powerups : MonoBehaviour
         isActive = false;
 
         GameManager.instance.PlayAudioClip(pickupSound);
-        if (powerupType != PowerupType.TimeTravel)
-            bottomTextMsg = "You picked up a " + powerupName;
+        if (powerupType != PowerupType.TimeTravel && powerupType != PowerupType.EasterEgg)
+            bottomTextMsg = "You recieved a " + powerupName;
 
         GameUIManager.instance.SetBottomText(bottomTextMsg);
 

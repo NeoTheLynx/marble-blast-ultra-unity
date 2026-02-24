@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using TMPro;
 using System;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class OptionsManager : MonoBehaviour
 {
@@ -44,6 +42,7 @@ public class OptionsManager : MonoBehaviour
     public Toggle grafful;
     public Toggle grafopgl;
     public Toggle grafwindo;
+    public Toggle customRes;
     [Space]
     public GameObject graphicsMenu;
     public GameObject audioMenu;
@@ -58,6 +57,18 @@ public class OptionsManager : MonoBehaviour
     public TextMeshProUGUI confirmCaption;
     public Button yesButton;
     public Button noButton;
+    [Space]
+    public GameObject customResolutionWindow;
+    public CanvasGroup optionsWindow;
+    public GameObject confirmGraphicsWindow;
+    public Button confirmChanges;
+    public Button revertChanges;
+    public TextMeshProUGUI confirmText;
+    float timeRemaining;
+
+    [HideInInspector] public int customWidth;
+    [HideInInspector] public int customHeight;
+    [HideInInspector] public bool useCustomResolution;
 
     int resolutionIndex;
     string colorMode, videoDriver;
@@ -84,14 +95,32 @@ public class OptionsManager : MonoBehaviour
         cntr_mrb_rt.onClick.AddListener(() => RemapButton("Move Right", cntr_mrb_rt));
         cntrl_mous_bttn.onClick.AddListener(() => RemapButton("Free-Look Key", cntrl_mous_bttn));
         controlsButton.onClick.AddListener(() => SetOptionsMenu(2));
-        grafapply.onClick.AddListener(() => ApplyGraphics());
+        grafapply.onClick.AddListener(() =>
+        {
+            confirmGraphicsWindow.SetActive(true);
+            optionsWindow.blocksRaycasts = false;
+            timeRemaining = 10.999f;
+            ApplyGraphics();
+        });
         graphicsButton.onClick.AddListener(() => SetOptionsMenu(0));
         homeButton.onClick.AddListener(() => SceneManager.LoadScene("MainMenu"));
         marbleButton.onClick.AddListener(() => SetControlsMenu(0));
         mouseButton.onClick.AddListener(() => SetControlsMenu(2));
 
-        yesButton.onClick.AddListener(() => ForceMapping());
-        noButton.onClick.AddListener(() => CancelMapping());
+        yesButton.onClick.AddListener(() => CancelMapping());
+        noButton.onClick.AddListener(() => ForceMapping());
+        confirmChanges.onClick.AddListener(() => 
+        {
+            confirmGraphicsWindow.SetActive(false);
+            optionsWindow.blocksRaycasts = true;
+            SaveGraphics(); 
+        });
+        revertChanges.onClick.AddListener(() =>
+        {
+            confirmGraphicsWindow.SetActive(false);
+            optionsWindow.blocksRaycasts = true;
+            RevertGraphics();
+        });
 
         cntrl_mous_freel.onValueChanged.AddListener(SetFreeLook);
         cntrl_mous_invrt.onValueChanged.AddListener(SetInvertYAxis);
@@ -105,6 +134,7 @@ public class OptionsManager : MonoBehaviour
         grafful.onValueChanged.AddListener(SetWindowFull);
         grafopgl.onValueChanged.AddListener(SetVideoDriverOpenGL);
         grafwindo.onValueChanged.AddListener(SetWindowWindow);
+        customRes.onValueChanged.AddListener(SetCustomResolution);
 
         mouseSensitivitySlider.onValueChanged.AddListener(SetMouseSensitivity);
         musicSlider.onValueChanged.AddListener(SetMusicVolume);
@@ -124,12 +154,14 @@ public class OptionsManager : MonoBehaviour
     public void SetDefaults()
     {
         resolutionIndex = PlayerPrefs.GetInt("Graphics_ScreenResolution", 2);
-        if(resolutionIndex == 0)
+        if (resolutionIndex == 0)
             graf640.SetIsOnWithoutNotify(true);
-        else if (resolutionIndex == 1) 
+        else if (resolutionIndex == 1)
             graf800.SetIsOnWithoutNotify(true);
-        else
+        else if (resolutionIndex == 2)
             graf1024.SetIsOnWithoutNotify(true);
+        else if (resolutionIndex == -1)
+            customRes.SetIsOnWithoutNotify(true);
 
         fullScreen = PlayerPrefs.GetInt("Graphics_Fullscreen", 0) == 1;
         grafful.SetIsOnWithoutNotify(fullScreen);
@@ -148,6 +180,12 @@ public class OptionsManager : MonoBehaviour
         else if (_colorDepth == "16-bit") graf16bt.SetIsOnWithoutNotify(true);
         colorMode = _colorDepth;
 
+        prevFullscreen = fullScreen;
+        prevResolutionIndex = resolutionIndex;
+        prevVideoDriver = _videoDriver;
+        prevColorMode = _colorDepth;
+        prevShadow = shadow;
+
         cntrl_mous_freel.SetIsOnWithoutNotify(PlayerPrefs.GetInt("Controls_Mouse_Freelook", 1) == 1);
         cntrl_mous_invrt.SetIsOnWithoutNotify(PlayerPrefs.GetInt("Controls_Mouse_InvertYAxis", 0) == 1);
 
@@ -161,26 +199,16 @@ public class OptionsManager : MonoBehaviour
         graphicsMenu.SetActive(false);
         audioMenu.SetActive(false);
         controlsMenu.SetActive(false);
-
-        graphicsButton.transform.SetAsFirstSibling();
-        audioButton.transform.SetAsFirstSibling();
-        controlsButton.transform.SetAsFirstSibling();
-
         switch (index)
         {
             case 0:
-                graphicsButton.transform.SetAsLastSibling();
-                graphicsMenu.SetActive(true); 
+                graphicsMenu.SetActive(true);
                 break;
             case 1:
-                audioButton.transform.SetAsLastSibling();
-                audioMenu.SetActive(true); 
+                audioMenu.SetActive(true);
                 break;
             case 2:
-                controlsButton.transform.SetAsLastSibling();
-                controlsMenu.transform.SetAsLastSibling();
-                homeButton.transform.SetAsLastSibling();
-                controlsMenu.SetActive(true); 
+                controlsMenu.SetActive(true);
                 break;
         }
     }
@@ -200,24 +228,84 @@ public class OptionsManager : MonoBehaviour
     }
 
     #region Graphics
+
+    int prevResolutionIndex;
+    bool prevFullscreen;
+    string prevVideoDriver;
+    string prevColorMode;
+    bool prevShadow;
+
     public void ApplyGraphics()
     {
         if (resolutionIndex == 0)
             Screen.SetResolution(1280, 720, fullScreen);
         else if (resolutionIndex == 1)
             Screen.SetResolution(1366, 769, fullScreen);
-        else
+        else if (resolutionIndex == 2)
             Screen.SetResolution(1920, 1080, fullScreen);
+        else if (resolutionIndex == -1)
+            Screen.SetResolution(customWidth, customHeight, fullScreen);
+    }
 
+    public void SaveGraphics()
+    {
         PlayerPrefs.SetInt("Graphics_ScreenResolution", resolutionIndex);
         PlayerPrefs.SetInt("Graphics_Shadow", shadow ? 1 : 0);
 
         PlayerPrefs.SetInt("Graphics_Fullscreen", fullScreen ? 1 : 0);
         PlayerPrefs.SetString("Graphics_VideoDriver", videoDriver);
         PlayerPrefs.SetString("Graphics_ColorDepth", colorMode);
-        PlayerPrefs.SetInt("Graphics_Shadow", shadow ? 1 : 0);
+
+        prevFullscreen = fullScreen;
+        prevResolutionIndex = resolutionIndex;
+        prevVideoDriver = videoDriver;
+        prevColorMode = colorMode;
+        prevShadow = shadow;
 
         PlayerPrefs.Save();
+    }
+
+    public void RevertGraphics()
+    {
+        fullScreen = prevFullscreen;
+        resolutionIndex = prevResolutionIndex;
+        videoDriver = prevVideoDriver;
+        colorMode = prevColorMode;
+        shadow = prevShadow;
+
+        graf640.SetIsOnWithoutNotify(false);
+        graf800.SetIsOnWithoutNotify(false);
+        graf1024.SetIsOnWithoutNotify(false);
+        customRes.SetIsOnWithoutNotify(false);
+        grafopgl.SetIsOnWithoutNotify(false);
+        grafdir3d.SetIsOnWithoutNotify(false);
+        graf32bt.SetIsOnWithoutNotify(false);
+        graf16bt.SetIsOnWithoutNotify(false);
+
+        if (resolutionIndex == 0)
+            graf640.SetIsOnWithoutNotify(true);
+        else if (resolutionIndex == 1)
+            graf800.SetIsOnWithoutNotify(true);
+        else if (resolutionIndex == 2)
+            graf1024.SetIsOnWithoutNotify(true);
+        else if (resolutionIndex == -1)
+            customRes.SetIsOnWithoutNotify(true);
+
+        grafful.SetIsOnWithoutNotify(fullScreen);
+        grafwindo.SetIsOnWithoutNotify(!fullScreen);
+
+        graf_chkbx.SetIsOnWithoutNotify(shadow);
+
+        string _videoDriver = videoDriver;
+        if (_videoDriver == "OpenGL") grafopgl.SetIsOnWithoutNotify(true);
+        else if (_videoDriver == "D3D") grafdir3d.SetIsOnWithoutNotify(true);
+
+        string _colorDepth = colorMode;
+        if (_colorDepth == "32-bit") graf32bt.SetIsOnWithoutNotify(true);
+        else if (_colorDepth == "16-bit") graf16bt.SetIsOnWithoutNotify(true);
+
+        ApplyGraphics();
+        SaveGraphics();
     }
 
     public void SetResolution640(bool isOn)
@@ -230,6 +318,7 @@ public class OptionsManager : MonoBehaviour
 
         graf800.SetIsOnWithoutNotify(false);
         graf1024.SetIsOnWithoutNotify(false);
+        customRes.SetIsOnWithoutNotify(false);
 
         resolutionIndex = 0;
     }
@@ -245,6 +334,7 @@ public class OptionsManager : MonoBehaviour
 
         graf640.SetIsOnWithoutNotify(false);
         graf1024.SetIsOnWithoutNotify(false);
+        customRes.SetIsOnWithoutNotify(false);
 
         resolutionIndex = 1;
     }
@@ -260,9 +350,59 @@ public class OptionsManager : MonoBehaviour
 
         graf640.SetIsOnWithoutNotify(false);
         graf800.SetIsOnWithoutNotify(false);
+        customRes.SetIsOnWithoutNotify(false);
 
         resolutionIndex = 2;
     }
+
+    public void SetCustomResolution(bool isOn)
+    {
+        optionsWindow.blocksRaycasts = false;
+        customResolutionWindow.SetActive(true);
+
+        GetComponent<CustomResolutionManager>().SelectFirstButton();
+        GetComponent<CustomResolutionManager>().scrollRect.verticalNormalizedPosition = 1f;
+
+        if (!isOn)
+        {
+            customRes.SetIsOnWithoutNotify(true);
+            return;
+        }
+
+        graf640.SetIsOnWithoutNotify(false);
+        graf800.SetIsOnWithoutNotify(false);
+        graf1024.SetIsOnWithoutNotify(false);
+    }
+
+    public void CancelCustomResolution()
+    {
+        customResolutionWindow.SetActive(false);
+        optionsWindow.blocksRaycasts = true;
+
+        graf640.SetIsOnWithoutNotify(false);
+        graf800.SetIsOnWithoutNotify(false);
+        graf1024.SetIsOnWithoutNotify(false);
+        customRes.SetIsOnWithoutNotify(false);
+
+        if (resolutionIndex == 0) graf640.SetIsOnWithoutNotify(true);
+        else if (resolutionIndex == 1) graf800.SetIsOnWithoutNotify(true);
+        else if (resolutionIndex == 2) graf1024.SetIsOnWithoutNotify(true);
+
+        useCustomResolution = false;
+    }
+
+    public void SetCustomResolution(int width, int height)
+    {
+        customResolutionWindow.SetActive(false);
+        optionsWindow.blocksRaycasts = true;
+
+        resolutionIndex = -1;
+        useCustomResolution = true;
+
+        customWidth = width;
+        customHeight = height;
+    }
+
 
     public void SetVideoDriverOpenGL(bool isOn)
     {
@@ -296,7 +436,7 @@ public class OptionsManager : MonoBehaviour
             return;
         }
         grafwindo.SetIsOnWithoutNotify(false);
-        
+
         fullScreen = true;
     }
 
@@ -337,7 +477,7 @@ public class OptionsManager : MonoBehaviour
     }
 
     public void SetShadow(bool isOn)
-    {   
+    {
         shadow = isOn;
     }
 
@@ -349,7 +489,7 @@ public class OptionsManager : MonoBehaviour
         musicSlider.value = volume;
         PlayerPrefs.SetFloat("Audio_MusicVolume", volume);
 
-        MenuMusic.instance.GetComponent<AudioSource>().volume = volume;
+        JukeboxManager.instance.GetComponent<AudioSource>().volume = volume;
 
         PlayerPrefs.Save();
     }
@@ -360,7 +500,7 @@ public class OptionsManager : MonoBehaviour
         PlayerPrefs.SetFloat("Audio_SoundVolume", volume);
 
         foreach (var audioSource in FindObjectsOfType<AudioSource>())
-            if(!audioSource.GetComponent<MenuMusic>())
+            if (!audioSource.GetComponent<JukeboxManager>())
                 audioSource.volume = PlayerPrefs.GetFloat("Audio_SoundVolume", 0.5f);
 
         PlayerPrefs.Save();
@@ -412,7 +552,20 @@ public class OptionsManager : MonoBehaviour
 
     private void Update()
     {
-        if (remapMenu.activeSelf)
+        if (confirmGraphicsWindow.activeInHierarchy)
+        {
+            confirmText.text = "Do you want to keep this video mode?\n" +
+                Mathf.FloorToInt(timeRemaining) + " seconds remaining...";
+            timeRemaining -= Time.deltaTime;
+            if (timeRemaining < 0)
+            {
+                confirmGraphicsWindow.SetActive(false);
+                optionsWindow.blocksRaycasts = true;
+                RevertGraphics();
+            }
+        }
+
+        if (remapMenu.activeInHierarchy)
         {
             if (!Input.anyKeyDown)
                 return;
@@ -436,7 +589,7 @@ public class OptionsManager : MonoBehaviour
                     }
                     else
                     {
-                        if(bindToBeRemapped == conflictedMapping)
+                        if (bindToBeRemapped == conflictedMapping)
                         {
                             remapMenu.SetActive(false);
 
@@ -583,14 +736,12 @@ public class OptionsManager : MonoBehaviour
 
     void EnableButtons()
     {
-        foreach (var button in FindObjectsOfType<Button>())
-            button.interactable = true;
+        optionsWindow.blocksRaycasts = true;
     }
 
     public void RemapButton(string _bindToBeRemapped, Button b)
     {
-        foreach (var button in FindObjectsOfType<Button>())
-            button.interactable = false;
+        optionsWindow.blocksRaycasts = false;
 
         remapCaption.text = "Press a new key or button for \"" + _bindToBeRemapped + "\"";
         buttonToBeRemapped = b;

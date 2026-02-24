@@ -60,12 +60,6 @@ public class LandMine : MonoBehaviour
         effect.transform.localScale = Vector3.one * 8f;
         Destroy(effect.gameObject, 3f);
 
-        Vector3 pos = transform.position;
-
-        Vector3 inheritedVel = m != null
-            ? m.marbleVelocity
-            : Vector3.zero;
-
         audioSource.PlayOneShot(explodeSfx);
 
         DeactivateLandMine();

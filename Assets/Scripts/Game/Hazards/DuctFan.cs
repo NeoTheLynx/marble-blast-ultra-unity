@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class DuctFan : MonoBehaviour
 {
     public float radius = 10f;
     public float arc = 0.7f;
-    public float strength = 80f;
+    public float strength = 50f;
 
     private void FixedUpdate()
     {

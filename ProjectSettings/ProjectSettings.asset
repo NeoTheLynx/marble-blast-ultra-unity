@@ -13,8 +13,8 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: NeoTheLynx
-  productName: Marble Blast Ultra
-  defaultCursor: {fileID: 2800000, guid: 61e15cfd8c613ec4ebccf15aa4686ee2, type: 3}
+  productName: MarbleBlastUltra
+  defaultCursor: {fileID: 2800000, guid: c62b705cdb4bd354298beeb0d4de02b8, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_ShowUnitySplashScreen: 1
@@ -164,7 +164,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   androidMinAspectRatio: 1
   applicationIdentifier:
-    Standalone: com.NaCl586.Marble-Blast-Gold
+    Standalone: com.NaCl586.Marble-Blast-Platinum-1.14
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -294,7 +294,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 910acad13d130e542a9d03f8d06773d0, type: 3}
+      m_Icon: {fileID: 2800000, guid: 433461f2f33a2a24480bc046e5924311, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0

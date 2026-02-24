@@ -27,6 +27,31 @@ EditorBuildSettings:
     path: Assets/Scenes/Game.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/sky_day.unity
-    guid: d17267558a64e8f468b2f77d427c8c9b
+    path: Assets/Scenes/Skybox/advanced_sky.unity
+    guid: 80f0557c1170c3949b4305f0dcbb14c2
+  - enabled: 1
+    path: Assets/Scenes/Skybox/expert_sky.unity
+    guid: c83ff6b801b6eca4b916c905a7b14a70
+  - enabled: 1
+    path: Assets/Scenes/Skybox/beginner_sky.unity
+    guid: 762a3d4eeec0fc0418ec9dd38d7e1fb6
+  - enabled: 1
+    path: Assets/Scenes/Skybox/bonus_sky.unity
+    guid: fdb245009d3462f44b8fcfebe8a2b400
+  - enabled: 1
+    path: Assets/Scenes/Skybox/intermediate_sky.unity
+    guid: e8b1cf4c055177b40a13b7f4ed489ae0
+  - enabled: 1
+    path: Assets/Scenes/Skybox/Old_sky.unity
+    guid: 484cb945cc625584684c8e6b2cf83cf0
+  - enabled: 1
+    path: Assets/Scenes/Skybox/sky_day.unity
+    guid: 19b2030de49bc584795f4fa6a399da89
+  - enabled: 1
+    path: Assets/Scenes/Skybox/SpaceStationSky.unity
+    guid: 65d15c7bdc5242f4fad7683417b74d21
+  - enabled: 1
+    path: Assets/Scenes/Previews.unity
+    guid: 044f69d84e0f34041b0b41277b66eaa0
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

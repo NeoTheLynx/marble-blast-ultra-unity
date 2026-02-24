@@ -16,6 +16,15 @@ public class Trapdoor : MonoBehaviour
     private Marble marble;
     private float initXRot;
 
+    public void OnCollisionStay(Collision collision)
+    {
+        Movement movement = null;
+        if (collision.gameObject.TryGetComponent<Movement>(out movement))
+        {
+            OnCollisionWithMarble();
+        }
+    }
+
     public void OnCollisionWithMarble()
     {
         if (!isActive)

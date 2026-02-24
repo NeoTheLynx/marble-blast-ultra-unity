@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class CameraController : MonoBehaviour
 {
@@ -25,9 +26,6 @@ public class CameraController : MonoBehaviour
 
     public void Start()
     {
-        marble = Marble.instance.transform;
-        offset = marble.position - transform.position;
-
         lastGravityDir = GravitySystem.GravityDir;
 
         onCameraFinish.AddListener(FinishCameraPan);
@@ -223,8 +221,13 @@ public class CameraController : MonoBehaviour
 
     public void ResetCam() 
     {
-        Transform startPad = GameManager.instance.startPad.transform;
+        Transform startPad = GameManager.instance.activeCheckpoint.transform.parent;
         offset = (startPad.GetChild(0).position - startPad.GetChild(1).position);
+    }
+
+    public void SetCameraPosition(Vector3 marblePos, Vector3 cameraPos)
+    {
+        offset = marblePos - cameraPos;
     }
 
     public void FinishCameraPan()

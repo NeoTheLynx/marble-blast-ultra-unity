@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Antlr4.Runtime;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using Antlr4.Runtime;
 using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using System.Globalization;
 using UnityEngine.SceneManagement;
 
 namespace TS
@@ -20,8 +19,10 @@ namespace TS
         public GameObject movingPlatformPrefab;
         public GameObject triggerGoToTarget;
         public GameObject inBoundsTrigger;
-        public GameObject helpTriggerInstance;
         public GameObject outOfBoundsTrigger;
+        public GameObject helpTriggerInstance;
+        public GameObject teleportTrigger;
+        public GameObject destinationTrigger;
         [Space]
         public GameObject finishSignPrefab;
         public GameObject signPlainPrefab;
@@ -32,8 +33,14 @@ namespace TS
         public GameObject signCautionPrefab;
         public GameObject signCautionCautionPrefab;
         public GameObject signCautionDangerPrefab;
-        public GameObject gemPrefab;
+        public GameObject signPrefab;
+        public GameObject signDownPrefab;
+        public GameObject signDownSidePrefab;
+        public GameObject signSidePrefab;
+        public GameObject signUpPrefab;
+        public GameObject signUpSidePrefab;
         [Space]
+        public GameObject gemPrefab;
         public GameObject antiGravityPrefab;
         public GameObject superJumpPrefab;
         public GameObject superSpeedPrefab;
@@ -41,6 +48,8 @@ namespace TS
         public GameObject shockAbsorberPrefab;
         public GameObject gyrocopterPrefab;
         public GameObject timeTravelPrefab;
+        public GameObject randomPowerupPrefab;
+        public GameObject easterEggPrefab;
         [Space]
         public GameObject trapdoorPrefab;
         public GameObject roundBumperPrefab;
@@ -49,18 +58,29 @@ namespace TS
         public GameObject tornadoPrefab;
         public GameObject oilSlickPrefab;
         public GameObject landMinePrefab;
+        public GameObject nukePrefab;
+        public GameObject magnetPrefab;
+        [Space]
+        public GameObject teleportPad;
+        public GameObject checkpointPrefab;
+        [Space]
+        public GameObject[] staticShapes;
 
         [Header("References")]
         public GameObject globalMarble;
         public GameObject startPad;
         public GameObject finishPad;
-        public GameObject CameraSpawnSphereMarker;
         public Light directionalLight;
+
+        List<GameObject> checkpoints = new List<GameObject>();
+        List<GameObject> destinationTriggers = new List<GameObject>();
+        List<GameObject> teleportTriggers = new List<GameObject>();
 
         private float[] sunColor;
 
         void Start()
         {
+            MarbleInfo.instance.ApplyMesh();
             ImportMission();
         }
 
@@ -151,7 +171,6 @@ namespace TS
                     {
                         var gobj = Instantiate(superJumpPrefab, transform, false);
                         gobj.name = "SuperJumpItem";
-                        gobj.GetComponent<Powerups>().rotateMesh = false;
 
                         var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
                         var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
@@ -175,7 +194,6 @@ namespace TS
                     {
                         var gobj = Instantiate(superSpeedPrefab, transform, false);
                         gobj.name = "SuperSpeedItem";
-                        gobj.GetComponent<Powerups>().rotateMesh = false;
 
                         var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
                         var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
@@ -199,7 +217,6 @@ namespace TS
                     {
                         var gobj = Instantiate(superBouncePrefab, transform, false);
                         gobj.name = "SuperBounceItem";
-                        gobj.GetComponent<Powerups>().rotateMesh = false;
 
                         var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
                         var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
@@ -223,7 +240,6 @@ namespace TS
                     {
                         var gobj = Instantiate(shockAbsorberPrefab, transform, false);
                         gobj.name = "ShockAbsorberItem";
-                        gobj.GetComponent<Powerups>().rotateMesh = false;
 
                         var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
                         var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
@@ -247,7 +263,6 @@ namespace TS
                     {
                         var gobj = Instantiate(gyrocopterPrefab, transform, false);
                         gobj.name = "HelicopterItem";
-                        gobj.GetComponent<Powerups>().rotateMesh = false;
 
                         var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
                         var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
@@ -271,7 +286,6 @@ namespace TS
                     {
                         var gobj = Instantiate(timeTravelPrefab, transform, false);
                         gobj.name = "TimeTravelItem";
-                        gobj.GetComponent<Powerups>().rotateMesh = false;
 
                         var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
                         var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
@@ -288,6 +302,38 @@ namespace TS
                             gobj.GetComponent<TimeTravel>().timeBonus = (float)int.Parse(timeBonus) / 1000;
                         else
                             gobj.GetComponent<TimeTravel>().timeBonus = 5;
+                    }
+
+                    else if (objectName == "EasterEgg")
+                    {
+                        var gobj = Instantiate(easterEggPrefab, transform, false);
+                        gobj.name = "EasterEgg";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+
+                    else if (objectName == "RandomPowerUpItem")
+                    {
+                        var gobj = Instantiate(randomPowerupPrefab, transform, false);
+                        gobj.name = "RandomPowerUpItem";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
                     }
                 }
 
@@ -311,6 +357,14 @@ namespace TS
 
                     if (!dif.GenerateMesh(-1))
                         Destroy(gobj.gameObject);
+
+                    //if scale has component with 0 value, remove all colliders
+                    if(scale.x == 0 || scale.y == 0 || scale.z == 0)
+                    {
+                        MeshCollider[] meshColliders = gobj.GetComponentsInChildren<MeshCollider>(true);
+                        foreach (var mc in meshColliders)
+                            Destroy(mc);
+                    }
                 }
 
                 //Shapes
@@ -352,6 +406,66 @@ namespace TS
 
                         finishPad.transform.localPosition = position;
                         finishPad.transform.localRotation = rotation;
+                    }
+
+                    else if (objectName.ToLower() == "checkpoint")
+                    {
+                        var cp = Instantiate(checkpointPrefab, transform, false);
+                        cp.name = string.IsNullOrEmpty(obj.Name) ? "Checkpoint" : obj.Name;
+
+                        Vector3 position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        Quaternion rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        Vector3 scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var checkpoint = cp.transform.Find("Mesh").Find("pCylinder").GetComponent<Checkpoint>();
+
+                        Transform cpTrigger = checkpoint.trigger;
+                        Transform cpMesh = checkpoint.mesh;
+                        Transform spawnPos = checkpoint.spawnPos;
+
+                        cp.transform.localPosition = position;
+                        cpMesh.transform.parent = null;
+
+                        Vector3 localScale = cpMesh.localScale;
+                        cpMesh.localScale = new Vector3(
+                            scale.x * localScale.x,
+                            scale.y * localScale.y,
+                            scale.z * localScale.z
+                        );
+
+                        cpMesh.transform.localRotation = rotation;
+                        cpMesh.transform.parent = cp.transform;
+                        spawnPos.transform.localRotation = Quaternion.Euler(spawnPos.transform.localRotation.eulerAngles.x, spawnPos.transform.localRotation.eulerAngles.y, -cpMesh.transform.localRotation.eulerAngles.z + 180);
+                        checkpoint.checkpointGravityDir = -checkpoint.transform.up;
+
+                        cpTrigger.GetComponent<BoxCollider>().enabled = false;
+
+                        var offset = obj.GetField("add");
+                        if (string.IsNullOrEmpty(offset))
+                        {
+                            checkpoint.hasAddOrSub = false;
+                            checkpoint.offset = new Vector3(0, 3, 0);
+                        }
+                        else
+                        {
+                            checkpoint.hasAddOrSub = true;
+                            checkpoint.offset = ConvertPoint(ParseVectorString(offset));
+                        }
+
+                        var subOffset = obj.GetField("sub");
+                        if (string.IsNullOrEmpty(subOffset))
+                        {
+                            checkpoint.hasAddOrSub = false;
+                            checkpoint.offset = new Vector3(0, 3, 0);
+                        }
+                        else
+                        {
+                            checkpoint.hasAddOrSub = true;
+                            checkpoint.offset = -ConvertPoint(ParseVectorString(subOffset));
+                        }
+
+                        checkpoint.InitCheckpoint();
+                        checkpoints.Add(cp);
                     }
 
                     //Signs
@@ -492,6 +606,97 @@ namespace TS
                         gobj.transform.localRotation = rotation;
                         gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
                     }
+                    //Signs MBP
+                    else if (objectName == "Sign")
+                    {
+                        var gobj = Instantiate(signPrefab, transform, false);
+                        gobj.name = "Sign";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "SignDown")
+                    {
+                        var gobj = Instantiate(signDownPrefab, transform, false);
+                        gobj.name = "SignDown";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "SignDownSide")
+                    {
+                        var gobj = Instantiate(signDownSidePrefab, transform, false);
+                        gobj.name = "SignDownSide";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "SignSide")
+                    {
+                        var gobj = Instantiate(signSidePrefab, transform, false);
+                        gobj.name = "SignSide";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "SignUp")
+                    {
+                        var gobj = Instantiate(signUpPrefab, transform, false);
+                        gobj.name = "SignUp";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "SignUpSide")
+                    {
+                        var gobj = Instantiate(signUpSidePrefab, transform, false);
+                        gobj.name = "SignUpSide";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
 
                     //Hazards
                     else if (objectName.ToLower() == "trapdoor")
@@ -562,6 +767,40 @@ namespace TS
                                                                 );
                     }
 
+                    else if (objectName.ToLower() == "nuke")
+                    {
+                        var gobj = Instantiate(nukePrefab, transform, false);
+                        gobj.name = "Nuke";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f); ;
+                        gobj.transform.localScale = new Vector3(scale.x * gobj.transform.localScale.x,
+                                                                scale.y * gobj.transform.localScale.y,
+                                                                scale.z * gobj.transform.localScale.z
+                                                                );
+                    }
+
+                    else if (objectName.ToLower() == "magnet")
+                    {
+                        var gobj = Instantiate(magnetPrefab, transform, false);
+                        gobj.name = "Magnet";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f); ;
+                        gobj.transform.localScale = new Vector3(scale.x * gobj.transform.localScale.x,
+                                                                scale.y * gobj.transform.localScale.y,
+                                                                scale.z * gobj.transform.localScale.z
+                                                                );
+                    }
+
                     else if (objectName.ToLower() == "roundbumper")
                     {
                         var gobj = Instantiate(roundBumperPrefab, transform, false);
@@ -614,6 +853,109 @@ namespace TS
                     }
                 }
 
+                else if (obj.ClassName == "TSStatic")
+                {
+                    string objectName = obj.GetField("shapeName");
+                    objectName = Path.GetFileNameWithoutExtension(objectName);
+
+                    if (objectName.ToLower() == "checkpoint" && !string.IsNullOrEmpty(obj.Name))
+                    {
+                        var cp = Instantiate(checkpointPrefab, transform, false);
+                        cp.name = string.IsNullOrEmpty(obj.Name) ? "Checkpoint" : obj.Name;
+
+                        Vector3 position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        Quaternion rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        Vector3 scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var checkpoint = cp.transform.Find("Mesh").Find("pCylinder").GetComponent<Checkpoint>();
+
+                        Transform cpTrigger = checkpoint.trigger;
+                        Transform cpMesh = checkpoint.mesh;
+                        Transform spawnPos = checkpoint.spawnPos;
+
+                        cp.transform.localPosition = position;
+                        cpMesh.transform.parent = null;
+
+                        Vector3 localScale = cpMesh.localScale;
+                        cpMesh.localScale = new Vector3(
+                            scale.x * localScale.x,
+                            scale.y * localScale.y,
+                            scale.z * localScale.z
+                        );
+
+                        cpMesh.transform.localRotation = rotation;
+                        cpMesh.transform.parent = cp.transform;
+                        spawnPos.transform.localRotation = Quaternion.Euler(spawnPos.transform.localRotation.eulerAngles.x, spawnPos.transform.localRotation.eulerAngles.y, -cpMesh.transform.localRotation.eulerAngles.z + 180);
+                        checkpoint.checkpointGravityDir = -checkpoint.transform.up;
+
+                        cpTrigger.GetComponent<BoxCollider>().enabled = false;
+
+                        var offset = obj.GetField("add");
+                        if (string.IsNullOrEmpty(offset))
+                        {
+                            checkpoint.hasAddOrSub = false;
+                            checkpoint.offset = new Vector3(0, 3, 0);
+                        }
+                        else
+                        {
+                            checkpoint.hasAddOrSub = true;
+                            checkpoint.offset = ConvertPoint(ParseVectorString(offset));
+                        }
+
+                        var subOffset = obj.GetField("sub");
+                        if (string.IsNullOrEmpty(subOffset))
+                        {
+                            checkpoint.hasAddOrSub = false;
+                            checkpoint.offset = new Vector3(0, 3, 0);
+                        }
+                        else
+                        {
+                            checkpoint.hasAddOrSub = true;
+                            checkpoint.offset = -ConvertPoint(ParseVectorString(subOffset));
+                        }
+
+                        checkpoint.InitCheckpoint();
+                        checkpoints.Add(cp);
+                    }
+                    else if (objectName.ToLower() == "teleportpad")
+                    {
+                        var gobj = Instantiate(teleportPad, transform, false);
+                        gobj.name = "Teleportpad";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f);
+                        gobj.transform.localScale = new Vector3(scale.x * gobj.transform.localScale.x,
+                                                                scale.y * gobj.transform.localScale.y,
+                                                                scale.z * gobj.transform.localScale.z
+                                                                );
+                    }
+
+                    else
+                    {
+                        var shape = staticShapes.FirstOrDefault(go => go != null && go.name.ToLower() == objectName.ToLower());
+                        if(shape != null)
+                        {
+                            var gobj = Instantiate(shape, transform, false);
+                            gobj.name = objectName;
+
+                            var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                            var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                            var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                            gobj.transform.localPosition = position;
+                            gobj.transform.localRotation = gobj.transform.localRotation * rotation * Quaternion.Euler(90f, 0f, 0f);
+                            gobj.transform.localScale = new Vector3(scale.x * gobj.transform.localScale.x,
+                                                                    scale.y * gobj.transform.localScale.y,
+                                                                    scale.z * gobj.transform.localScale.z
+                                                                    );
+                        }
+                    }
+                }
+
                 //Triggers
                 else if (obj.ClassName == "Trigger")
                 {
@@ -651,25 +993,73 @@ namespace TS
                         oobtObj.transform.localScale = Vector3.Scale(scale, polyhedronScale);
                     }
 
-                    else
+                    else if (objectName == "HelpTrigger")
                     {
-                        if (objectName == "HelpTrigger")
-                        {
-                            var htObj = Instantiate(helpTriggerInstance, transform, false);
-                            htObj.name = "HelpTrigger";
+                        var htObj = Instantiate(helpTriggerInstance, transform, false);
+                        htObj.name = "HelpTrigger";
 
-                            htObj.GetComponent<HelpTrigger>().helpText = obj.GetField("text");
+                        htObj.GetComponent<HelpTrigger>().helpText = obj.GetField("text");
 
-                            var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
-                            var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
-                            var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
 
-                            var polyhedronScale = PolyhedronToBoxSize(ParseVectorString(obj.GetField("polyhedron")));
+                        var polyhedronScale = PolyhedronToBoxSize(ParseVectorString(obj.GetField("polyhedron")));
 
-                            htObj.transform.localPosition = position;
-                            htObj.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
-                            htObj.transform.localScale = Vector3.Scale(scale, polyhedronScale);
-                        }
+                        htObj.transform.localPosition = position;
+                        htObj.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                        htObj.transform.localScale = Vector3.Scale(scale, polyhedronScale);
+                    }
+
+                    else if (objectName == "TeleportTrigger")
+                    {
+                        var telObj = Instantiate(teleportTrigger, transform, false);
+                        telObj.name = string.IsNullOrEmpty(obj.Name) ? "TeleportTrigger" : obj.Name;
+
+                        var time = obj.GetField("time");
+                        telObj.GetComponent<Teleport>().time = string.IsNullOrEmpty(time) ? 2 : (float.Parse(time) / 1000);
+
+                        telObj.GetComponent<Teleport>().destinationGameObjectName = obj.GetField("destination");
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var polyhedronScale = PolyhedronToBoxSize(ParseVectorString(obj.GetField("polyhedron")));
+
+                        telObj.transform.localPosition = position;
+                        telObj.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+
+                        var cameraPos = telObj.transform.Find("CameraPos");
+                        cameraPos.transform.parent = null;
+                        telObj.transform.localScale = Vector3.Scale(scale, polyhedronScale);
+                        cameraPos.transform.parent = telObj.transform;
+
+                        teleportTriggers.Add(telObj);
+                        if (!string.IsNullOrEmpty(obj.Name))
+                            destinationTriggers.Add(telObj);
+                    }
+
+                    else if (objectName == "DestinationTrigger")
+                    {
+                        var destObj = Instantiate(destinationTrigger, transform, false);
+                        destObj.name = string.IsNullOrEmpty(obj.Name) ? "DestinationTrigger" : obj.Name;
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var polyhedronScale = PolyhedronToBoxSize(ParseVectorString(obj.GetField("polyhedron")));
+
+                        destObj.transform.localPosition = position;
+                        destObj.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+
+                        var cameraPos = destObj.transform.Find("CameraPos");
+                        cameraPos.transform.parent = null;
+                        destObj.transform.localScale = Vector3.Scale(scale, polyhedronScale);
+                        cameraPos.transform.parent = destObj.transform;
+
+                        destinationTriggers.Add(destObj);
                     }
                 }
 
@@ -805,26 +1195,48 @@ namespace TS
                     movingPlatform.smoothing = smoothing;
                     movingPlatform.InitMovingPlatform();
                 }
+            }
 
-                if (obj.ClassName == "SpawnSphere")
+            //assigning destination triggers to teleport
+            foreach (GameObject go in teleportTriggers)
+            {
+                Teleport tele = go.GetComponent<Teleport>();
+                string destination = tele.destinationGameObjectName;
+                foreach (GameObject dest in destinationTriggers)
                 {
-                    //wip get spawnspheres
-                    string objectName = obj.GetField("dataBlock");
-
-                    if (objectName == "CameraSpawnSphereMarker")
+                    if (dest.name == destination)
                     {
-                        //var ibtObj = Instantiate(inBoundsTrigger, transform, false);
-                        //ibtObj.name = "CameraSpawnSphereMarker";
+                        tele.destination = dest;
+                        break;
+                    }
+                }
+                tele.InitTeleporter();
+            }
 
-                        //var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
-                        //var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
-                        //var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+            //assigning checkpoint triggers
+            foreach (var obj in mission.RecursiveChildren())
+            {
+                if (obj.ClassName == "Trigger" && obj.GetField("dataBlock") == "CheckpointTrigger")
+                {
+                    foreach (GameObject go in checkpoints)
+                    {
+                        if (obj.GetField("respawnPoint") == go.name)
+                        {
+                            var cpTrigger = go.transform.Find("Trigger");
 
-                        //var polyhedronScale = PolyhedronToBoxSize(ParseVectorString(obj.GetField("polyhedron")));
+                            var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                            var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                            var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
 
-                        //ibtObj.transform.localPosition = position;
-                        //ibtObj.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
-                        //ibtObj.transform.localScale = Vector3.Scale(scale, polyhedronScale);
+                            var polyhedronScale = PolyhedronToBoxSize(ParseVectorString(obj.GetField("polyhedron")));
+
+                            cpTrigger.transform.position = position;
+                            cpTrigger.transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
+                            cpTrigger.transform.localScale = Vector3.Scale(scale, polyhedronScale);
+
+                            cpTrigger.GetComponent<BoxCollider>().enabled = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -837,6 +1249,8 @@ namespace TS
             while (!GameManager.instance.startPad)
                 yield return null;
 
+            GameUIManager.instance.Init();
+
             globalMarble.GetComponent<Movement>().GenerateMeshData();
 
             Time.timeScale = 1f;
@@ -846,7 +1260,7 @@ namespace TS
             GameManager.instance.PlayLevelMusic();
 
             directionalLight.GetComponent<Light>().shadows = PlayerPrefs.GetInt("Graphics_Shadow", 1) == 1 ? LightShadows.Soft : LightShadows.None;
-            directionalLight.intensity = 0.25f;
+            directionalLight.intensity *= ConvertIntensity(sunColor);
 
             AsyncOperation unloadOp = SceneManager.UnloadSceneAsync("Loading");
             while (!unloadOp.isDone)
@@ -856,6 +1270,10 @@ namespace TS
 
             CameraController.instance.GetComponent<Camera>().enabled = true;
             GameUIManager.instance.GetComponent<Canvas>().enabled = true;
+
+            //disable cursor visibility
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
 
             Invoke(nameof(EnableSounds), 0.1f);
 
@@ -1037,5 +1455,6 @@ namespace TS
 
             return obj;
         }
+
     }
 }

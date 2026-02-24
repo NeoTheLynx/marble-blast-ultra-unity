@@ -58,9 +58,16 @@ public class LoadingManager : MonoBehaviour
         opSkybox.allowSceneActivation = true;
         while (!opSkybox.isDone)
             yield return null;
+
+        DisablePreviews();
     }
 
-
+    void DisablePreviews(){
+        Preview.instance.setIsInPreviewMode(false);
+    }
+    void EnablePreviews(){
+        Preview.instance.setIsInPreviewMode(true);
+    }
 
     bool isCancelling;
 
@@ -80,6 +87,7 @@ public class LoadingManager : MonoBehaviour
         StopAllCoroutines();
 
         // Load PlayMission in Single mode
+        EnablePreviews();
         SceneManager.LoadScene("PlayMission", LoadSceneMode.Single);
     }
 }

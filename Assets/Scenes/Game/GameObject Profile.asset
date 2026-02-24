@@ -15,7 +15,7 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   gaussianStart:
     m_OverrideState: 0
     m_Value: 10
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf1aba9553839d41ae37dd52e9ebcce, type: 3}
   m_Name: MotionBlur
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   mode:
     m_OverrideState: 0
     m_Value: 0
@@ -190,13 +190,13 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: -0.25
+    m_Value: -1
   contrast:
     m_OverrideState: 1
     m_Value: 28
   colorFilter:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.94509804, b: 0.8784314, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     m_OverrideState: 0
     m_Value: 0
@@ -255,7 +255,7 @@ MonoBehaviour:
     m_Value: 25
   scatter:
     m_OverrideState: 1
-    m_Value: 0.475
+    m_Value: 0.692
   clamp:
     m_OverrideState: 1
     m_Value: 65472
@@ -293,10 +293,10 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.7556535, b: 0.4669811, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   highlights:
     m_OverrideState: 1
-    m_Value: {r: 0.5518868, g: 0.6262112, b: 1, a: 1}
+    m_Value: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
   balance:
     m_OverrideState: 1
     m_Value: 10

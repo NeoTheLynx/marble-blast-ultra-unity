@@ -14,8 +14,10 @@ public class SuperJump : Powerups
 
     GameObject psObj;
 
-    public void Start()
+    protected override void Start()
     {
+        base.Start();
+
         psObj = null;
         if (!alreadyListened)
         {
@@ -30,7 +32,16 @@ public class SuperJump : Powerups
         onUseSuperJump.RemoveAllListeners();
     }
 
-    void FixedUpdate()
+    public void OnEnable()
+    {
+        if (!alreadyListened)
+        {
+            alreadyListened = true;
+            onUseSuperJump.AddListener(UsePowerup);
+        }
+    }
+
+    protected override void FixedUpdate()
     {
         base.FixedUpdate();
 

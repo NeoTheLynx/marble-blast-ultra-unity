@@ -12,11 +12,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-public class Dif : MonoBehaviour
-{
+public class Dif : MonoBehaviour {
 
-    public string filePath;
-    public Material DefaultMaterial;
+	public string filePath;
+	public Material DefaultMaterial;
 
     [Header("Collision / Chunking")]
     public int maxTrianglesPerChunk = 1000;
@@ -28,7 +27,7 @@ public class Dif : MonoBehaviour
         isMovingPlatform = (interiorIndex != -1);
 
         // Load DIF resource
-        var resource = DifResourceManager.getResource(Path.Combine(Application.streamingAssetsPath, filePath), interiorIndex);
+        var resource = DifResourceManager.getResource(Application.streamingAssetsPath + "/" + filePath, interiorIndex);
 
         if (resource == null)
         {
@@ -69,7 +68,7 @@ public class Dif : MonoBehaviour
             if (materialTris == null || materialTris.Length == 0)
                 continue;
 
-            string matName = resource.materials[mat];
+            string matName = Path.GetFileNameWithoutExtension(resource.materials[mat]);
             Material material = ResolveMaterial(matName);
 
             if (!materialTriMap.ContainsKey(matName))
@@ -80,7 +79,7 @@ public class Dif : MonoBehaviour
         // Create chunks
         foreach (var kvp in materialTriMap)
         {
-            string matName = kvp.Key;
+            string matName = Path.GetFileNameWithoutExtension(kvp.Key);
             List<int> allTris = kvp.Value;
             Material material = ResolveMaterial(matName);
 
@@ -128,7 +127,7 @@ public class Dif : MonoBehaviour
         var mf = chunk.AddComponent<MeshFilter>();
         var mr = chunk.AddComponent<MeshRenderer>();
 
-        if (isMovingPlatform)
+        if(isMovingPlatform)
         {
             var rb = chunk.AddComponent<Rigidbody>();
             rb.isKinematic = true;
@@ -294,34 +293,34 @@ public class Dif : MonoBehaviour
 
 
     private string ResolveTexturePath(string texture)
-    {
-        var basePath = Path.GetDirectoryName(filePath);
-        while (!string.IsNullOrEmpty(basePath))
-        {
-            var assetPath = Path.Combine(Application.streamingAssetsPath, basePath);
-            var possibleTextures = new List<string>
-            {
-                Path.Combine(assetPath, texture + ".png"),
-                Path.Combine(assetPath, texture + ".jpg"),
-                Path.Combine(assetPath, texture + ".jp2"),
-                Path.Combine(assetPath, texture + ".bmp"),
-                Path.Combine(assetPath, texture + ".bm8"),
-                Path.Combine(assetPath, texture + ".gif"),
-                Path.Combine(assetPath, texture + ".dds"),
-            };
-            foreach (var possibleTexture in possibleTextures)
-            {
-                if (File.Exists(possibleTexture))
-                {
-                    return possibleTexture;
-                }
-            }
+	{
+		var basePath = Path.GetDirectoryName(filePath);
+		while (!string.IsNullOrEmpty(basePath))
+		{
+			var assetPath = Path.Combine(Application.streamingAssetsPath, basePath);
+			var possibleTextures = new List<string>
+			{
+				Path.Combine(assetPath, texture + ".png"),
+				Path.Combine(assetPath, texture + ".jpg"),
+				Path.Combine(assetPath, texture + ".jp2"),
+				Path.Combine(assetPath, texture + ".bmp"),
+				Path.Combine(assetPath, texture + ".bm8"),
+				Path.Combine(assetPath, texture + ".gif"),
+				Path.Combine(assetPath, texture + ".dds"),
+			};
+			foreach (var possibleTexture in possibleTextures)
+			{
+				if (File.Exists(possibleTexture))
+				{
+					return possibleTexture;
+				}
+			}
 
-            basePath = Path.GetDirectoryName(basePath);
-        }
+			basePath = Path.GetDirectoryName(basePath);
+		}
 
-        return texture;
-    }
+		return texture;
+	}
 
     static Dictionary<string, (float friction, float restitution, float force)> materialDict = new Dictionary<string, (float, float, float)>()
     {

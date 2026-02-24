@@ -29,6 +29,7 @@ public class Gem : MonoBehaviour
         else
             GameManager.instance.PlayAudioClip(pickupSound);
 
+        GameManager.instance.recentGems.Add(gameObject);
         gameObject.SetActive(false);
     }
 }
