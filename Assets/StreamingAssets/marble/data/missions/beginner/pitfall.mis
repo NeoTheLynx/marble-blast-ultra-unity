@@ -98,5 +98,16 @@ new SimGroup(MissionGroup) {
       description = "AudioMusic";
       preload = "0";
    };
+   new SpawnSphere() {
+      position = "5.29917 -45.9468 29.6997";
+      rotation = "0.504606 -0.112703 0.855962 29.2486";
+      scale = "1 1 1";
+      hidden = "0";
+      dataBlock = "CameraSpawnSphereMarker";
+      radius = "100";
+      sphereWeight = "100";
+      indoorWeight = "100";
+      outdoorWeight = "100";
+   };
 };
 //--- OBJECT WRITE END ---

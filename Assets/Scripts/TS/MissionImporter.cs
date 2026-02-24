@@ -54,6 +54,7 @@ namespace TS
         public GameObject globalMarble;
         public GameObject startPad;
         public GameObject finishPad;
+        public GameObject CameraSpawnSphereMarker;
         public Light directionalLight;
 
         private float[] sunColor;
@@ -803,6 +804,28 @@ namespace TS
 
                     movingPlatform.smoothing = smoothing;
                     movingPlatform.InitMovingPlatform();
+                }
+
+                if (obj.ClassName == "SpawnSphere")
+                {
+                    //wip get spawnspheres
+                    string objectName = obj.GetField("dataBlock");
+
+                    if (objectName == "CameraSpawnSphereMarker")
+                    {
+                        //var ibtObj = Instantiate(inBoundsTrigger, transform, false);
+                        //ibtObj.name = "CameraSpawnSphereMarker";
+
+                        //var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        //var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        //var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        //var polyhedronScale = PolyhedronToBoxSize(ParseVectorString(obj.GetField("polyhedron")));
+
+                        //ibtObj.transform.localPosition = position;
+                        //ibtObj.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                        //ibtObj.transform.localScale = Vector3.Scale(scale, polyhedronScale);
+                    }
                 }
             }
 
