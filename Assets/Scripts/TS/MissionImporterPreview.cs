@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 namespace TS
 {
@@ -168,9 +169,12 @@ namespace TS
                     var difPath = ResolvePath(obj.GetField("interiorFile"), thisMission);
                     var dif = gobj.GetComponent<Dif>();
                     dif.filePath = difPath;
-
-                    if (!dif.GenerateMesh(-1))
+                    if (!dif.GenerateMesh(-1)) {
                         Destroy(gobj.gameObject);
+                    } else {
+                        //things ok?
+                    }
+                        
 
                     //if scale has component with 0 value, remove all colliders
                     if(scale.x == 0 || scale.y == 0 || scale.z == 0)

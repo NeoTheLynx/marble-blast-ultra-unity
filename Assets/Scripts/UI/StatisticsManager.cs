@@ -268,6 +268,15 @@ public class StatisticsManager : MonoBehaviour
             if (type == Type.custom)
                 missionList = MissionInfo.instance.missionsGoldCustom;
         }
+        else if (game == Game.ultra)
+        {
+            if (type == Type.beginner)
+                missionList = MissionInfo.instance.missionsUltraBeginner;
+            if (type == Type.intermediate)
+                missionList = MissionInfo.instance.missionsUltraIntermediate;
+            if (type == Type.advanced)
+                missionList = MissionInfo.instance.missionsUltraAdvanced;
+        }
 
         return missionList;
     }

@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TS;
+using System.Threading.Tasks;
 //using MissionImporterPreview;
 
 public class Preview : MonoBehaviour
 {
 
     public List<Mission> previewMissions = new List<Mission>();
-    public List<Mission> tempMisisons = new List<Mission>();
+    public List<Mission> tempMissions = new List<Mission>();
     public static Preview instance;
     private static bool isInPreviewMode;
     public GameObject mainParent;
@@ -71,11 +72,11 @@ public class Preview : MonoBehaviour
     //Load All Missions Into Mega Mission
     void LoadAllMissions()
     {
-                tempMissions = MissionInfo.instance.missionsGoldBeginner;
+                tempMissions = MissionInfo.instance.missionsUltraBeginner;
                 previewMissions.AddRange(tempMissions);
-                tempMissions = MissionInfo.instance.missionsGoldIntermediate;
+                tempMissions = MissionInfo.instance.missionsUltraIntermediate;
                 previewMissions.AddRange(tempMissions);
-                tempMissions = MissionInfo.instance.missionsGoldAdvanced;
+                tempMissions = MissionInfo.instance.missionsUltraAdvanced;
                 previewMissions.AddRange(tempMissions);
                 tempMissions = MissionInfo.instance.missionsGoldCustom;
                 previewMissions.AddRange(tempMissions);
@@ -83,6 +84,8 @@ public class Preview : MonoBehaviour
                 tempMissions.Clear();
                 GameObject previewInteriorPrefab = Resources.Load<GameObject>("Prefabs/Interior");
                 //Loop through missions to add them to mega scene
+                //for (int index = 0; index < previewMissions.Count; index++)
+                //for (int index = 0; index < 73; index++)
                 for (int index = 0; index < previewMissions.Count; index++)
                 {
                     Debug.Log("Adding Mission To Preview: " + (previewMissions[index].directory));

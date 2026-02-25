@@ -41,7 +41,8 @@ public enum Game
 {
     none,
     gold,
-    platinum
+    platinum,
+    ultra
 }
 
 public class PlayMissionManager : MonoBehaviour
@@ -249,28 +250,36 @@ public class PlayMissionManager : MonoBehaviour
 
     void LoadMissions(Type difficulty, Game game)
     {
-        if (game == Game.gold)
-        {
-            if (difficulty == Type.beginner)
-                missions = MissionInfo.instance.missionsGoldBeginner;
+        if (difficulty == Type.beginner)
+                missions = MissionInfo.instance.missionsUltraBeginner;
             else if (difficulty == Type.intermediate)
-                missions = MissionInfo.instance.missionsGoldIntermediate;
+                missions = MissionInfo.instance.missionsUltraIntermediate;
             else if (difficulty == Type.advanced)
-                missions = MissionInfo.instance.missionsGoldAdvanced;
+                missions = MissionInfo.instance.missionsUltraAdvanced;
             else if (difficulty == Type.custom)
                 missions = MissionInfo.instance.missionsGoldCustom;
-        }
-        else if (game == Game.platinum)
-        {
-            if (difficulty == Type.beginner)
-                missions = MissionInfo.instance.missionsPlatinumBeginner;
-            else if (difficulty == Type.intermediate)
-                missions = MissionInfo.instance.missionsPlatinumIntermediate;
-            else if (difficulty == Type.advanced)
-                missions = MissionInfo.instance.missionsPlatinumAdvanced;
-            else if (difficulty == Type.expert)
-                missions = MissionInfo.instance.missionsPlatinumExpert;
-        }
+        // if (game == Game.gold)
+        // {
+        //     if (difficulty == Type.beginner)
+        //         missions = MissionInfo.instance.missionsGoldBeginner;
+        //     else if (difficulty == Type.intermediate)
+        //         missions = MissionInfo.instance.missionsGoldIntermediate;
+        //     else if (difficulty == Type.advanced)
+        //         missions = MissionInfo.instance.missionsGoldAdvanced;
+        //     else if (difficulty == Type.custom)
+        //         missions = MissionInfo.instance.missionsGoldCustom;
+        // }
+        // else if (game == Game.platinum)
+        // {
+        //     if (difficulty == Type.beginner)
+        //         missions = MissionInfo.instance.missionsPlatinumBeginner;
+        //     else if (difficulty == Type.intermediate)
+        //         missions = MissionInfo.instance.missionsPlatinumIntermediate;
+        //     else if (difficulty == Type.advanced)
+        //         missions = MissionInfo.instance.missionsPlatinumAdvanced;
+        //     else if (difficulty == Type.expert)
+        //         missions = MissionInfo.instance.missionsPlatinumExpert;
+        // }
 
         if (difficulty == Type.custom)
             statisticsButton.gameObject.SetActive(false);
