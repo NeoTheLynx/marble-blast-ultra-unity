@@ -91,6 +91,7 @@ public class Preview : MonoBehaviour
                     Debug.Log("Adding Mission To Preview: " + (previewMissions[index].directory));
                     // Creates an empty GameObject named "MyEmptyObject"
                     GameObject emptyLevelObject = new GameObject("Level_" + (previewMissions[index].missionName));
+                    emptyLevelObject.gameObject.tag = "PreviewLevelGroup";
                     MissionImporterPreview mip = emptyLevelObject.AddComponent<MissionImporterPreview>();
 
                     // The object is created at the origin (0, 0, 0) by default in some cases, 
@@ -101,6 +102,7 @@ public class Preview : MonoBehaviour
                     
                     emptyLevelObject.GetComponent<MissionImporterPreview>().setInteriorPrefab(previewInteriorPrefab);
                     emptyLevelObject.GetComponent<MissionImporterPreview>().setThisMission(previewMissions[index].directory);
+                    emptyLevelObject.gameObject.SetActive(false);
 
 
                     //emptyLevelObject.AddComponent(typeof(RigidBody));

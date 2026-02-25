@@ -65,6 +65,26 @@ public class SplashScreenManager : MonoBehaviour
         {
             yield return null;
         }
+        GameObject parentObject = GameObject.Find("PreviewRoot");
+        GameObject previewCamera = GameObject.Find("PreviewCamera");  
+        if (parentObject != null)
+        {
+            // true parameter includes inactive children
+            Transform[] children = parentObject.GetComponentsInChildren<Transform>(true); 
+
+            foreach (Transform child in children)
+            {
+                if (child.CompareTag("PreviewLevelGroup"))
+                {
+                    if(child.name == "Level_levelone"){
+                        child.gameObject.SetActive(true);
+                        GameObject previewCameraPosition = GameObject.Find("CameraSpawnSphereMarker");
+                        previewCamera.gameObject.transform.position = previewCameraPosition.gameObject.transform.position;
+                        previewCamera.gameObject.transform.rotation = previewCameraPosition.gameObject.transform.rotation;
+                    }
+                }
+            }
+        }
          SceneManager.LoadScene("MainMenu");
     }
 }

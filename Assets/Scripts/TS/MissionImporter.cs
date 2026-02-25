@@ -39,6 +39,7 @@ namespace TS
         public GameObject signSidePrefab;
         public GameObject signUpPrefab;
         public GameObject signUpSidePrefab;
+        public GameObject astrolabePrefab;
         [Space]
         public GameObject gemPrefab;
         public GameObject antiGravityPrefab;
@@ -366,7 +367,7 @@ namespace TS
                             Destroy(mc);
                     }
                 }
-
+                
                 //Shapes
                 else if (obj.ClassName == "StaticShape")
                 {
@@ -466,6 +467,23 @@ namespace TS
 
                         checkpoint.InitCheckpoint();
                         checkpoints.Add(cp);
+                    }
+
+                    //Astrolabe
+                    else if (objectName == "astrolabeShape")
+                    {
+                        var gobj = Instantiate(astrolabePrefab, transform, false);
+                        gobj.name = "astrolabeShape";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f);;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
                     }
 
                     //Signs

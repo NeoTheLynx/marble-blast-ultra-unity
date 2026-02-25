@@ -184,6 +184,26 @@ namespace TS
                             Destroy(mc);
                     }
                 }
+                
+                //spawn spheres
+                else if (obj.ClassName == "SpawnSphere")
+                {
+                    string objectName = obj.GetField("dataBlock");
+                    if(objectName == "CameraSpawnSphereMarker"){
+                        GameObject gobj = Instantiate(new GameObject(), transform, false);
+                        gobj.name = "CameraSpawnSphereMarker";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f);
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                }
 
                 //Shapes
                 else if (obj.ClassName == "StaticShape")

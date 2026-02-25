@@ -92,6 +92,8 @@ MonoBehaviour:
     type: 3}
   signUpSidePrefab: {fileID: 2507949015771116209, guid: 3577738624944c442b29672bf1fdd463,
     type: 3}
+  astrolabePrefab: {fileID: 3109652929854068506, guid: 5f601217b2f3ba140aa7e32c2b91d9fd,
+    type: 3}
   gemPrefab: {fileID: 2975894190698141840, guid: 247b70f391126b045a8d5964a576fa3f,
     type: 3}
   antiGravityPrefab: {fileID: 979331172554361627, guid: 4e96a5d04db152f489942a2adb85b36b,
