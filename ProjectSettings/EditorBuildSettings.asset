@@ -53,5 +53,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Previews.unity
     guid: 044f69d84e0f34041b0b41277b66eaa0
+  - enabled: 1
+    path: Assets/Scenes/Skybox/sky_beginner.unity
+    guid: c14fbd6f1b1e1604e8657a5715f884e3
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
