@@ -333,14 +333,7 @@ public class PlayMissionManager : MonoBehaviour
                 if (child.CompareTag("PreviewLevelGroup"))
                 {
                     child.gameObject.SetActive(false);
-                    // if(child.name == "Level_" + missionfile){
-                    //     child.gameObject.SetActive(true);
-                    //     GameObject previewCameraPosition = GameObject.Find("CameraSpawnSphereMarker");
-                    //     previewCamera.gameObject.transform.position = previewCameraPosition.gameObject.transform.position;
-                    //     previewCamera.gameObject.transform.rotation = previewCameraPosition.gameObject.transform.rotation;
-                    // } else {
-                    //     child.gameObject.SetActive(false);
-                    // }
+
                 }
             }
             foreach (Transform child in children)

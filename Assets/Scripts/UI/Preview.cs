@@ -83,6 +83,7 @@ public class Preview : MonoBehaviour
 
                 tempMissions.Clear();
                 GameObject previewInteriorPrefab = Resources.Load<GameObject>("Prefabs/Interior");
+                GameObject previewGlass9Prefab = Resources.Load<GameObject>("Prefabs/Structures/glass_9_mbu");
                 //Loop through missions to add them to mega scene
                 //for (int index = 0; index < previewMissions.Count; index++)
                 //for (int index = 0; index < 73; index++)
@@ -101,6 +102,7 @@ public class Preview : MonoBehaviour
 
                     
                     emptyLevelObject.GetComponent<MissionImporterPreview>().setInteriorPrefab(previewInteriorPrefab);
+                    emptyLevelObject.GetComponent<MissionImporterPreview>().setGlass9Prefab(previewGlass9Prefab);
                     emptyLevelObject.GetComponent<MissionImporterPreview>().setThisMission(previewMissions[index].directory);
                     emptyLevelObject.gameObject.SetActive(false);
 
