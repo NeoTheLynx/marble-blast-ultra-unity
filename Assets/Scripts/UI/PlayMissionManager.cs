@@ -320,6 +320,45 @@ public class PlayMissionManager : MonoBehaviour
         SetLevelInfo(selectedLevelNum);
     }
 
+    IEnumerator ChangePreviewLevel(string missionfile){
+        GameObject parentObject = GameObject.Find("PreviewRoot");
+        GameObject previewCamera = GameObject.Find("PreviewCamera");  
+        if (parentObject != null)
+        {
+            // true parameter includes inactive children
+            Transform[] children = parentObject.GetComponentsInChildren<Transform>(true); 
+
+            foreach (Transform child in children)
+            {
+                if (child.CompareTag("PreviewLevelGroup"))
+                {
+                    child.gameObject.SetActive(false);
+                    // if(child.name == "Level_" + missionfile){
+                    //     child.gameObject.SetActive(true);
+                    //     GameObject previewCameraPosition = GameObject.Find("CameraSpawnSphereMarker");
+                    //     previewCamera.gameObject.transform.position = previewCameraPosition.gameObject.transform.position;
+                    //     previewCamera.gameObject.transform.rotation = previewCameraPosition.gameObject.transform.rotation;
+                    // } else {
+                    //     child.gameObject.SetActive(false);
+                    // }
+                }
+            }
+            foreach (Transform child in children)
+            {
+                if (child.CompareTag("PreviewLevelGroup"))
+                {
+                     if(child.name == "Level_" + missionfile){
+                         child.gameObject.SetActive(true);
+                         GameObject previewCameraPosition = GameObject.Find("CameraSpawnSphereMarker");
+                         previewCamera.gameObject.transform.position = previewCameraPosition.gameObject.transform.position;
+                         previewCamera.gameObject.transform.rotation = previewCameraPosition.gameObject.transform.rotation;
+                    }
+                }
+            }
+        }
+        yield return null;
+    }
+
     public void SetLevelInfo(int number)
     {
         foreach (GameObject g in spaces)
@@ -350,6 +389,10 @@ public class PlayMissionManager : MonoBehaviour
 
             return;
         }
+
+        //ChangePreviewLevel(missions[number].missionName);
+        StartCoroutine(ChangePreviewLevel(missions[number].missionName));
+        //Debug.Log();
 
         int qualifiedLevel = debug ? 9999 : PlayerPrefs.GetInt("QualifiedLevel" + CapitalizeFirst(currentlySelectedType.ToString()) + CapitalizeFirst(selectedGame.ToString()), 0);
 
