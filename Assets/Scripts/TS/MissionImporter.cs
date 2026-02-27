@@ -65,6 +65,8 @@ namespace TS
         public GameObject teleportPad;
         public GameObject checkpointPrefab;
         [Space]
+        public GameObject glass_9;
+        [Space]
         public GameObject[] staticShapes;
 
         [Header("References")]
@@ -468,7 +470,20 @@ namespace TS
                         checkpoint.InitCheckpoint();
                         checkpoints.Add(cp);
                     }
+                    else if(objectName == "glass_9shape"){
+                        GameObject gobj = Instantiate(glass_9, transform, false);
+                        gobj.name = "glass_9shape";
 
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(-90f, 90f, 90f);
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
                     //Astrolabe
                     else if (objectName == "astrolabeShape")
                     {

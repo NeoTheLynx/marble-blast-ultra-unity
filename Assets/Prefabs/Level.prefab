@@ -136,6 +136,7 @@ MonoBehaviour:
     type: 3}
   checkpointPrefab: {fileID: 7410003163096702430, guid: 6d0b13f703dd7b946aed7e43e49dce7a,
     type: 3}
+  glass_9: {fileID: 7199997274048667226, guid: 8428ad3846461534ab7eabf781caa630, type: 3}
   staticShapes:
   - {fileID: 1873647146533241301, guid: 5191b7e87cf3c5b49889a9f2d4d55c9b, type: 3}
   - {fileID: 435278814453432950, guid: 46d51c5abb2a02e4fa6d68ff398f491d, type: 3}
