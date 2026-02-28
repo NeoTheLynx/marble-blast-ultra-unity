@@ -235,6 +235,28 @@ text  =  $Text::TriggerText6_0;
             msToNext = "6000";
             smoothingType = "Accelerate";
          };
+         new Marker() {
+            position = "48 -18 20";
+            rotation = "1 0 0 0";
+            scale = "1 1 1";
+            hidden = "0";
+            reanderShadow = "1";
+            seqNum = "5";
+            type = "Normal";
+            msToNext = "2000";
+            smoothingType = "Linear";
+         };
+         new Marker() {
+            position = "48 -18 20";
+            rotation = "1 0 0 0";
+            scale = "1 1 1";
+            hidden = "0";
+            reanderShadow = "1";
+            seqNum = "6";
+            type = "Normal";
+            msToNext = "6000";
+            smoothingType = "Accelerate";
+         };
       };
       new PathedInterior(MustChange) {
          position = "0 0 0";

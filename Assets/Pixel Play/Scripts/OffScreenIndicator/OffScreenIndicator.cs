@@ -24,7 +24,7 @@ public class OffScreenIndicator : MonoBehaviour
 
     void Awake()
     {
-        //mainCamera = Camera.main;
+        mainCamera = Camera.main;
         screenCentre = new Vector3(Screen.width, Screen.height, 0) / 2;
         screenBounds = screenCentre * screenBoundOffset;
         TargetStateChanged += HandleTargetStateChanged;
@@ -40,6 +40,9 @@ public class OffScreenIndicator : MonoBehaviour
     /// </summary>
     void DrawIndicators()
     {
+        if(mainCamera == null){
+            mainCamera = Camera.main;
+        }
         foreach(Target target in targets)
         {
             Vector3 screenPosition = OffScreenIndicatorCore.GetScreenPosition(mainCamera, target.transform.position);

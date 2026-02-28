@@ -16,7 +16,7 @@ public class Target : MonoBehaviour
     [SerializeField] private bool needArrowIndicator = true;
 
     [Tooltip("Select if distance text is required for this target")]
-    [SerializeField] private bool needDistanceText = true;
+    [SerializeField] private bool needDistanceText = false;
 
     /// <summary>
     /// Please do not assign its value yourself without understanding its use.
@@ -69,6 +69,12 @@ public class Target : MonoBehaviour
         }
     }
 
+    void Start(){
+        //gameObject.active = false;
+        //gameObject.active = true;
+        //OffScreenIndicator.TargetStateChanged.Invoke(this, true);
+    }
+
     /// <summary>
     /// On enable add this target object to the targets list.
     /// </summary>
@@ -100,5 +106,9 @@ public class Target : MonoBehaviour
     {
         float distanceFromCamera = Vector3.Distance(cameraPosition, transform.position);
         return distanceFromCamera;
+    }
+
+    public void setTargetColor(Color tColor) {
+        targetColor = tColor;
     }
 }

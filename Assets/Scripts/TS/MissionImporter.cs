@@ -144,6 +144,9 @@ namespace TS
                     {
                         var gobj = Instantiate(gemPrefab, transform, false);
                         gobj.name = "Gem";
+                        //Target hudT = gobj.AddComponent<Target>();
+                        //hudT.enabled = false;
+                        //hudT.enabled = true;
 
                         var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
                         var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));

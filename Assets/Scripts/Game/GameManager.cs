@@ -200,10 +200,16 @@ public class GameManager : MonoBehaviour
         gems = FindObjectsOfType<Gem>();
 
         totalGems = gems.Length;
-        if (totalGems != 0)
+        if (totalGems != 0) {
             GameUIManager.instance.SetTargetGem(totalGems);
-        else
+            GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Gem");
+            foreach(GameObject obst in obstacles) {
+                obst.active = false;
+            }
+        }
+        else {
             GameUIManager.instance.ShowGemCountUI(false);
+        }
     }
 
     #region Game
