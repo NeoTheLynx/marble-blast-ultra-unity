@@ -412,9 +412,11 @@ namespace TS
 
                         finishPad.transform.localPosition = position;
                         finishPad.transform.localRotation = rotation;
+                        finishPad.SetActive(false);
+                        finishPad.SetActive(true);
                     }
 
-                    else if (objectName.ToLower() == "checkpoint")
+                    else if (objectName.ToLower() == "checkPointShape")
                     {
                         var cp = Instantiate(checkpointPrefab, transform, false);
                         cp.name = string.IsNullOrEmpty(obj.Name) ? "Checkpoint" : obj.Name;
@@ -1252,7 +1254,7 @@ namespace TS
             //assigning checkpoint triggers
             foreach (var obj in mission.RecursiveChildren())
             {
-                if (obj.ClassName == "Trigger" && obj.GetField("dataBlock") == "CheckpointTrigger")
+                if (obj.ClassName == "Trigger" && obj.GetField("dataBlock") == "CheckPointTrigger")
                 {
                     foreach (GameObject go in checkpoints)
                     {

@@ -11,6 +11,9 @@ public class SplashScreenManager : MonoBehaviour
     public Sprite production;
     public Sprite presents;
     public Sprite title;
+    public Image studioLogo;
+    public GameObject Phase2;
+    public GameObject Phase3;
 
     private void Update()
     {
@@ -20,35 +23,45 @@ public class SplashScreenManager : MonoBehaviour
 
     public void Start()
     {
-        StartCoroutine(InitiatePreviewServer());
-        JukeboxManager.instance.PlayMusic("Tim Trance");
+        StartCoroutine(InitSplashScreen());
+        
+        //JukeboxManager.instance.PlayMusic("Tim Trance");
 
-        image.sprite = presents;
-        image.color = Color.clear;
-        image.DOColor(Color.white, 0.5f).OnComplete(() => {
-            DOVirtual.DelayedCall(2f, () =>
-            {
-                image.DOColor(Color.clear, 0.5f).OnComplete(() => {
-                    image.sprite = production;
-                    image.DOColor(Color.white, 0.5f).OnComplete(() => {
-                        DOVirtual.DelayedCall(2f, () =>
-                        {
-                            image.DOColor(Color.clear, 0.5f).OnComplete(() => {
-                                image.sprite = title;
-                                image.DOColor(Color.white, 0.5f).OnComplete(() => {
-                                    DOVirtual.DelayedCall(2f, () =>
-                                    {
-                                        image.DOColor(Color.clear, 0.5f).OnComplete(() => {
-                                            //SceneManager.LoadScene("MainMenu");
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-        });
+        // image.sprite = presents;
+        // image.color = Color.clear;
+        // image.DOColor(Color.white, 0.5f).OnComplete(() => {
+        //     DOVirtual.DelayedCall(2f, () =>
+        //     {
+        //         image.DOColor(Color.clear, 0.5f).OnComplete(() => {
+        //             image.sprite = production;
+        //             image.DOColor(Color.white, 0.5f).OnComplete(() => {
+        //                 DOVirtual.DelayedCall(2f, () =>
+        //                 {
+        //                     image.DOColor(Color.clear, 0.5f).OnComplete(() => {
+        //                         image.sprite = title;
+        //                         image.DOColor(Color.white, 0.5f).OnComplete(() => {
+        //                             DOVirtual.DelayedCall(2f, () =>
+        //                             {
+        //                                 image.DOColor(Color.clear, 0.5f).OnComplete(() => {
+        //                                     //SceneManager.LoadScene("MainMenu");
+        //                                 });
+        //                             });
+        //                         });
+        //                     });
+        //                 });
+        //             });
+        //         });
+        //     });
+        // });
+    }
+
+    IEnumerator InitSplashScreen() {
+        yield return new WaitForSeconds(2);
+        studioLogo.gameObject.SetActive(false);
+        Phase2.SetActive(true);
+        yield return new WaitForSeconds(1);
+        Phase3.SetActive(true);
+        StartCoroutine(InitiatePreviewServer());
     }
 
     IEnumerator InitiatePreviewServer()
@@ -76,7 +89,7 @@ public class SplashScreenManager : MonoBehaviour
             {
                 if (child.CompareTag("PreviewLevelGroup"))
                 {
-                    if(child.name == "Level_levelone"){
+                    if(child.name == "Level_urban"){
                         child.gameObject.SetActive(true);
                         GameObject previewCameraPosition = GameObject.Find("CameraSpawnSphereMarker");
                         previewCamera.gameObject.transform.position = previewCameraPosition.gameObject.transform.position;
@@ -85,6 +98,6 @@ public class SplashScreenManager : MonoBehaviour
                 }
             }
         }
-         SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainSplash");
     }
 }
