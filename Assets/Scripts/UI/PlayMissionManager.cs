@@ -25,6 +25,9 @@ public class Mission
     public string music;
     public string skyboxName;
     public bool hasEgg;
+
+    
+
 }
 
 public enum Type
@@ -79,6 +82,10 @@ public class PlayMissionManager : MonoBehaviour
     public Button statisticsButton;
     public Button achievementsButton;
     public Button searchButton;
+    [Space]
+    public Material beginnerSkyMat;
+    public Material intermediateSkyMat;
+    public Material advancedSkyMat;
     [Space]
     public bool debug = false;
 
@@ -345,6 +352,27 @@ public class PlayMissionManager : MonoBehaviour
                          GameObject previewCameraPosition = GameObject.Find("CameraSpawnSphereMarker");
                          previewCamera.gameObject.transform.position = previewCameraPosition.gameObject.transform.position;
                          previewCamera.gameObject.transform.rotation = previewCameraPosition.gameObject.transform.rotation;
+                         GameObject previewMetaData = GameObject.Find("PreviewMetaData");
+                         string metaDifficulty = previewMetaData.GetComponent<PreviewMetaData>().getLevelDifficulty();
+                         if(metaDifficulty.ToLower() == "beginner"){
+                            RenderSettings.skybox = beginnerSkyMat;
+                             // Update the ambient lighting and reflection probes to match the new skybox
+                            DynamicGI.UpdateEnvironment();
+                            GameObject previewController = GameObject.Find("PreviewRoot");
+                            previewController.GetComponent<Preview>().setCurrentSky(beginnerSkyMat);
+                         } else if(metaDifficulty.ToLower() == "intermediate") {
+                            RenderSettings.skybox = intermediateSkyMat;
+                             // Update the ambient lighting and reflection probes to match the new skybox
+                            DynamicGI.UpdateEnvironment();
+                            GameObject previewController = GameObject.Find("PreviewRoot");
+                            previewController.GetComponent<Preview>().setCurrentSky(intermediateSkyMat);
+                         } else if(metaDifficulty.ToLower() == "advanced") {
+                            RenderSettings.skybox = advancedSkyMat;
+                             // Update the ambient lighting and reflection probes to match the new skybox
+                            DynamicGI.UpdateEnvironment();
+                            GameObject previewController = GameObject.Find("PreviewRoot");
+                            previewController.GetComponent<Preview>().setCurrentSky(advancedSkyMat);
+                         }
                     }
                 }
             }

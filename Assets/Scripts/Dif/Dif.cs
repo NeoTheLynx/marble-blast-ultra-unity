@@ -180,7 +180,7 @@ public class Dif : MonoBehaviour {
             tex.LoadImage(File.ReadAllBytes(texPath));
             mat.mainTexture = tex;
         }
-
+        //Debug.Log("Material: " + materialName);
         return mat;
     }
 

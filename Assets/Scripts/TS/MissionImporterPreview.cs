@@ -138,6 +138,25 @@ namespace TS
 
             foreach (var obj in mission.RecursiveChildren())
             {
+
+                if (obj.ClassName == "ScriptObject")
+                {
+                    string dtype = obj.GetField("type");
+                    Debug.Log(dtype);
+                    GameObject gobj = Instantiate(new GameObject(), transform, false);
+                    gobj.name = "PreviewMetaData";
+                    gobj.AddComponent<PreviewMetaData>();
+                    gobj.GetComponent<PreviewMetaData>().setLevelDifficutly(dtype);
+                    //var direction = ConvertDirection(ParseVectorString(obj.GetField("direction")));
+                    //sunColor = ParseVectorString(obj.GetField("color"));
+                    //var ambient = ParseVectorString(obj.GetField("ambient"));
+
+                    //directionalLight.transform.localRotation = direction;
+                    //directionalLight.color = new Color(sunColor[0], sunColor[1], sunColor[2], 1f);
+
+                    //RenderSettings.ambientLight = new Color(ambient[0], ambient[1], ambient[2], 1f);
+                }
+
                 if (obj.ClassName == "Sun")
                 {
                     var direction = ConvertDirection(ParseVectorString(obj.GetField("direction")));

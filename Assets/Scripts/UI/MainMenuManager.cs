@@ -25,10 +25,22 @@ public class MainMenuManager : MonoBehaviour
             isQuitting = true;
         });
         websiteButton.onClick.AddListener(() => Application.OpenURL("https://marbleblast.com/"));
+        //GameObject previewController = GameObject.Find("PreviewRoot");
+        //Material updateCurrentSky = previewController.GetComponent<Preview>().getCurrentSky();
+        //RenderSettings.skybox = updateCurrentSky;
+                             // Update the ambient lighting and reflection probes to match the new skybox
+          //                  DynamicGI.UpdateEnvironment();
     }
 
     private void Update()
     {
+
+        GameObject previewController = GameObject.Find("PreviewRoot");
+        Material updateCurrentSky = previewController.GetComponent<Preview>().getCurrentSky();
+        RenderSettings.skybox = updateCurrentSky;
+                             //Update the ambient lighting and reflection probes to match the new skybox
+                           DynamicGI.UpdateEnvironment();
+
         if (isQuitting && Input.GetKeyDown(KeyCode.Escape))
             Application.Quit();
     }

@@ -14,6 +14,7 @@ public class Preview : MonoBehaviour
     public static Preview instance;
     private static bool isInPreviewMode;
     public GameObject mainParent;
+    public Material currentSky;
 
     void Awake()
     {
@@ -32,13 +33,23 @@ public class Preview : MonoBehaviour
     {
         isInPreviewMode = true;
         LoadAllMissions();
+        
         //GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("Audio_MusicVolume", 0.5f);
+    }
+
+    public void setCurrentSky(Material csky){
+        currentSky = csky;
+    }
+
+    public Material getCurrentSky(){
+        return currentSky;
     }
 
     public void setIsInPreviewMode(bool state){
         isInPreviewMode = state;
         if(isInPreviewMode) {
             EnableAllChildren();
+            //StartCoroutine(updatePreviewSky());
         }
         else {
             DisableAllChildren();
@@ -112,5 +123,22 @@ public class Preview : MonoBehaviour
                     //if(names[index] == "Dave")
                       //  return names[index];
                 }
+    }
+
+    IEnumerator updatePreviewSky()
+    {
+        // An infinite loop to keep the coroutine running indefinitely
+        while (true)
+        {
+            // Code to execute
+            //Instantiate(cannonballPrefab, firePoint.position, firePoint.rotation);
+            //Debug.Log("Fired cannonball.");
+
+            // Pause the coroutine for the specified duration
+            RenderSettings.skybox = currentSky;
+                             // Update the ambient lighting and reflection probes to match the new skybox
+                            DynamicGI.UpdateEnvironment();
+            yield return new WaitForSeconds(1);
+        }
     }
 }

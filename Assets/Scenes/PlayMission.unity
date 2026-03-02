@@ -11433,6 +11433,9 @@ MonoBehaviour:
   statisticsButton: {fileID: 173544578}
   achievementsButton: {fileID: 1282761844}
   searchButton: {fileID: 1124384536}
+  beginnerSkyMat: {fileID: 2100000, guid: 6505cb9f9de4b7d46962e17d1cfc5db9, type: 2}
+  intermediateSkyMat: {fileID: 2100000, guid: 1fb1624c7006cfc43b696de85638fd5a, type: 2}
+  advancedSkyMat: {fileID: 2100000, guid: 873b881e46a9cda4791670be7d71ef42, type: 2}
   debug: 0
   selectedLevelNum: 0
 --- !u!4 &1996103265
