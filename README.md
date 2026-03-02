@@ -1,7 +1,7 @@
 # Marble Blast Ultra Unity Port
 
-The Unity Port of Marble Blast Ultra, based on [Marble Blast Platinum Unity remake](https://github.com/NaCl586/marble-blast-platinum-unity/) that I did. This remake is based on Marble Blast Ultra. 
-These features are not yet implemented (and might possibly not implemented later): Replay Center, Leaderboards, and Level Editor (this is not planned, so don't ask for level editor).
+The Unity Port of Marble Blast Ultra, based on [Marble Blast Platinum Unity remake](https://github.com/NaCl586/marble-blast-platinum-unity/) that NaCl586 did. This remake is based on Marble Blast Ultra. 
+These features are not yet implemented (and might possibly not implemented later): Leaderboards, and Level Editor (this is not planned, so don't ask for level editor).
 
 <img src="https://i.imgur.com/dmkvam1.png" width="640">
 <img src="https://i.imgur.com/yyTlJ6q.png" width="640">
@@ -19,7 +19,7 @@ Please report other bugs that you find! Thank you
 
 Also lightning is still not optimized enough, feel free to give feedback too
 
-## Download the Windows build [here](https://github.com/NaCl586/marble-blast-platinum-unity/releases/)
+## Download the Windows build [here](https://github.com/NaCl586/marble-blast-ultra-unity/releases/)
 
 If you find bugs or things that are not faithful with the original Marble Blast Platinum, feel free to message me on discord NaCl586#8479.
 
