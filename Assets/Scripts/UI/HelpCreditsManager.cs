@@ -226,7 +226,7 @@ public class HelpCreditsManager : MonoBehaviour
                 HC_Gem2.SetActive(true);
                 HC_Gem3.SetActive(true);
                 titleText.text = "<size=50>Goals";
-                captionText.text = "<size=26>Start Pad - This is where you start the level.\n\nEnd Pad - Get your marble here to end the level.\n\nDiamonds - if a level has diamonds, you must pick them all up before you can finish.";
+                captionText.text = "<size=26>Start Pad - This is where you start the level.\n\nEnd Pad - Get your marble here to end the level.\nGems - if a level has gems, you must pick them all up before you can finish.";
                 SetMargin(margin, 0);
                 break;
 

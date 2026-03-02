@@ -379,9 +379,9 @@ public class GameManager : MonoBehaviour
 
         string remainingGemMsg;
 
-        if (currentGems + 1 == totalGems) remainingGemMsg = "You picked up a diamond! Only one more diamond to go!";
-        else if (currentGems == totalGems) remainingGemMsg = "You picked up all diamonds! Head for the finish!";
-        else remainingGemMsg = "You picked up a diamond! " + (totalGems - currentGems) + " diamonds to go!";
+        if (currentGems + 1 == totalGems) remainingGemMsg = "You picked up a gem! Only one more gem to go!";
+        else if (currentGems == totalGems) remainingGemMsg = "You picked up all gems! Head for the finish!";
+        else remainingGemMsg = "You picked up a gem! " + (totalGems - currentGems) + " gems to go!";
 
         if (_count > 0)
             GameUIManager.instance.SetBottomText(remainingGemMsg);
@@ -601,7 +601,7 @@ public class GameManager : MonoBehaviour
         //Missing gems
         if (totalGems != 0 && totalGems != currentGems)
         {
-            GameUIManager.instance.SetBottomText("You can't finish without all diamonds!");
+            GameUIManager.instance.SetBottomText("You can't finish without all gems!");
 
             PlayMissingGemAudio();
         }
