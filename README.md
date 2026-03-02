@@ -1,9 +1,9 @@
-# Marble Blast Platinum Unity Port
+# Marble Blast Ultra Unity Port
 
-The Unity Port of Marble Blast Platinum, based on [Marble Blast Gold Unity remake](https://github.com/NaCl586/marble-blast-gold-unity/) that I did. This remake is based on Marble Blast Platinum 1.14. 
+The Unity Port of Marble Blast Ultra, based on [Marble Blast Platinum Unity remake](https://github.com/NaCl586/marble-blast-platinum-unity/) that I did. This remake is based on Marble Blast Ultra. 
 These features are not yet implemented (and might possibly not implemented later): Replay Center, Leaderboards, and Level Editor (this is not planned, so don't ask for level editor).
 
-<img src="https://i.imgur.com/j1YrNlX.png" width="640">
+<img src="https://i.imgur.com/dmkvam1.png" width="640">
 <img src="https://i.imgur.com/yyTlJ6q.png" width="640">
 <img src="https://i.imgur.com/WEB3hS8.png" width="640">
 <img src="https://i.imgur.com/3HdzfdO.png" width="640">
