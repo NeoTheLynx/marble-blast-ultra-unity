@@ -56,6 +56,7 @@ public class PlayMissionManager : MonoBehaviour
     public TextMeshProUGUI levelDescriptionText;
     public TextMeshProUGUI bestTimesText;
     public TextMeshProUGUI currentLevelText;
+    public TextMeshProUGUI currentLevelNumber;
     public TextMeshProUGUI timeToQualifyText;
     public GameObject notQualifiedText;
     public GameObject notQualifiedImage;
@@ -88,16 +89,26 @@ public class PlayMissionManager : MonoBehaviour
     public Material advancedSkyMat;
     [Space]
     public bool debug = false;
+    public string menuDifficulty;
+    public Button aButton;
+    public Button bButton;
+    public Button yButton;
+    //public Button xButton;
 
     [HideInInspector] public int selectedLevelNum;
     public static Type currentlySelectedType = Type.none;
     public static Game selectedGame = Game.none;
 
+    private Translations stringTable;
+
     public void FixedUpdate()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow)) PrevButton();
         if (Input.GetKeyDown(KeyCode.RightArrow)) NextButton();
-        if (Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene("MainMenu");
+        if (Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene("DifficultySelect");
+        if (Input.GetKeyDown(KeyCode.Backspace)) SceneManager.LoadScene("DifficultySelect");
+        if (Input.GetKeyDown(KeyCode.Return)) SceneManager.LoadScene("Loading");
+        if (Input.GetKeyDown(KeyCode.A)) SceneManager.LoadScene("Loading");
     }
 
     public void Start()
@@ -109,6 +120,8 @@ public class PlayMissionManager : MonoBehaviour
         statisticsWindow.SetActive(false);
         achievementsWindow.SetActive(false);
         searchWindow.SetActive(false);
+
+        stringTable = GameObject.Find("TranslationObject").GetComponent<Translations>();
 
         marbleSelectButton.onClick.AddListener(() => 
         {
@@ -141,7 +154,8 @@ public class PlayMissionManager : MonoBehaviour
             GetComponent<SearchManager>().SelectFirstButton();
             GetComponent<SearchManager>().scrollRect.verticalNormalizedPosition = 1f;
         });
-
+        menuDifficulty = MissionInfo.instance.getCurrentDifficulty();
+        //Debug.Log();
         StartCoroutine(WaitUntilFinishLoading());
     }
 
@@ -152,58 +166,73 @@ public class PlayMissionManager : MonoBehaviour
 
     IEnumerator WaitUntilFinishLoading()
     {
-        while (MissionInfo.instance.missionsPlatinumBeginner == null || MissionInfo.instance.missionsPlatinumBeginner.Count == 0)
+        while (MissionInfo.instance.missionsUltraBeginner == null || MissionInfo.instance.missionsUltraBeginner.Count == 0)
             yield return null;
 
         Time.timeScale = 1;
 
         if (selectedGame == Game.none)
-            selectedGame = Game.platinum;
+            selectedGame = Game.ultra;
 
-        beginnerButton.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            if (selectedGame == Game.platinum)
-                LoadMissions(Type.beginner, Game.platinum);
-            else if (selectedGame == Game.gold)
-                LoadMissions(Type.beginner, Game.gold);
-        });
-        intermediateButton.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            if (selectedGame == Game.platinum)
-                LoadMissions(Type.intermediate, Game.platinum);
-            else if (selectedGame == Game.gold)
-                LoadMissions(Type.intermediate, Game.gold);
-        });
-        advancedButton.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            if (selectedGame == Game.platinum)
-                LoadMissions(Type.advanced, Game.platinum);
-            else if (selectedGame == Game.gold)
-                LoadMissions(Type.advanced, Game.gold);
-        });
-        expertButton.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            if (selectedGame == Game.platinum)
-                LoadMissions(Type.expert, Game.platinum);
-        });
-        customButton.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            if (selectedGame == Game.gold)
-                LoadMissions(Type.custom, Game.gold);
-        });
+        // beginnerButton.GetComponent<Button>().onClick.AddListener(() =>
+        // {
+        //     if (selectedGame == Game.platinum)
+        //         LoadMissions(Type.beginner, Game.platinum);
+        //     else if (selectedGame == Game.gold)
+        //         LoadMissions(Type.beginner, Game.gold);
+        // });
+        // intermediateButton.GetComponent<Button>().onClick.AddListener(() =>
+        // {
+        //     if (selectedGame == Game.platinum)
+        //         LoadMissions(Type.intermediate, Game.platinum);
+        //     else if (selectedGame == Game.gold)
+        //         LoadMissions(Type.intermediate, Game.gold);
+        // });
+        // advancedButton.GetComponent<Button>().onClick.AddListener(() =>
+        // {
+        //     if (selectedGame == Game.platinum)
+        //         LoadMissions(Type.advanced, Game.platinum);
+        //     else if (selectedGame == Game.gold)
+        //         LoadMissions(Type.advanced, Game.gold);
+        // });
+        // expertButton.GetComponent<Button>().onClick.AddListener(() =>
+        // {
+        //     if (selectedGame == Game.platinum)
+        //         LoadMissions(Type.expert, Game.platinum);
+        // });
+        // customButton.GetComponent<Button>().onClick.AddListener(() =>
+        // {
+        //     if (selectedGame == Game.gold)
+        //         LoadMissions(Type.custom, Game.gold);
+        // });
         switchGameButton.GetComponent<Button>().onClick.AddListener(() => SwitchGame());
 
 
-        home.onClick.AddListener(() => SceneManager.LoadScene("MainMenu"));
+        home.onClick.AddListener(() => SceneManager.LoadScene("DifficultySelect"));
 
         prev.onClick.AddListener(PrevButton);
         next.onClick.AddListener(NextButton);
-        play.onClick.AddListener(() => SceneManager.LoadScene("Loading"));
+        aButton.onClick.AddListener(() => PlayLevel());
 
-        if (currentlySelectedType == Type.none)
-            currentlySelectedType = Type.beginner;
+        //if (currentlySelectedType == Type.none) {
+            
+        //}   
 
-        LoadMissions(currentlySelectedType, selectedGame);
+        Debug.LogError("SELECTED DIFFICULTY: " + menuDifficulty);
+        if(menuDifficulty == "beginner"){
+            LoadMissions(Type.beginner, Game.ultra);
+        }
+        else if(menuDifficulty == "intermediate"){
+            LoadMissions(Type.intermediate, Game.ultra);
+        }
+        else if(menuDifficulty == "advanced"){
+            LoadMissions(Type.advanced, Game.ultra);
+        }
+        else if(menuDifficulty == "custom"){
+            LoadMissions(Type.custom, Game.ultra);
+        }
+
+        //LoadMissions(currentlySelectedType, selectedGame);
 
         if (selectedGame == Game.gold)
         {
@@ -225,6 +254,10 @@ public class PlayMissionManager : MonoBehaviour
         }
 
         GetComponent<SearchManager>().InitSearchElements();
+    }
+
+    void PlayLevel(){
+        SceneManager.LoadScene("Loading");
     }
 
     void SwitchGame()
@@ -264,7 +297,7 @@ public class PlayMissionManager : MonoBehaviour
             else if (difficulty == Type.advanced)
                 missions = MissionInfo.instance.missionsUltraAdvanced;
             else if (difficulty == Type.custom)
-                missions = MissionInfo.instance.missionsGoldCustom;
+                missions = MissionInfo.instance.missionsUltraCustom;
         // if (game == Game.gold)
         // {
         //     if (difficulty == Type.beginner)
@@ -390,7 +423,7 @@ public class PlayMissionManager : MonoBehaviour
             levelDescriptionText.gameObject.SetActive(false);
 
             levelImage.color = Color.clear;
-            currentLevelText.text = "Level 0";
+            currentLevelText.text = "No Missions";
 
             notQualifiedImage.SetActive(true);
             notQualifiedText.SetActive(true);
@@ -413,7 +446,7 @@ public class PlayMissionManager : MonoBehaviour
 
         //ChangePreviewLevel(missions[number].missionName);
         StartCoroutine(ChangePreviewLevel(missions[number].missionName));
-        //Debug.Log();
+        //Debug.Log("Real Level Number: " + missions[number].level);
 
         int qualifiedLevel = debug ? 9999 : PlayerPrefs.GetInt("QualifiedLevel" + CapitalizeFirst(currentlySelectedType.ToString()) + CapitalizeFirst(selectedGame.ToString()), 0);
 
@@ -439,9 +472,9 @@ public class PlayMissionManager : MonoBehaviour
             "<b>Author:</b> " + missions[number].artist;
 
         if (missions[number].time != -1)
-            timeToQualifyText.text = "Par Time: " + Utils.FormatTime(missions[number].time);
+            timeToQualifyText.text = "<color=#88BCEE>" + Utils.FormatTimeAlt(missions[number].time);
         else
-            timeToQualifyText.text = string.Empty;
+            timeToQualifyText.text = "None";
 
         RefreshTMPLayout(levelDescriptionText);
         RefreshTMPLayout(timeToQualifyText);
@@ -459,8 +492,10 @@ public class PlayMissionManager : MonoBehaviour
             levelImage.color = Color.clear;
         }
 
-        currentLevelText.text = missions[number].levelName + " - " + CapitalizeFirst(currentlySelectedType.ToString()) + " Level " + (number + 1);
+        //Debug.LogError(stringTable.getValue(missions[number].levelName));
 
+        currentLevelText.text = stringTable.getValue(missions[number].levelName);
+        currentLevelNumber.text = "Level " + (number + 1);
         notQualifiedImage.SetActive(qualifiedLevel < number);
         notQualifiedText.SetActive(qualifiedLevel < number);
 
@@ -487,38 +522,51 @@ public class PlayMissionManager : MonoBehaviour
         MissionInfo.instance.skybox = Application.CanStreamedLevelBeLoaded(skyboxName) ? skyboxName : "intermediate_sky";
 
         bestTimesText.text = string.Empty;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 1; i++)
         {
-            string _name = PlayerPrefs.GetString(MissionInfo.instance.levelName + "_Name_" + i, "Matan W.");
             float _time = PlayerPrefs.GetFloat(MissionInfo.instance.levelName + "_Time_" + i, -1);
-            bestTimesText.text += (i + 1) + ". " + _name;
+            //Debug.Log();
+            if(_time == -1){
+                bestTimesText.text += "None";
+            } else {
+                if(_time >= missions[number].time) {
+                    bestTimesText.text += "<color=#FF7575>" + Utils.FormatTimeAlt(_time);
+                } else {
+                    bestTimesText.text += "<color=#8DFF8D>" + Utils.FormatTimeAlt(_time);
+                }
+                
+            }
+            
+            // string _name = PlayerPrefs.GetString(MissionInfo.instance.levelName + "_Name_" + i, "Matan W.");
+            // float _time = PlayerPrefs.GetFloat(MissionInfo.instance.levelName + "_Time_" + i, -1);
+            // bestTimesText.text += (i + 1) + ". " + _name;
 
-            if (selectedGame == Game.gold && currentlySelectedType != Type.custom && _time < MissionInfo.instance.goldTime && _time != -1)
-            {
-                bestTimesText.text += "\t" + Utils.FormatTime(_time) + "<sprite name=\"gold\">\n";
-            }
-            else if (selectedGame == Game.gold && currentlySelectedType == Type.custom)
-            {
-                if (_time < MissionInfo.instance.ultimateTime && _time != -1)
-                    bestTimesText.text += "\t" + Utils.FormatTime(_time) + "<sprite name=\"ultimate\">\n";
-                else if (_time < MissionInfo.instance.goldTime && _time != -1)
-                    bestTimesText.text += "\t" + Utils.FormatTime(_time) + "<sprite name=\"platinum\">\n";
-                else
-                    bestTimesText.text += "\t" + Utils.FormatTime(_time) + "\n";
-            }
-            else if (selectedGame == Game.platinum)
-            {
-                if (_time < MissionInfo.instance.ultimateTime && _time != -1)
-                    bestTimesText.text += "\t" + Utils.FormatTime(_time) + "<sprite name=\"ultimate\">\n";
-                else if (_time < MissionInfo.instance.goldTime && _time != -1)
-                    bestTimesText.text += "\t" + Utils.FormatTime(_time) + "<sprite name=\"platinum\">\n";
-                else
-                    bestTimesText.text += "\t" + Utils.FormatTime(_time) + "\n";
-            }
-            else
-            {
-                bestTimesText.text += "\t" + Utils.FormatTime(_time) + "\n";
-            }
+            // if (selectedGame == Game.gold && currentlySelectedType != Type.custom && _time < MissionInfo.instance.goldTime && _time != -1)
+            // {
+            //     bestTimesText.text += "\t" + Utils.FormatTime(_time) + "<sprite name=\"gold\">\n";
+            // }
+            // else if (selectedGame == Game.gold && currentlySelectedType == Type.custom)
+            // {
+            //     if (_time < MissionInfo.instance.ultimateTime && _time != -1)
+            //         bestTimesText.text += "\t" + Utils.FormatTime(_time) + "<sprite name=\"ultimate\">\n";
+            //     else if (_time < MissionInfo.instance.goldTime && _time != -1)
+            //         bestTimesText.text += "\t" + Utils.FormatTime(_time) + "<sprite name=\"platinum\">\n";
+            //     else
+            //         bestTimesText.text += "\t" + Utils.FormatTime(_time) + "\n";
+            // }
+            // else if (selectedGame == Game.platinum)
+            // {
+            //     if (_time < MissionInfo.instance.ultimateTime && _time != -1)
+            //         bestTimesText.text += "\t" + Utils.FormatTime(_time) + "<sprite name=\"ultimate\">\n";
+            //     else if (_time < MissionInfo.instance.goldTime && _time != -1)
+            //         bestTimesText.text += "\t" + Utils.FormatTime(_time) + "<sprite name=\"platinum\">\n";
+            //     else
+            //         bestTimesText.text += "\t" + Utils.FormatTime(_time) + "\n";
+            // }
+            // else
+            // {
+            //     bestTimesText.text += "\t" + Utils.FormatTime(_time) + "\n";
+            // }
         }
 
         if (missions[number].hasEgg)

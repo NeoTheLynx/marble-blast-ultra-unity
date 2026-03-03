@@ -15,6 +15,15 @@ public static class Utils
         else
             return string.Format("{0:00}:{1:00}.{2:000}", ts.Minutes, ts.Seconds, ts.Milliseconds);
     }
+    
+    public static string FormatTimeAlt(float time)
+    {
+        TimeSpan ts = TimeSpan.FromMilliseconds(time);
+        if (time == -1)
+            return "99:59.99";
+        else
+            return string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds);
+    }
 
     // Optional aliases for common names
     private static readonly Dictionary<string, KeyCode> Aliases = new Dictionary<string, KeyCode>()

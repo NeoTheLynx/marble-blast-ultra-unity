@@ -246,29 +246,29 @@ public class StatisticsManager : MonoBehaviour
     public List<Mission> GetMissionList(Game game, Type type)
     {
         List<Mission> missionList = new List<Mission>();
-        if (game == Game.platinum)
-        {
-            if (type == Type.beginner)
-                missionList = MissionInfo.instance.missionsPlatinumBeginner;
-            if (type == Type.intermediate)
-                missionList = MissionInfo.instance.missionsPlatinumIntermediate;
-            if (type == Type.advanced)
-                missionList = MissionInfo.instance.missionsPlatinumAdvanced;
-            if (type == Type.expert)
-                missionList = MissionInfo.instance.missionsPlatinumExpert;
-        }
-        else if (game == Game.gold)
-        {
-            if (type == Type.beginner)
-                missionList = MissionInfo.instance.missionsGoldBeginner;
-            if (type == Type.intermediate)
-                missionList = MissionInfo.instance.missionsGoldIntermediate;
-            if (type == Type.advanced)
-                missionList = MissionInfo.instance.missionsGoldAdvanced;
-            if (type == Type.custom)
-                missionList = MissionInfo.instance.missionsGoldCustom;
-        }
-        else if (game == Game.ultra)
+        // if (game == Game.platinum)
+        // {
+        //     if (type == Type.beginner)
+        //         missionList = MissionInfo.instance.missionsPlatinumBeginner;
+        //     if (type == Type.intermediate)
+        //         missionList = MissionInfo.instance.missionsPlatinumIntermediate;
+        //     if (type == Type.advanced)
+        //         missionList = MissionInfo.instance.missionsPlatinumAdvanced;
+        //     if (type == Type.expert)
+        //         missionList = MissionInfo.instance.missionsPlatinumExpert;
+        // }
+        // else if (game == Game.gold)
+        // {
+        //     if (type == Type.beginner)
+        //         missionList = MissionInfo.instance.missionsGoldBeginner;
+        //     if (type == Type.intermediate)
+        //         missionList = MissionInfo.instance.missionsGoldIntermediate;
+        //     if (type == Type.advanced)
+        //         missionList = MissionInfo.instance.missionsGoldAdvanced;
+        //     if (type == Type.custom)
+        //         missionList = MissionInfo.instance.missionsGoldCustom;
+        // }
+        if (game == Game.ultra)
         {
             if (type == Type.beginner)
                 missionList = MissionInfo.instance.missionsUltraBeginner;
@@ -276,6 +276,8 @@ public class StatisticsManager : MonoBehaviour
                 missionList = MissionInfo.instance.missionsUltraIntermediate;
             if (type == Type.advanced)
                 missionList = MissionInfo.instance.missionsUltraAdvanced;
+            if (type == Type.custom)
+                missionList = MissionInfo.instance.missionsUltraCustom;
         }
 
         return missionList;

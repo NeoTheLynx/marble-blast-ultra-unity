@@ -46,18 +46,22 @@ public class MissionInfo : MonoBehaviour
     public string skybox;
     public bool hasEgg;
 
+    [Header("Previews")]
+    public string currentGameDifficulty = "intermediate";
+
     [Header("Load Mission")]
-    public List<Mission> missionsPlatinumBeginner = new List<Mission>();
-    public List<Mission> missionsPlatinumIntermediate = new List<Mission>();
-    public List<Mission> missionsPlatinumAdvanced = new List<Mission>();
-    public List<Mission> missionsPlatinumExpert = new List<Mission>();
-    public List<Mission> missionsGoldBeginner = new List<Mission>();
-    public List<Mission> missionsGoldIntermediate = new List<Mission>();
-    public List<Mission> missionsGoldAdvanced = new List<Mission>();
-    public List<Mission> missionsGoldCustom = new List<Mission>();
+    // public List<Mission> missionsPlatinumBeginner = new List<Mission>();
+    // public List<Mission> missionsPlatinumIntermediate = new List<Mission>();
+    // public List<Mission> missionsPlatinumAdvanced = new List<Mission>();
+    // public List<Mission> missionsPlatinumExpert = new List<Mission>();
+    // public List<Mission> missionsGoldBeginner = new List<Mission>();
+    // public List<Mission> missionsGoldIntermediate = new List<Mission>();
+    // public List<Mission> missionsGoldAdvanced = new List<Mission>();
+    // public List<Mission> missionsGoldCustom = new List<Mission>();
     public List<Mission> missionsUltraBeginner = new List<Mission>();
     public List<Mission> missionsUltraIntermediate = new List<Mission>();
     public List<Mission> missionsUltraAdvanced = new List<Mission>();
+    public List<Mission> missionsUltraCustom = new List<Mission>();
 
     List<TSObject> MissionObjects;
 
@@ -65,17 +69,26 @@ public class MissionInfo : MonoBehaviour
     {
         highScoreName = PlayerPrefs.GetString("HighScoreName", "");
 
-        LoadMissions(Type.beginner, Game.platinum);
-        LoadMissions(Type.intermediate, Game.platinum);
-        LoadMissions(Type.advanced, Game.platinum);
-        LoadMissions(Type.expert, Game.platinum);
-        LoadMissions(Type.beginner, Game.gold);
-        LoadMissions(Type.intermediate, Game.gold);
-        LoadMissions(Type.advanced, Game.gold);
-        LoadMissions(Type.custom, Game.gold);
+        // LoadMissions(Type.beginner, Game.platinum);
+        // LoadMissions(Type.intermediate, Game.platinum);
+        // LoadMissions(Type.advanced, Game.platinum);
+        // LoadMissions(Type.expert, Game.platinum);
+        // LoadMissions(Type.beginner, Game.gold);
+        // LoadMissions(Type.intermediate, Game.gold);
+        // LoadMissions(Type.advanced, Game.gold);
+        // LoadMissions(Type.custom, Game.gold);
         LoadMissions(Type.beginner, Game.ultra);
         LoadMissions(Type.intermediate, Game.ultra);
         LoadMissions(Type.advanced, Game.ultra);
+        LoadMissions(Type.custom, Game.ultra);
+    }
+
+    public void setCurrentDifficulty(string cdif){
+        currentGameDifficulty = cdif;
+    }
+
+    public string getCurrentDifficulty(){
+        return currentGameDifficulty;
     }
 
     public void LoadMissions(Type difficulty, Game game)
@@ -242,29 +255,7 @@ public class MissionInfo : MonoBehaviour
             if(newMission.levelImage)
                 newMission.levelImage.name = levelName;
 
-            if(game == Game.gold)
-            {
-                if (difficulty == Type.beginner)
-                    missionsGoldBeginner.Add(newMission);
-                else if (difficulty == Type.intermediate)
-                    missionsGoldIntermediate.Add(newMission);
-                else if (difficulty == Type.advanced)
-                    missionsGoldAdvanced.Add(newMission);
-                else if (difficulty == Type.custom)
-                    missionsGoldCustom.Add(newMission);
-            }
-            else if(game == Game.platinum)
-            {
-                if (difficulty == Type.beginner)
-                    missionsPlatinumBeginner.Add(newMission);
-                else if (difficulty == Type.intermediate)
-                    missionsPlatinumIntermediate.Add(newMission);
-                else if (difficulty == Type.advanced)
-                    missionsPlatinumAdvanced.Add(newMission);
-                else if (difficulty == Type.expert)
-                    missionsPlatinumExpert.Add(newMission);
-            }
-            else if(game == Game.ultra)
+            if(game == Game.ultra)
             {
                 if (difficulty == Type.beginner)
                     missionsUltraBeginner.Add(newMission);
@@ -272,33 +263,13 @@ public class MissionInfo : MonoBehaviour
                     missionsUltraIntermediate.Add(newMission);
                 else if (difficulty == Type.advanced)
                     missionsUltraAdvanced.Add(newMission);
+                else if (difficulty == Type.custom)
+                    missionsUltraCustom.Add(newMission);
             }
             
         }
 
-        if (game == Game.gold)
-        {
-            if (difficulty == Type.beginner)
-                missionsGoldBeginner = SortMissionsByLevelNumber(missionsGoldBeginner);
-            else if (difficulty == Type.intermediate)
-                missionsGoldIntermediate = SortMissionsByLevelNumber(missionsGoldIntermediate);
-            else if (difficulty == Type.advanced)
-                missionsGoldAdvanced = SortMissionsByLevelNumber(missionsGoldAdvanced);
-            else if (difficulty == Type.custom)
-                missionsGoldCustom = SortMissionsByLevelNumber(missionsGoldCustom);
-        }
-        else if (game == Game.platinum)
-        {
-            if (difficulty == Type.beginner)
-                missionsPlatinumBeginner = SortMissionsByLevelNumber(missionsPlatinumBeginner);
-            else if (difficulty == Type.intermediate)
-                missionsPlatinumIntermediate = SortMissionsByLevelNumber(missionsPlatinumIntermediate);
-            else if (difficulty == Type.advanced)
-                missionsPlatinumAdvanced = SortMissionsByLevelNumber(missionsPlatinumAdvanced);
-            else if (difficulty == Type.expert)
-                missionsPlatinumExpert = SortMissionsByLevelNumber(missionsPlatinumExpert);
-        }
-        else if (game == Game.ultra)
+        if (game == Game.ultra)
         {
             if (difficulty == Type.beginner)
                 missionsUltraBeginner = SortMissionsByLevelNumber(missionsUltraBeginner);
@@ -306,6 +277,8 @@ public class MissionInfo : MonoBehaviour
                 missionsUltraIntermediate = SortMissionsByLevelNumber(missionsUltraIntermediate);
             else if (difficulty == Type.advanced)
                 missionsUltraAdvanced = SortMissionsByLevelNumber(missionsUltraAdvanced);
+            else if (difficulty == Type.custom)
+                missionsUltraCustom = SortMissionsByLevelNumber(missionsUltraCustom);
         }
     }
 

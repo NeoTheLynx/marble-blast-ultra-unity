@@ -89,7 +89,7 @@ public class Preview : MonoBehaviour
                 previewMissions.AddRange(tempMissions);
                 tempMissions = MissionInfo.instance.missionsUltraAdvanced;
                 previewMissions.AddRange(tempMissions);
-                tempMissions = MissionInfo.instance.missionsGoldCustom;
+                tempMissions = MissionInfo.instance.missionsUltraCustom;
                 previewMissions.AddRange(tempMissions);
 
                 tempMissions.Clear();

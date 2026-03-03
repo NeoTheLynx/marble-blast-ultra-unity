@@ -4,22 +4,24 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class MainMenuButtonList : MonoBehaviour
+public class DifficultyMenuButtonList : MonoBehaviour
 {
     public Button buttonPrefab; // Reference to your Button Prefab
     public Button buttonPrefabSpacer; // Reference to your Button Prefab
     public Transform contentParent; // Reference to the Content GameObject in your Scroll Rect
     //public Transform contentParentSp; // Reference to the Content GameObject in your Scroll Rect
+    public Button aButton;
+    public Button bButton;
+    public MissionInfo misinfo;
 
     private List<KeyValuePair<int, string>> menuOptions = new List<KeyValuePair<int, string>>() { 
-                new KeyValuePair<int, string>(0, "Single Player Game"),
-                new KeyValuePair<int, string>(1, "Multiplayer Game"),
-                new KeyValuePair<int, string>(1, "SPACER"),
-                new KeyValuePair<int, string>(2, "Leaderboards"),
-                new KeyValuePair<int, string>(3, "Achievements"),
-                new KeyValuePair<int, string>(4, "Help & Options"),
-                new KeyValuePair<int, string>(5, "Download Content"),
-                new KeyValuePair<int, string>(6, "Exit Game"),
+                new KeyValuePair<int, string>(0, "Beginner Levels"),
+                new KeyValuePair<int, string>(1, "Intermediate Levels"),
+                new KeyValuePair<int, string>(2, "Advanced Levels"),
+                new KeyValuePair<int, string>(2, "SPACER"),
+                new KeyValuePair<int, string>(3, "Custom Levels"),
+                new KeyValuePair<int, string>(3, "SPACER"),
+                new KeyValuePair<int, string>(4, "Gem Hunt"),
     };
 
     void Start()
@@ -30,6 +32,17 @@ public class MainMenuButtonList : MonoBehaviour
         RenderSettings.skybox = updateCurrentSky;
                              //Update the ambient lighting and reflection probes to match the new skybox
                            DynamicGI.UpdateEnvironment();
+        aButton.onClick.AddListener(() => onA());  
+        bButton.onClick.AddListener(() => onB());
+        misinfo = GameObject.Find("MissionInfo").GetComponent<MissionInfo>();  
+    }
+
+    void onA(){
+        Debug.Log("This button does nothing atm");
+    }
+
+    void onB(){
+        SceneManager.LoadScene("MainMenu");
     }
 
     void PopulateMenuItems() {
@@ -49,43 +62,40 @@ public class MainMenuButtonList : MonoBehaviour
             newButton.GetComponentInChildren<TextMeshProUGUI>().text = menuItem.Value;
 
             // Add a listener to the button's OnClick event
-            Debug.Log("Adding Clicks For: " + menuItem.Key.ToString());
+            //Debug.Log("Adding Clicks For: " + menuItem.Key.ToString());
             newButton.onClick.AddListener(() => OnButtonClick(menuItem.Key));
         }
     }
 
     void OnButtonClick(int btnIndex)
     {
-        //Debug.Log("Clicked on button for: " + btnIndex.ToString());
+        Debug.Log("Clicked on button for: " + btnIndex.ToString());
         switch(btnIndex)
         {
             case 0:
-                SceneManager.LoadScene("DifficultySelect");
+                misinfo.setCurrentDifficulty("beginner");
+                SceneManager.LoadScene("PlayMission");
                 break;
 
             case 1:
-                Debug.Log("<color=red>Multiplayer Not Implemented</color>");
+                misinfo.setCurrentDifficulty("intermediate");
+                SceneManager.LoadScene("PlayMission");
                 break;
 
             case 2:
-                Debug.Log("<color=red>Leaderboards Not Implemented</color>");
+                misinfo.setCurrentDifficulty("advanced");
+                SceneManager.LoadScene("PlayMission");
                 break;
 
             case 3:
-                Debug.Log("<color=red>Achivements Not Implemented</color>");
+                misinfo.setCurrentDifficulty("custom");
+                SceneManager.LoadScene("PlayMission");
                 break;
 
             case 4:
-                SceneManager.LoadScene("Options");
-                break;
-
-            case 5:
-                Debug.Log("<color=red>Download Content Not Implemented</color>");
-                break;
-
-            case 6:
-                Application.Quit();
-                break;        
+                Debug.Log("<color=red>Gem Hunt Not Implemented</color>");
+                //SceneManager.LoadScene("PlayMission");
+                break;      
 
             default:
                 Debug.Log("<color=yellow>No Menu Index</color>");

@@ -12,6 +12,7 @@ public class MainMenuManager : MonoBehaviour
     public Button quitButton;
     public Button websiteButton;
     public GameObject quitImage;
+    public Button aButton;
 
     bool isQuitting;
 
@@ -30,6 +31,11 @@ public class MainMenuManager : MonoBehaviour
         //RenderSettings.skybox = updateCurrentSky;
                              // Update the ambient lighting and reflection probes to match the new skybox
           //                  DynamicGI.UpdateEnvironment();
+        aButton.onClick.AddListener(() => onA());  
+    }
+
+    void onA(){
+        Debug.Log("This button does nothing atm");
     }
 
     private void Update()
