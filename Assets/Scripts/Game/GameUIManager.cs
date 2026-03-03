@@ -14,15 +14,13 @@ public class GameUIManager : MonoBehaviour
     }
 
     [SerializeField] Sprite[] numbers;
-    //[SerializeField] Sprite[] numbersGreen;
-    //[SerializeField] Sprite[] numbersRed;
+    [SerializeField] Sprite[] numbersGreen;
+    [SerializeField] Sprite[] numbersRed;
     [SerializeField] Image[] timerNumbers;
     [SerializeField] TextMeshProUGUI centerText;
     [SerializeField] TextMeshProUGUI bottomText;
     [SerializeField] TextMeshProUGUI fpsText;
     [SerializeField] Texture[] powerupIcon;
-    [SerializeField] Sprite[] powerupHUDImages;
-    [SerializeField] Image powerupHUDSprite;
     [SerializeField] RawImage powerupHUD;
     [SerializeField] Image[] targetGem;
     [SerializeField] Image[] currentGem;
@@ -33,10 +31,10 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] GameObject goImage;
     [SerializeField] GameObject outOfBoundsImage;
     [Space]
-    //public GameObject oobInsultMenu;
-    //[SerializeField] TextMeshProUGUI oobInsultTitleText;
-    //[SerializeField] TextMeshProUGUI oobInsultCaptionText;
-    //[SerializeField] Button oobInsultCloseButton;
+    public GameObject oobInsultMenu;
+    [SerializeField] TextMeshProUGUI oobInsultTitleText;
+    [SerializeField] TextMeshProUGUI oobInsultCaptionText;
+    [SerializeField] Button oobInsultCloseButton;
 
     Tween centerTextFade;
     Tween bottomTextFade;
@@ -49,13 +47,13 @@ public class GameUIManager : MonoBehaviour
     public void Init()
     {
         timerColor = new Sprite[numbers.Length];
-        // oobInsultCloseButton.onClick.AddListener(() => {
-        //     Cursor.lockState = CursorLockMode.Locked;
-        //     Cursor.visible = false;
+        oobInsultCloseButton.onClick.AddListener(() => {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
 
-        //     Time.timeScale = 1;
-        //     oobInsultMenu.SetActive(false);
-        // });
+            Time.timeScale = 1;
+            oobInsultMenu.SetActive(false);
+        });
         isInitialized = true;
     }
 
@@ -81,14 +79,14 @@ public class GameUIManager : MonoBehaviour
 
     public void SetOutOfBoundsMessage(int oobCount, string message)
     {
-        // oobInsultMenu.SetActive(true);
-        // Time.timeScale = 0;
+        oobInsultMenu.SetActive(true);
+        Time.timeScale = 0;
 
-        // Cursor.lockState = CursorLockMode.None;
-        // Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
-        // oobInsultTitleText.text = "Out of Bounds " + oobCount + " times";
-        // oobInsultCaptionText.text = message;
+        oobInsultTitleText.text = "Out of Bounds " + oobCount + " times";
+        oobInsultCaptionText.text = message;
     }
 
     public void UpdateHUDMaterial()
@@ -147,36 +145,25 @@ public class GameUIManager : MonoBehaviour
         switch (_powerUp)
         {
             case PowerupType.None:
-                powerupHUDSprite.sprite = powerupHUDImages[0];
-                //powerupHUD.texture = powerupIcon[0];
+                powerupHUD.texture = powerupIcon[0];
                 break;
             case PowerupType.SuperJump:
-                powerupHUDSprite.sprite = powerupHUDImages[1];
-                //powerupHUD.texture = powerupIcon[1];
+                powerupHUD.texture = powerupIcon[1];
                 break;
             case PowerupType.SuperSpeed:
-                powerupHUDSprite.sprite = powerupHUDImages[2];
-                //powerupHUD.texture = powerupIcon[2];
+                powerupHUD.texture = powerupIcon[2];
                 break;
             case PowerupType.SuperBounce:
-                powerupHUDSprite.sprite = powerupHUDImages[3];
-                //powerupHUD.texture = powerupIcon[3];
+                powerupHUD.texture = powerupIcon[3];
                 break;
             case PowerupType.ShockAbsorber:
-                powerupHUDSprite.sprite = powerupHUDImages[4];
-                //powerupHUD.texture = powerupIcon[4];
+                powerupHUD.texture = powerupIcon[4];
                 break;
             case PowerupType.Gyrocopter:
-                powerupHUDSprite.sprite = powerupHUDImages[5];
-                //powerupHUD.texture = powerupIcon[5];
+                powerupHUD.texture = powerupIcon[5];
                 break;
-            case PowerupType.MegaMarble:
-                powerupHUDSprite.sprite = powerupHUDImages[6];
-                //powerupHUD.texture = powerupIcon[5];
-            break;
             default:
-                powerupHUDSprite.sprite = powerupHUDImages[0];
-                //powerupHUD.texture = powerupIcon[0];
+                powerupHUD.texture = powerupIcon[0];
                 break;
         }
     }
@@ -214,11 +201,10 @@ public class GameUIManager : MonoBehaviour
 
     public void SetTimerColor(bool isRed)
     {
-        timerColor = numbers;
-        //timerColor = isRed ? numbersRed : numbers;
+        timerColor = isRed ? numbersRed : numbers;
 
-        //if (GameManager.instance.timeTravelActive)
-        //    timerColor = numbersGreen;
+        if (GameManager.instance.timeTravelActive)
+            timerColor = numbersGreen;
     }
 
     public void SetTimerText(float _timeMs)
@@ -241,16 +227,14 @@ public class GameUIManager : MonoBehaviour
         int centiseconds = remainder / 10;
         int milliseconds = remainder % 10;
 
-        timerColor = numbers;
-
-        // if (!GameManager.alarmIsPlaying)
-        // {
-        //     timerColor = numbers;
-        //     if (!GameManager.gameStart || GameManager.gameFinish || GameManager.instance.timeTravelActive)
-        //         timerColor = numbersGreen;
-        //     else if (GameManager.notQualified)
-        //         timerColor = numbersRed;
-        // }
+        if (!GameManager.alarmIsPlaying)
+        {
+            timerColor = numbers;
+            if (!GameManager.gameStart || GameManager.gameFinish || GameManager.instance.timeTravelActive)
+                timerColor = numbersGreen;
+            else if (GameManager.notQualified)
+                timerColor = numbersRed;
+        }
 
         timerNumbers[0].sprite = timerColor[decaminutes];
         timerNumbers[1].sprite = timerColor[minutes];

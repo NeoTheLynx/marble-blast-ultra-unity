@@ -14,8 +14,7 @@ public enum PowerupType
     TimeTravel,
     AntiGravity,
     Gyrocopter,
-    EasterEgg,
-    MegaMarble
+    EasterEgg
 }
 
 public class Powerups : MonoBehaviour

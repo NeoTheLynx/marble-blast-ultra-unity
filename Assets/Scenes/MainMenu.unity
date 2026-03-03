@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
   m_AmbientGroundColor: {r: 1, g: 1, b: 1, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 6505cb9f9de4b7d46962e17d1cfc5db9, type: 2}
   m_HaloStrength: 0.5
@@ -1346,6 +1346,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4a4d33c5cf159d749a442e965d5bb5e5, type: 3}
   - {fileID: 21300000, guid: 7d20b80ab2e2b12409d3d3020c29af83, type: 3}
   - {fileID: 21300000, guid: 1db98f4bc217dcf4bbc7b12b2b5878e8, type: 3}
+  numbersGreen: []
+  numbersRed: []
   timerNumbers:
   - {fileID: 0}
   - {fileID: 0}
@@ -1364,8 +1366,6 @@ MonoBehaviour:
   - {fileID: 8400000, guid: 6f282d7df174844489bba1be573ab19a, type: 2}
   - {fileID: 8400000, guid: 47fe2bda9e22c2b4286f95b1ce9d33c6, type: 2}
   - {fileID: 8400000, guid: 209ff298d6e71974caaef1fea0c3bcd8, type: 2}
-  powerupHUDImages: []
-  powerupHUDSprite: {fileID: 0}
   powerupHUD: {fileID: 0}
   targetGem:
   - {fileID: 0}
