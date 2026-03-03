@@ -54,7 +54,7 @@ public class Marble : MonoBehaviour
 
     private void Update()
     {
-        if (GameUIManager.instance.isInitialized && GameUIManager.instance.oobInsultMenu.activeSelf)
+        if (GameUIManager.instance.isInitialized)
             return;
 
         if (Input.GetKeyDown(KeyCode.R) && !GameManager.gameFinish)

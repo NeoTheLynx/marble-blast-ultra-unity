@@ -174,7 +174,7 @@ public class GameManager : MonoBehaviour
         finishMenu.SetActive(false);
         pauseMenu.SetActive(false);
 
-        okayButton.onClick.AddListener(CloseEnterNameWindow);
+//        okayButton.onClick.AddListener(CloseEnterNameWindow);
         replayButton.onClick.AddListener(ReplayLevel);
         continueButton.onClick.AddListener(ReturnToMenu);
         noButton.onClick.AddListener(TogglePause);
@@ -301,9 +301,7 @@ public class GameManager : MonoBehaviour
 
         if (gameFinish)
         {
-            if (enterNameMenu.activeSelf && Input.GetKeyDown(KeyCode.Return))
-                CloseEnterNameWindow();
-            else if (finishMenu.activeSelf && Input.GetKeyDown(KeyCode.Return))
+           if (finishMenu.activeSelf && Input.GetKeyDown(KeyCode.Return))
                 ReturnToMenu();
         }
     }
@@ -344,7 +342,7 @@ public class GameManager : MonoBehaviour
 
     public void TogglePause()
     {
-        if (GameUIManager.instance.isInitialized && GameUIManager.instance.oobInsultMenu.activeSelf)
+        if (GameUIManager.instance.isInitialized)
             return;
 
         isPaused = !isPaused;
@@ -662,7 +660,7 @@ public class GameManager : MonoBehaviour
 
     public void CloseEnterNameWindow()
     {
-        enterNameMenu.SetActive(false);
+        //enterNameMenu.SetActive(false);
         replayButton.interactable = true;
         continueButton.interactable = true;
 
@@ -685,7 +683,7 @@ public class GameManager : MonoBehaviour
         {
             replayButton.interactable = false;
             continueButton.interactable = false;
-            enterNameMenu.SetActive(true);
+            //enterNameMenu.SetActive(true);
             if (pos == 0)
                 enterNameCaption.text = "You got the top time!";
             else if (pos == 1)
