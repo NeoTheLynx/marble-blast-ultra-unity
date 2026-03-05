@@ -336,6 +336,7 @@ public class GameManager : MonoBehaviour
 
     void DisablePreviews(){
         Preview.instance.setIsInPreviewMode(false);
+        
     }
     void EnablePreviews(){
         Preview.instance.setIsInPreviewMode(true);
@@ -570,6 +571,10 @@ public class GameManager : MonoBehaviour
     {
         PlayReadyAudio();
         GameUIManager.instance.SetCenterImage(0);
+        GameObject mc = GameObject.Find("Main Camera");
+        mc.GetComponent<Camera>().farClipPlane = MissionInfo.instance.renderDistance;
+        Debug.LogError("Setting Camera Distance To: " + MissionInfo.instance.renderDistance.ToString());
+        //Camera.main.farClipPlane = MissionInfo.instance.renderDistance;
         Invoke(nameof(GameStateSet), 1.5f);
     }
     void GameStateSet()

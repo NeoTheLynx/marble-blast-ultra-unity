@@ -177,6 +177,13 @@ namespace TS
                     
                 }
 
+                else if (obj.ClassName == "Sky")
+                {
+                    string objectName = obj.GetField("visibleDistance");
+
+                    
+                }
+
                 //Interior
                 else if (obj.ClassName == "InteriorInstance")
                 {

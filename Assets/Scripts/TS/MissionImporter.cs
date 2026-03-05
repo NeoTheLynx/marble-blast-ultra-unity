@@ -1305,6 +1305,7 @@ namespace TS
                 yield return null;
 
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(MissionInfo.instance.skybox));
+            
 
             CameraController.instance.GetComponent<Camera>().enabled = true;
             GameUIManager.instance.GetComponent<Canvas>().enabled = true;

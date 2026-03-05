@@ -42,6 +42,10 @@ public class GameUIManager : MonoBehaviour
 
     [HideInInspector] public bool isInitialized = false;
 
+    void Start(){
+        // Camera.main.farClipPlane = MissionInfo.instance.renderDistance;
+    }
+
     public void Init()
     {
         timerColor = new Sprite[numbers.Length];
@@ -176,9 +180,9 @@ public class GameUIManager : MonoBehaviour
 
         _text = Utils.Resolve(_text).Replace("\\", "");
 
-        bottomText.color = Color.yellow;
+        bottomText.color = Color.white;
         bottomText.text = _text;
-        bottomTextFade = bottomText.DOColor(Color.yellow, _time).OnComplete(() => { bottomText.DOColor(Color.clear, 0.25f); });
+        bottomTextFade = bottomText.DOColor(Color.white, _time).OnComplete(() => { bottomText.DOColor(Color.clear, 0.25f); });
     }
 
     public void TeleportFadeOutBottomText()

@@ -44,6 +44,7 @@ public class MissionInfo : MonoBehaviour
     public int alarmTime;
     public string music;
     public string skybox;
+    public int renderDistance;
     public bool hasEgg;
 
     [Header("Previews")]
@@ -243,7 +244,9 @@ public class MissionInfo : MonoBehaviour
                 else if (obj.ClassName == "Sky")
                 {
                     var skybox = ResolvePath(obj.GetField("materialList"), MissionInfo.instance.MissionPath);
-
+                    renderDistance = int.Parse(obj.GetField("visibleDistance"));//ResolvePath(obj.GetField("visibleDistance"), MissionInfo.instance.MissionPath);
+                    //Debug.Log("This Mission Distance: " + obj.GetField("visibleDistance"));
+                    newMission.renderDistance = renderDistance;
                     newMission.skyboxName = Path.GetFileNameWithoutExtension(skybox);
                 }
                 else if(obj.ClassName == "Item" && obj.GetField("dataBlock") == "EasterEgg")
