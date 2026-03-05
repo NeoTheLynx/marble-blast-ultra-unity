@@ -310,10 +310,10 @@ namespace TS
                             gobj.GetComponent<TimeTravel>().timeBonus = 5;
                     }
 
-                    else if (objectName == "EasterEgg")
+                    else if (objectName == "EasterEggItem")
                     {
                         var gobj = Instantiate(easterEggPrefab, transform, false);
-                        gobj.name = "EasterEgg";
+                        gobj.name = "EasterEggItem";
 
                         var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
                         var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
