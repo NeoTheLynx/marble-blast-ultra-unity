@@ -46,6 +46,7 @@ public class Translations : MonoBehaviour
         stringTable.Add("$Text::LevelName48", "Upward Spiral");
         stringTable.Add("$Text::LevelName104", "Divergence");
         stringTable.Add("$Text::LevelName107", "Urban Jungle");
+        stringTable.Add("$Text::LevelName103", "Black Diamond");
         //Help Texts
         //translationList.Add("", "Learning To Roll");
     }

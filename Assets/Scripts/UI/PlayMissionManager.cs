@@ -25,6 +25,7 @@ public class Mission
     public string music;
     public string skyboxName;
     public bool hasEgg;
+    public int renderDistance;
 
     
 
@@ -511,6 +512,7 @@ public class PlayMissionManager : MonoBehaviour
         MissionInfo.instance.ultimateTime = missions[number].ultimateTime;
         MissionInfo.instance.alarmTime = missions[number].alarmTime;
         MissionInfo.instance.hasEgg = missions[number].hasEgg;
+        MissionInfo.instance.renderDistance = missions[number].renderDistance;
 
         string musicName = missions[number].music;
         musicName = string.IsNullOrEmpty(musicName) ? string.Empty : Path.GetFileNameWithoutExtension(musicName.Trim());
