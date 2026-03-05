@@ -14,8 +14,6 @@ public class GameUIManager : MonoBehaviour
     }
 
     [SerializeField] Sprite[] numbers;
-    [SerializeField] Sprite[] numbersGreen;
-    [SerializeField] Sprite[] numbersRed;
     [SerializeField] Image[] timerNumbers;
     [SerializeField] TextMeshProUGUI centerText;
     [SerializeField] TextMeshProUGUI bottomText;
@@ -79,14 +77,7 @@ public class GameUIManager : MonoBehaviour
 
     public void SetOutOfBoundsMessage(int oobCount, string message)
     {
-        oobInsultMenu.SetActive(true);
-        Time.timeScale = 0;
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        oobInsultTitleText.text = "Out of Bounds " + oobCount + " times";
-        oobInsultCaptionText.text = message;
     }
 
     public void UpdateHUDMaterial()
@@ -201,10 +192,11 @@ public class GameUIManager : MonoBehaviour
 
     public void SetTimerColor(bool isRed)
     {
-        timerColor = isRed ? numbersRed : numbers;
+        timerColor = numbers;
+        // timerColor = isRed ? numbersRed : numbers;
 
-        if (GameManager.instance.timeTravelActive)
-            timerColor = numbersGreen;
+        // if (GameManager.instance.timeTravelActive)
+        //     timerColor = numbersGreen;
     }
 
     public void SetTimerText(float _timeMs)
@@ -227,14 +219,16 @@ public class GameUIManager : MonoBehaviour
         int centiseconds = remainder / 10;
         int milliseconds = remainder % 10;
 
-        if (!GameManager.alarmIsPlaying)
-        {
-            timerColor = numbers;
-            if (!GameManager.gameStart || GameManager.gameFinish || GameManager.instance.timeTravelActive)
-                timerColor = numbersGreen;
-            else if (GameManager.notQualified)
-                timerColor = numbersRed;
-        }
+        timerColor = numbers;
+
+        // if (!GameManager.alarmIsPlaying)
+        // {
+        //     timerColor = numbers;
+        //     if (!GameManager.gameStart || GameManager.gameFinish || GameManager.instance.timeTravelActive)
+        //         timerColor = numbersGreen;
+        //     else if (GameManager.notQualified)
+        //         timerColor = numbersRed;
+        // }
 
         timerNumbers[0].sprite = timerColor[decaminutes];
         timerNumbers[1].sprite = timerColor[minutes];
