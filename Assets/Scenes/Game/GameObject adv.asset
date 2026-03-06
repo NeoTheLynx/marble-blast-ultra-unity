@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: GameObject Profile
+  m_Name: GameObject adv
   m_EditorClassIdentifier: 
   components:
   - {fileID: -5362524961823571634}
@@ -190,10 +190,10 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: -0.25
+    m_Value: -1
   contrast:
     m_OverrideState: 1
-    m_Value: 100
+    m_Value: 50
   colorFilter:
     m_OverrideState: 1
     m_Value: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 1}
