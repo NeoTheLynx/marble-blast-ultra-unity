@@ -15,6 +15,7 @@ public class Preview : MonoBehaviour
     private static bool isInPreviewMode;
     public GameObject mainParent;
     public Material currentSky;
+    public GameObject previewInteriorPrefab;
 
     void Awake()
     {
@@ -93,7 +94,7 @@ public class Preview : MonoBehaviour
                 previewMissions.AddRange(tempMissions);
 
                 tempMissions.Clear();
-                GameObject previewInteriorPrefab = Resources.Load<GameObject>("Prefabs/Interior");
+                //GameObject previewInteriorPrefab = Resources.Load<GameObject>("Prefabs/Interior");
                 GameObject previewGlass9Prefab = Resources.Load<GameObject>("Prefabs/Structures/glass_9_mbu");
                 //Loop through missions to add them to mega scene
                 //for (int index = 0; index < previewMissions.Count; index++)

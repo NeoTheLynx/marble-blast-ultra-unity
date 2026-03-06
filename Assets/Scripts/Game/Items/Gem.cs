@@ -5,20 +5,41 @@ using UnityEngine;
 public class Gem : MonoBehaviour
 {
     [SerializeField] Texture[] gemColors;
-    [SerializeField] SkinnedMeshRenderer smr;
+    [SerializeField] MeshRenderer mr;
     [SerializeField] AudioClip pickupSound;
     [SerializeField] AudioClip pickupLastGem;
     [SerializeField] Color selectedColor;
+    [SerializeField] Material[] mbuGemColors;
+    [SerializeField] Light gemLight;
 
     void Start()
     {
         int randomGemColor = Random.Range(0, gemColors.Length);
-        smr.materials[0].mainTexture = gemColors[randomGemColor];
+        //mr.materials[0] = mbuGemColors[randomGemColor];
+        //Debug.Log(smr.materialList);
+        //Material gemMat = smr.material;
+        //gemMat.SetTexture("_MainTex", gemColors[randomGemColor]);
+        //smr.material.SetTex
+        //smr.materials[0].mainTexture = gemColors[randomGemColor];
+        Material[] materials = mr.materials;
+
+        // Change the material at the specified index
+        if (0 >= 0 && 0 < materials.Length && mbuGemColors[randomGemColor] != null)
+        {
+            materials[0] = mbuGemColors[randomGemColor];
+
+            // Reassign the modified array back to the renderer
+            mr.materials = materials;
+        }
+        else
+        {
+            Debug.LogError("Material index is out of range or new material is null.");
+        }
         Debug.Log(randomGemColor);
         switch (randomGemColor)
         {
             case 0:
-                selectedColor = new Color(1f, 1f, 1f);
+                selectedColor = new Color(1f, 0f, 0.4f);
                 break;
             case 1:
                 selectedColor = new Color(0f, 0f, 0f);
@@ -27,7 +48,7 @@ public class Gem : MonoBehaviour
                 selectedColor = new Color(0f, 0f, 1f);
                 break;
             case 3:
-                selectedColor = new Color(1f, 1f, 1f);
+                selectedColor = new Color(0.5f, 0.5f, 0.5f);
                 break;
             case 4:
                 selectedColor = new Color(0.69f, 0f, 1f);
@@ -42,10 +63,10 @@ public class Gem : MonoBehaviour
                 selectedColor = new Color(0f, 1f, 0f);
                 break;
             case 8:
-                selectedColor = new Color(1f, 1f, 1f);
+                selectedColor = new Color(0f, 1f, 0.6f);
                 break;
             case 9:
-                selectedColor = new Color(1f, 1f, 1f);
+                selectedColor = new Color(1f, 0.85f, 0f);
                 break;
             default:
                 Debug.Log("Invalid Gem Color");
@@ -53,6 +74,7 @@ public class Gem : MonoBehaviour
                 break;
         }
         this.gameObject.GetComponent<Target>().setTargetColor(selectedColor);
+        gemLight.color = selectedColor;
         
         //Target indicatorTarget = gameObject.
         //indicatorTarget

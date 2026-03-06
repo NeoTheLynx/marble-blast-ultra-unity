@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] AudioClip jump;
     [SerializeField] AudioClip puSpawn;
     [SerializeField] AudioClip puReady;
-    [SerializeField] AudioClip puSet;
+    //[SerializeField] AudioClip puSet;
     [SerializeField] AudioClip puGo;
     [SerializeField] AudioClip puFinish;
     [SerializeField] AudioClip puOutOfBounds;
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
     public void PlayJumpAudio() => audioSource.PlayOneShot(jump);
     public void PlaySpawnAudio() => audioSource.PlayOneShot(puSpawn);
     public void PlayReadyAudio() => audioSource.PlayOneShot(puReady);
-    public void PlaySetAudio() => audioSource.PlayOneShot(puSet);
+    //public void PlaySetAudio() => audioSource.PlayOneShot(puSet);
     public void PlayGoAudio() => audioSource.PlayOneShot(puGo);
     public void PlayFinishAudio() => audioSource.PlayOneShot(puFinish);
     public void PlayOutOfBoundsAudio() => audioSource.PlayOneShot(puOutOfBounds);
@@ -579,7 +579,7 @@ public class GameManager : MonoBehaviour
     }
     void GameStateSet()
     {
-        PlaySetAudio();
+        //PlaySetAudio();
         GameUIManager.instance.SetCenterImage(1);
         Invoke(nameof(GameStateGo), 1.5f);
     }
