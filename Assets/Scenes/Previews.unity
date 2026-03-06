@@ -299,6 +299,8 @@ MonoBehaviour:
   tempMissions: []
   mainParent: {fileID: 995812533}
   currentSky: {fileID: 0}
+  previewInteriorPrefab: {fileID: 6653497135140199419, guid: 3806fd2cf50ec474f88647ee66b42828,
+    type: 3}
 --- !u!1 &1187857695
 GameObject:
   m_ObjectHideFlags: 0

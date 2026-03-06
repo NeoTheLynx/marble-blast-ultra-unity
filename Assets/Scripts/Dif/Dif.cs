@@ -17,11 +17,58 @@ public class Dif : MonoBehaviour {
 
 	public string filePath;
 	public Material DefaultMaterial;
+    public Material[] tileMats;
 
     [Header("Collision / Chunking")]
     public int maxTrianglesPerChunk = 1000;
 
     bool isMovingPlatform;
+
+    //fork this
+    private Material get_material(string matnam){
+        Debug.Log("Tile Count: " + tileMats.Length.ToString());
+        if(matnam == "tile_intermediate") {
+            return tileMats[0];
+        } else if(matnam == "tile_intermediate_green") {
+            return tileMats[1];
+        } else if(matnam == "tile_intermediate_red") {
+            return tileMats[2];
+        } else if(matnam == "tile_advanced") {
+            return tileMats[3];
+        } else if(matnam == "tile_advanced_blue") {
+            return tileMats[4];
+        } else if(matnam == "tile_advanced_green") {
+            return tileMats[5];
+        } else if(matnam == "tile_beginner") {
+            return tileMats[6];
+        } else if(matnam == "tile_beginner_red") {
+            return tileMats[7];
+        } else if(matnam == "tile_beginner_blue") {
+            return tileMats[8];
+        } else if(matnam == "tile_underside") {
+            return tileMats[9];
+        } else if(matnam == "plate_1") {
+            return tileMats[10];
+        } else if(matnam == "edge_white") {
+            return tileMats[11];
+        } else if(matnam == "wall_beginner") {
+            return tileMats[12];
+        } else if(matnam == "beam") {
+            return tileMats[13];
+        } else if(matnam == "beam_side") {
+            return tileMats[14];
+        } else if(matnam == "friction_high") {
+            return tileMats[15];
+        } else if(matnam == "friction_low") {
+            return tileMats[16];
+        } else if(matnam == "friction_high_shadow") {
+            return tileMats[17];
+        } else if(matnam == "friction_low_shadow") {
+            return tileMats[18];
+        } else {
+            return DefaultMaterial;
+        }
+    }
 
     public bool GenerateMesh(int interiorIndex)
     {
@@ -170,18 +217,27 @@ public class Dif : MonoBehaviour {
         if (string.IsNullOrEmpty(materialName))
             return DefaultMaterial;
 
-        var mat = Instantiate(DefaultMaterial);
-        mat.name = materialName;
+        Debug.Log("Material: " + materialName);
 
-        string texPath = ResolveTexturePath(materialName);
-        if (File.Exists(texPath))
-        {
-            var tex = new Texture2D(2, 2);
-            tex.LoadImage(File.ReadAllBytes(texPath));
-            mat.mainTexture = tex;
-        }
-        //Debug.Log("Material: " + materialName);
-        return mat;
+        return get_material(materialName);
+
+        // if(materialName == "tile_intermediate"){
+        //     return get_material(materialName);
+        // } else {
+        //     var mat = Instantiate(DefaultMaterial);
+        //     mat.name = materialName;
+
+        //     string texPath = ResolveTexturePath(materialName);
+        //     if (File.Exists(texPath))
+        //     {
+        //         var tex = new Texture2D(2, 2);
+        //         tex.LoadImage(File.ReadAllBytes(texPath));
+        //         mat.mainTexture = tex;
+        //     }
+        //     return mat;
+            
+        //}
+
     }
 
 

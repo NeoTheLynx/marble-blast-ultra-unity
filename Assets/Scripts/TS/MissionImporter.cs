@@ -130,7 +130,7 @@ namespace TS
                     var ambient = ParseVectorString(obj.GetField("ambient"));
 
                     directionalLight.transform.localRotation = direction;
-                    directionalLight.color = new Color(sunColor[0], sunColor[1], sunColor[2], 1f);
+                    //directionalLight.color = new Color(sunColor[0], sunColor[1], sunColor[2], 1f);
 
                     RenderSettings.ambientLight = new Color(ambient[0], ambient[1], ambient[2], 1f);
                 }

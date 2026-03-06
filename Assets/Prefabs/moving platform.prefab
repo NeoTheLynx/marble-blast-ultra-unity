@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6653497135140199418}
   - component: {fileID: 8893658547553830780}
   m_Layer: 0
-  m_Name: Moving Platform
+  m_Name: moving platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,6 +47,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   filePath: 
   DefaultMaterial: {fileID: 2100000, guid: 3ad662118ff794fed9fcbf828afdca2c, type: 2}
+  tileMats:
+  - {fileID: 2100000, guid: b1c1a525055b6f34489fc22eb573de81, type: 2}
+  - {fileID: 2100000, guid: db8ba53912b35044e880a94ba1f162f4, type: 2}
+  - {fileID: 2100000, guid: d33b562cc533f744ba332efd910c4f0c, type: 2}
+  - {fileID: 2100000, guid: 4883b6477b8407746968c967edb9d216, type: 2}
+  - {fileID: 2100000, guid: 874a83b462c86284f8c22fa9b946d52e, type: 2}
+  - {fileID: 2100000, guid: ce032c6e7bfff8a46bcdc8e1f1ad94ba, type: 2}
+  - {fileID: 2100000, guid: e5d3692e79622dc4fac14105396efb69, type: 2}
+  - {fileID: 2100000, guid: 01bb453ca85ca0f43b4a32af90062238, type: 2}
+  - {fileID: 2100000, guid: a2a39246abfc3d84eae848bed1f84eec, type: 2}
+  - {fileID: 2100000, guid: d213c23bdbfda6c439f4827811cdf53b, type: 2}
+  - {fileID: 2100000, guid: c4b58e55e5140954fb87f31475d34060, type: 2}
+  - {fileID: 2100000, guid: c2a9cf2e528d8264e99cc8f75fb82050, type: 2}
+  - {fileID: 2100000, guid: 238b00dbe1a2fb64ebecf3f1b0d4604f, type: 2}
+  - {fileID: 2100000, guid: a00da046f5a647c4b8737157ae950f4b, type: 2}
+  - {fileID: 2100000, guid: 77b60ccb87e76b6419978b80630472d4, type: 2}
+  - {fileID: 2100000, guid: 09fcc5d585a43814da77978c33fec828, type: 2}
+  - {fileID: 2100000, guid: 03a613dbfc460684383b1c28f3db514d, type: 2}
+  - {fileID: 2100000, guid: 9122f1a232652714eb0507be2f0a650e, type: 2}
+  - {fileID: 2100000, guid: 5fd2d94eb9062984f849ce0446ea4b2f, type: 2}
   maxTrianglesPerChunk: 1000
 --- !u!114 &8893658547553830780
 MonoBehaviour:

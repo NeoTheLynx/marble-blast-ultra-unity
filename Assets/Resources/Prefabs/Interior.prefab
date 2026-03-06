@@ -46,4 +46,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   filePath: 
   DefaultMaterial: {fileID: 2100000, guid: 3ad662118ff794fed9fcbf828afdca2c, type: 2}
+  tileMats:
+  - {fileID: 2100000, guid: b1c1a525055b6f34489fc22eb573de81, type: 2}
+  - {fileID: 2100000, guid: db8ba53912b35044e880a94ba1f162f4, type: 2}
+  - {fileID: 2100000, guid: d33b562cc533f744ba332efd910c4f0c, type: 2}
+  - {fileID: 2100000, guid: 4883b6477b8407746968c967edb9d216, type: 2}
+  - {fileID: 2100000, guid: 874a83b462c86284f8c22fa9b946d52e, type: 2}
+  - {fileID: 2100000, guid: ce032c6e7bfff8a46bcdc8e1f1ad94ba, type: 2}
+  - {fileID: 2100000, guid: e5d3692e79622dc4fac14105396efb69, type: 2}
+  - {fileID: 2100000, guid: 01bb453ca85ca0f43b4a32af90062238, type: 2}
+  - {fileID: 2100000, guid: a2a39246abfc3d84eae848bed1f84eec, type: 2}
   maxTrianglesPerChunk: 500

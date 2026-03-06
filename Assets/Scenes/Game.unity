@@ -743,15 +743,14 @@ MonoBehaviour:
   gameUIManager: {fileID: 321397486}
   startPad: {fileID: 0}
   finishPad: {fileID: 0}
-  jump: {fileID: 8300000, guid: 4e4c9e7584344034685c8e54685b3c4e, type: 3}
-  puSpawn: {fileID: 8300000, guid: 6be13735a4752a14699862c0cf0da08f, type: 3}
-  puReady: {fileID: 8300000, guid: 4e79ae1ffe2a3c34da733a62ccc1097a, type: 3}
-  puSet: {fileID: 8300000, guid: 99b411f86680a3642a48ca1762fde164, type: 3}
-  puGo: {fileID: 8300000, guid: c151a7b2595aa9d4d8abac12448fd629, type: 3}
-  puFinish: {fileID: 8300000, guid: 2453ba9fc48b84a4a913027079f8aa01, type: 3}
-  puOutOfBounds: {fileID: 8300000, guid: 6293670d1efa4f04c985b4ccc29b9e0a, type: 3}
-  puHelp: {fileID: 8300000, guid: 07c110ced645a49439b009fff14440dd, type: 3}
-  puMissingGems: {fileID: 8300000, guid: 14006ae21e199684b92b8ef1c9228871, type: 3}
+  jump: {fileID: 8300000, guid: 43030d97ff9202e48b0248e5fa510946, type: 3}
+  puSpawn: {fileID: 8300000, guid: fe69c589523067949b148ca10467be7f, type: 3}
+  puReady: {fileID: 8300000, guid: d43a3bcc9052ebd48a39a847e5a65486, type: 3}
+  puGo: {fileID: 8300000, guid: 19b9800fbcc0f3d4384b258d94808d51, type: 3}
+  puFinish: {fileID: 8300000, guid: 4e2013bcbf8156646a6850f76583222c, type: 3}
+  puOutOfBounds: {fileID: 8300000, guid: ee4f1a5d76b9d0b49b840438b012fc97, type: 3}
+  puHelp: {fileID: 8300000, guid: b9e1ac5890292294a9173a86170542fc, type: 3}
+  puMissingGems: {fileID: 8300000, guid: 2e6210b6ca81712458e4d991af95fb98, type: 3}
   checkpointSfx: {fileID: 8300000, guid: 18e5fc5336b4c3d42be8fec2f6ef95b3, type: 3}
   overParTimeSfx: {fileID: 8300000, guid: 7993d2e5375cbeb4d8a068a71576a509, type: 3}
   pauseMenu: {fileID: 321397485}
