@@ -678,9 +678,9 @@ new SimGroup(MissionGroup) {
       dataBlock = "DuctFan";
          className = "DuctFan";
    };
-   new SimGroup(check1) {
 
-      new Trigger(check1) {
+
+      new Trigger(checkpoint1) {
          position = "-16.3654 31.4523 6.4019";
          rotation = "1 0 0 0";
          scale = "16.3627 15.4914 2.41893";
@@ -688,18 +688,18 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "1";
+            respawnPoint = "checkpoint1";
       };
-      new StaticShape() {
+      new StaticShape(checkpoint1) {
          position = "-9.06904 20.9633 6.50426";
          rotation = "0 0 1 89.9544";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
-   new SimGroup(check2) {
 
-      new Trigger(check2) {
+
+      new Trigger(checkpoint2) {
          position = "15.8893 32.4457 6.37543";
          rotation = "1 0 0 0";
          scale = "16.3627 16.4285 2.41893";
@@ -707,18 +707,18 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "2";
+            respawnPoint = "checkpoint2";
       };
-      new StaticShape() {
+      new StaticShape(checkpoint2) {
          position = "26.9964 25.0227 6.51495";
          rotation = "0 0 1 179.909";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
-   new SimGroup(check3) {
 
-      new Trigger(check3) {
+
+      new Trigger(checkpoint3) {
          position = "23.3603 0.20662 12.3145";
          rotation = "1 0 0 0";
          scale = "9.09329 8.74027 2.41893";
@@ -726,18 +726,19 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "3";
+            respawnPoint = "checkpoint3";
       };
-      new StaticShape() {
+      new StaticShape(checkpoint3) {
          position = "27.0125 -5.03627 12.5121";
          rotation = "0 0 -1 89.3814";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
-   new SimGroup(check4) {
 
-      new Trigger(check4) {
+   
+
+      new Trigger(checkpoint4) {
          position = "-8.3661 24.2944 18.3317";
          rotation = "1 0 0 0";
          scale = "8.43849 8.30313 2.41893";
@@ -745,18 +746,19 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "4";
+            respawnPoint = "checkpoint4";
       };
-      new StaticShape() {
+      new StaticShape(checkpoint4) {
          position = "-5.02682 19.0218 18.5092";
          rotation = "0 0 1 89.3814";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
-   new SimGroup(check5) {
+   
+   
 
-      new Trigger(check5) {
+      new Trigger(checkpoint5) {
          position = "15.9837 -0.147426 34.1775";
          rotation = "1 0 0 0";
          scale = "4.51505 4.2714 2.41893";
@@ -764,14 +766,15 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "5";
+            respawnPoint = "checkpoint5";
       };
-      new StaticShape() {
+      new StaticShape(checkpoint5) {
          position = "19.0266 -3.02049 34.5052";
          rotation = "1 0 0 0";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
+   
 };
 //--- OBJECT WRITE END ---
