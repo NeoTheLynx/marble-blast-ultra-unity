@@ -416,8 +416,9 @@ namespace TS
                         finishPad.SetActive(true);
                     }
 
-                    else if (objectName.ToLower() == "checkPointShape")
+                    else if (objectName == "checkPointShape")
                     {
+                        Debug.Log("Found Checkpoint");
                         var cp = Instantiate(checkpointPrefab, transform, false);
                         cp.name = string.IsNullOrEmpty(obj.Name) ? "Checkpoint" : obj.Name;
 
