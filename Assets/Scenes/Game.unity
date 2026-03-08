@@ -383,18 +383,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 321397483}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &321397499 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7322541689513117698, guid: 90bfd7c6cf135de4bb2bd8a855d5ceec,
-    type: 3}
-  m_PrefabInstance: {fileID: 321397483}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &321397500 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7500683491667754053, guid: 90bfd7c6cf135de4bb2bd8a855d5ceec,
@@ -764,7 +752,7 @@ MonoBehaviour:
   platinumTimeBox: {fileID: 321397500}
   ultimateTimeBox: {fileID: 321397498}
   goldTimeBox: {fileID: 321397497}
-  parTimeText: {fileID: 321397499}
+  parTimeText: {fileID: 0}
   timePassedText: {fileID: 321397496}
   clockBonusesText: {fileID: 321397495}
   replayButton: {fileID: 321397492}
@@ -793,6 +781,7 @@ MonoBehaviour:
   finishParticles: {fileID: 8285649748157849879, guid: e154bf5a1b0c7ad4a8468754518554b6,
     type: 3}
   alarmCoroutineStarted: 0
+  isDemoLaunch: 1
 --- !u!4 &1466247739
 Transform:
   m_ObjectHideFlags: 0

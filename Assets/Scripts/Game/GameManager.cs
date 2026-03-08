@@ -164,6 +164,9 @@ public class GameManager : MonoBehaviour
 
     private MeshRenderer thisActiveCheckpointRenderer;
 
+    [Header("Xbox Demo Stuff")]
+    public bool isDemoLaunch = true;
+
     void Start()
     {
         isPaused = false;
@@ -195,6 +198,10 @@ public class GameManager : MonoBehaviour
         gameStart = false;
         gameFinish = false;
         alarmCoroutineStarted = false;
+    }
+
+    public bool CheckIfDemoLaunch(){
+        return isDemoLaunch;
     }
 
     public void InitGemCount()

@@ -26,6 +26,7 @@ public class Mission
     public string skyboxName;
     public bool hasEgg;
     public int renderDistance;
+    public int isDemoUnlocked;
 
     
 
@@ -75,6 +76,7 @@ public class PlayMissionManager : MonoBehaviour
     public Image eggImage;
     public Sprite egg;
     public Sprite egg_nf;
+    public Image demoLock;
     [Space]
     public GameObject marbleSelectWindow;
     public GameObject statisticsWindow;
@@ -102,14 +104,16 @@ public class PlayMissionManager : MonoBehaviour
 
     private Translations stringTable;
 
-    public void FixedUpdate()
+    private bool isInDemo = true;
+
+    public void Update()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow)) PrevButton();
         if (Input.GetKeyDown(KeyCode.RightArrow)) NextButton();
         if (Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene("DifficultySelect");
         if (Input.GetKeyDown(KeyCode.Backspace)) SceneManager.LoadScene("DifficultySelect");
-        if (Input.GetKeyDown(KeyCode.Return)) SceneManager.LoadScene("Loading");
-        if (Input.GetKeyDown(KeyCode.A)) SceneManager.LoadScene("Loading");
+        if (Input.GetKeyDown(KeyCode.Return)) PlayLevel();
+        if (Input.GetKeyDown(KeyCode.A)) PlayLevel();
     }
 
     public void Start()
@@ -258,7 +262,12 @@ public class PlayMissionManager : MonoBehaviour
     }
 
     void PlayLevel(){
-        SceneManager.LoadScene("Loading");
+        if(isInDemo && MissionInfo.instance.isDemoUnlocked == 0){
+            Debug.LogError("Level Not Playable In Demo");
+        } else {
+            SceneManager.LoadScene("Loading");
+        }
+        
     }
 
     void SwitchGame()
@@ -513,6 +522,7 @@ public class PlayMissionManager : MonoBehaviour
         MissionInfo.instance.alarmTime = missions[number].alarmTime;
         MissionInfo.instance.hasEgg = missions[number].hasEgg;
         MissionInfo.instance.renderDistance = missions[number].renderDistance;
+        MissionInfo.instance.isDemoUnlocked = missions[number].isDemoUnlocked;
 
         string musicName = missions[number].music;
         musicName = string.IsNullOrEmpty(musicName) ? string.Empty : Path.GetFileNameWithoutExtension(musicName.Trim());
@@ -582,6 +592,12 @@ public class PlayMissionManager : MonoBehaviour
         else
         {
             eggImage.gameObject.SetActive(false);
+        }
+        //ShowDemoLockIfInDemo
+        if(isInDemo && MissionInfo.instance.isDemoUnlocked == 0){
+            demoLock.enabled = true;
+        } else {
+            demoLock.enabled = false;
         }
     }
 

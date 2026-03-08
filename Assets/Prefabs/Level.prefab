@@ -96,7 +96,7 @@ MonoBehaviour:
     type: 3}
   gemPrefab: {fileID: 2975894190698141840, guid: 247b70f391126b045a8d5964a576fa3f,
     type: 3}
-  antiGravityPrefab: {fileID: 979331172554361627, guid: 4e96a5d04db152f489942a2adb85b36b,
+  antiGravityPrefab: {fileID: 979331172554361627, guid: 32f4bca312c973e42a502f3dbe577f3d,
     type: 3}
   superJumpPrefab: {fileID: 8578050620539726098, guid: 54d3391eb637b62419c8e281bf46bc42,
     type: 3}
