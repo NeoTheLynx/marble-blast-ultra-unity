@@ -322,7 +322,7 @@ namespace TS
                         var localScale = gobj.transform.localScale;
 
                         gobj.transform.localPosition = position;
-                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(-90f, 90f, 90f);
                         gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
                     }
 
@@ -1299,7 +1299,7 @@ namespace TS
             GameManager.instance.PlayLevelMusic();
 
             directionalLight.GetComponent<Light>().shadows = PlayerPrefs.GetInt("Graphics_Shadow", 1) == 1 ? LightShadows.Soft : LightShadows.None;
-            directionalLight.intensity *= ConvertIntensity(sunColor);
+            directionalLight.intensity = 1f;//*= ConvertIntensity(sunColor);
 
             AsyncOperation unloadOp = SceneManager.UnloadSceneAsync("Loading");
             while (!unloadOp.isDone)

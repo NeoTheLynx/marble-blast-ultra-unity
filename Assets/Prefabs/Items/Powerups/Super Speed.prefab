@@ -50,8 +50,8 @@ MonoBehaviour:
   powerupName: Super Speed PowerUp!
   autoUse: 0
   respawnTime: 7
-  pickupSound: {fileID: 8300000, guid: ad1709c1a2174104ebfb5348b1c167fc, type: 3}
-  useSound: {fileID: 8300000, guid: 47c4c1f9ebee3864fbc6882cbe87ac97, type: 3}
+  pickupSound: {fileID: 8300000, guid: fad279812103ec145a8aa97d20da6bf3, type: 3}
+  useSound: {fileID: 8300000, guid: e938148fa634c2240b8442520373a6f7, type: 3}
   meshRenderer: {fileID: 0}
   skinnedMeshRenderer: {fileID: 0}
   isActive: 1
@@ -79,8 +79,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 2.25}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.4011287, z: 0.6152271}
+  m_Center: {x: 0, y: 0.29943565, z: -0.050659776}
 --- !u!1001 &4912086225922507570
 PrefabInstance:
   m_ObjectHideFlags: 0

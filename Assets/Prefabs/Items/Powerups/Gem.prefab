@@ -88,7 +88,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.625
+  m_Radius: 0.325
   m_Center: {x: 0, y: 0, z: 0.25}
 --- !u!114 &2975894190698141854
 MonoBehaviour:
@@ -129,6 +129,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: b85edca3f52bde541a849c884a6a41eb, type: 2}
   - {fileID: 2100000, guid: 3179cc1a1e6e58d49a03883bd02a48ae, type: 2}
   gemLight: {fileID: 2965031082269591620}
+  thisTargetIndicator: {fileID: 8287644213623039636}
 --- !u!114 &2216345325286387655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,7 +137,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2975894190698141840}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 411060de4483b5e4c9847cd3cbc18554, type: 3}
   m_Name: 
@@ -588,8 +589,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7015893121536301958, guid: 16eeb80f2d4d75846837eb46870fdf16,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8287644213623039636}
   m_SourcePrefab: {fileID: 100100000, guid: 16eeb80f2d4d75846837eb46870fdf16, type: 3}
+--- !u!1 &4083810338713588899 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7015893121536301958, guid: 16eeb80f2d4d75846837eb46870fdf16,
+    type: 3}
+  m_PrefabInstance: {fileID: 6481223310063456037}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8287644213623039636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4083810338713588899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411060de4483b5e4c9847cd3cbc18554, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Target
+  targetColor: {r: 1, g: 0, b: 0, a: 1}
+  needBoxIndicator: 1
+  needArrowIndicator: 1
+  needDistanceText: 0
+  indicator: {fileID: 0}
 --- !u!23 &5064055090639060519 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -6938132755853283070, guid: 16eeb80f2d4d75846837eb46870fdf16,

@@ -53,8 +53,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.25, y: 1.75, z: 1.25}
-  m_Center: {x: 0, y: 0.43, z: 0}
+  m_Size: {x: 0.47455692, y: 1.073315, z: 0.5147753}
+  m_Center: {x: -0.018094063, y: 0.57265216, z: 0.0025850534}
 --- !u!114 &8578050620539726096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,8 +71,8 @@ MonoBehaviour:
   powerupName: Super Jump PowerUp!
   autoUse: 0
   respawnTime: 7
-  pickupSound: {fileID: 8300000, guid: 39fc930f5da6328488d019c0a1d8bb28, type: 3}
-  useSound: {fileID: 8300000, guid: 78b9999d0faa9154dbc863f058507492, type: 3}
+  pickupSound: {fileID: 8300000, guid: 8c51b8d9a1634394e9f624dceaaefdac, type: 3}
+  useSound: {fileID: 8300000, guid: f1fed4d3379b3734a9a60db0dee90f45, type: 3}
   meshRenderer: {fileID: 0}
   skinnedMeshRenderer: {fileID: 0}
   isActive: 1

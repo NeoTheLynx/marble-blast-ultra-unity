@@ -46,6 +46,7 @@ public class MissionInfo : MonoBehaviour
     public string skybox;
     public int renderDistance;
     public bool hasEgg;
+    public int isDemoUnlocked;
 
     [Header("Previews")]
     public string currentGameDifficulty = "intermediate";
@@ -238,6 +239,12 @@ public class MissionInfo : MonoBehaviour
                         newMission.alarmTime = _alarmTime;
                     else
                         newMission.alarmTime = 15;
+
+                    int _inDemo = 0;
+                    if (int.TryParse(obj.GetField("isInDemoMode"), out _inDemo))
+                        newMission.isDemoUnlocked = _inDemo;
+                    else
+                        newMission.isDemoUnlocked = 0;
 
                     newMission.music = obj.GetField("music");
                 }

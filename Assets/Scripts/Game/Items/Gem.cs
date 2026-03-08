@@ -11,6 +11,7 @@ public class Gem : MonoBehaviour
     [SerializeField] Color selectedColor;
     [SerializeField] Material[] mbuGemColors;
     [SerializeField] Light gemLight;
+    public Target thisTargetIndicator;
 
     void Start()
     {
@@ -73,7 +74,7 @@ public class Gem : MonoBehaviour
                 selectedColor = new Color(1f, 1f, 1f);
                 break;
         }
-        this.gameObject.GetComponent<Target>().setTargetColor(selectedColor);
+        thisTargetIndicator.setTargetColor(selectedColor);
         gemLight.color = selectedColor;
         
         //Target indicatorTarget = gameObject.

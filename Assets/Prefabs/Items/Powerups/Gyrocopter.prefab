@@ -71,8 +71,8 @@ MonoBehaviour:
   powerupName: Gyrocopter PowerUp!
   autoUse: 0
   respawnTime: 7
-  pickupSound: {fileID: 8300000, guid: 002008bdbb3c5094b82e3cee52a5e0ef, type: 3}
-  useSound: {fileID: 0}
+  pickupSound: {fileID: 8300000, guid: 8ba8249dba94b474985bc989a58e61ca, type: 3}
+  useSound: {fileID: 8300000, guid: dc7969b22e7128f4a9e918cbbaf87837, type: 3}
   meshRenderer: {fileID: 0}
   skinnedMeshRenderer: {fileID: 0}
   isActive: 1
