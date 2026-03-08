@@ -162,6 +162,8 @@ public class GameManager : MonoBehaviour
 
     Coroutine alarmCoroutine;
 
+    private MeshRenderer thisActiveCheckpointRenderer;
+
     void Start()
     {
         isPaused = false;
@@ -434,11 +436,46 @@ public class GameManager : MonoBehaviour
     {
         TogglePause();
 
+        //Debug.Log(activeCheckpoint.parent.gameObject.name);
+        string activeCheckName = activeCheckpoint.parent.gameObject.name;
+
+        if(activeCheckName == "StartPad"){
+            //Checkpoint is spawnpad
+        } else {
+            //reset active material
+            GameObject MBUCheckPad = activeCheckpoint.parent.gameObject.transform.parent.gameObject.transform.Find("mbucheck").gameObject;
+            thisActiveCheckpointRenderer = MBUCheckPad.GetComponent<MeshRenderer>();
+            StartCoroutine(FadeEmissionRoutine());
+        }
+
+
         activeCheckpoint = startPad.transform.Find("Spawn");
         activeCheckpointGravityDir = Vector3.down;
         useCheckpoint = false;
 
         Marble.onRespawn?.Invoke();
+    }
+
+    IEnumerator FadeEmissionRoutine()
+    {
+        float timer = 0f;
+        while (timer < 2.0f)
+        {
+            // Calculate the interpolation value
+            float currentIntensity = Mathf.Lerp(3f, 0f, timer / 2.0f);
+            float t = timer / 2.0f;
+            // Use Color.Lerp to fade the color
+            Color currentColor = Color.Lerp(Color.white, Color.black, t) * currentIntensity;
+            // Set the material's emission color
+            thisActiveCheckpointRenderer.sharedMaterial.SetColor("_EmissionColor", currentColor);
+            
+            timer += Time.deltaTime;
+            yield return null; // Wait until the next frame
+        }
+
+        // Ensure the final color is set precisely
+        thisActiveCheckpointRenderer.sharedMaterial.SetColor("_EmissionColor", Color.black);
+        //thisActiveCheckpointRenderer.sharedMaterial.DisableKeyword("_EMISSION");
     }
 
     public void ReplayLevel()
@@ -453,6 +490,19 @@ public class GameManager : MonoBehaviour
     public void ReachCheckpoint(Transform checkpoint, Vector3 checkpointGravityDir)
     {
         if (checkpoint == activeCheckpoint) return;
+
+        string activeCheckName = activeCheckpoint.parent.gameObject.name;
+        Debug.Log(activeCheckName);
+        if(activeCheckName == "StartPad"){
+            //Checkpoint is spawnpad
+        } else {
+            //reset active material
+            GameObject MBUCheckPad = activeCheckpoint.parent.gameObject.transform.parent.gameObject.transform.Find("mbucheck").gameObject;
+            MBUCheckPad.GetComponent<MeshRenderer>().sharedMaterial = activeCheckpoint.parent.gameObject.transform.parent.gameObject.transform.Find("Mesh").transform.Find("pCylinder").GetComponent<Checkpoint>().visualStates[0];
+            //thisActiveCheckpointRenderer = MBUCheckPad.GetComponent<MeshRenderer>();
+            //StartCoroutine(FadeEmissionRoutine());
+            //MBUCheckPad.SetActive(false);
+        }
 
         useCheckpoint = true;
 

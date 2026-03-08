@@ -15,6 +15,7 @@ TagManager:
   - Jukebox
   - PreviewCamera
   - PreviewLevelGroup
+  - StartPad
   layers:
   - Default
   - TransparentFX

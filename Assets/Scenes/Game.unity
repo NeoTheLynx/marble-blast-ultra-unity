@@ -751,7 +751,7 @@ MonoBehaviour:
   puOutOfBounds: {fileID: 8300000, guid: ee4f1a5d76b9d0b49b840438b012fc97, type: 3}
   puHelp: {fileID: 8300000, guid: b9e1ac5890292294a9173a86170542fc, type: 3}
   puMissingGems: {fileID: 8300000, guid: 2e6210b6ca81712458e4d991af95fb98, type: 3}
-  checkpointSfx: {fileID: 8300000, guid: 18e5fc5336b4c3d42be8fec2f6ef95b3, type: 3}
+  checkpointSfx: {fileID: 8300000, guid: 9db130372bf65a2439e1287828f60104, type: 3}
   overParTimeSfx: {fileID: 8300000, guid: 7993d2e5375cbeb4d8a068a71576a509, type: 3}
   pauseMenu: {fileID: 321397485}
   finishMenu: {fileID: 321397484}

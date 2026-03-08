@@ -507,6 +507,9 @@ MonoBehaviour:
   mesh: {fileID: 3115652802038173476}
   trigger: {fileID: 3347970519241205869}
   checkpointGravityDir: {x: 0, y: 0, z: 0}
+  visualStates:
+  - {fileID: 2100000, guid: 634ee04e0f257bb40acefb12c882df8b, type: 2}
+  - {fileID: 2100000, guid: 40f781904ea77c742abce3f84f566390, type: 2}
 --- !u!114 &3222534829383410968
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ public class Checkpoint : MonoBehaviour
     public Transform mesh;
     public Transform trigger;
     public Vector3 checkpointGravityDir;
+    public Material[] visualStates;
 
     public void InitCheckpoint()
     {
