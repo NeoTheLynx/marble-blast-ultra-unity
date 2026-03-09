@@ -106,6 +106,8 @@ public class Marble : MonoBehaviour
             SuperBounce.onUseSuperBounce?.Invoke();
         if (powerUp == PowerupType.Gyrocopter)
             Gyrocopter.onUseGyrocopter?.Invoke();
+        if (powerUp == PowerupType.MegaMarble)
+            MegaMarble.onUseMegaMarble?.Invoke();
     }
 
     public void Respawn()
@@ -121,6 +123,8 @@ public class Marble : MonoBehaviour
         else if (_powerup == PowerupType.SuperBounce)
             useSuperBounceSound.Play();
         else if (_powerup == PowerupType.Gyrocopter)
+            gyroSound.Play();
+        else if (_powerup == PowerupType.MegaMarble)
             gyroSound.Play();
         else if (_powerup == PowerupType.TimeTravel)
             TTActiveSound.Play();
@@ -226,6 +230,24 @@ public class Marble : MonoBehaviour
         ToggleGyrocopterBlades(false);
         GameManager.instance.gyrocopterIsActive = false;
         StopSound(PowerupType.Gyrocopter);
+        movement.gravity = movement.gravity * 4;
+    }
+
+    public void UseMegaMarble()
+    {
+        Debug.Log("Using Mega Marble");
+        //ToggleGyrocopterBlades(true);
+        GameManager.instance.megaIsActive = true;
+        PlaySound(PowerupType.MegaMarble);
+        movement.gravity = movement.gravity * 0.25f;
+    }
+
+    public void CancelMegaMarble()
+    {
+        //ToggleGyrocopterBlades(false);
+        Debug.Log("Cancel Mega Marble");
+        GameManager.instance.megaIsActive = false;
+        StopSound(PowerupType.MegaMarble);
         movement.gravity = movement.gravity * 4;
     }
 

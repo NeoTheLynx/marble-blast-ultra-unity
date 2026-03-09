@@ -67,6 +67,9 @@ namespace TS
         public GameObject checkpointPrefab;
         [Space]
         public GameObject glass_9;
+        public GameObject cloudsBeginnerPefab;
+        public GameObject cloudsIntermediatePefab;
+        public GameObject cloudsAdvancedPefab;
         [Space]
         public GameObject[] staticShapes;
 
@@ -95,6 +98,15 @@ namespace TS
 
         public void setGlass9Prefab(GameObject glass_9_p){
             glass_9 = glass_9_p;
+        }
+        public void setBeginnerClouds(GameObject cloudsBeginner){
+            cloudsBeginnerPefab = cloudsBeginner;
+        }
+        public void setIntermediateClouds(GameObject cloudsIntermediate){
+            cloudsIntermediatePefab = cloudsIntermediate;
+        }
+        public void setAdvancedClouds(GameObject cloudsAdvanced){
+            cloudsAdvancedPefab = cloudsAdvanced;
         }
 
         public void setThisMission(string mis){
@@ -253,6 +265,51 @@ namespace TS
 
                         gobj.transform.localPosition = position;
                         gobj.transform.localRotation = rotation * Quaternion.Euler(-90f, 90f, 90f);
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "astrolabeCloudsBeginnerShape")
+                    {
+                        var gobj = Instantiate(cloudsBeginnerPefab, transform, false);
+                        gobj.name = "astrolabeCloudsBeginnerShape";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f);;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "astrolabeCloudsIntermediateShape")
+                    {
+                        var gobj = Instantiate(cloudsIntermediatePefab, transform, false);
+                        gobj.name = "astrolabeCloudsIntermediateShape";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f);;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "astrolabeCloudsAdvancedShape")
+                    {
+                        var gobj = Instantiate(cloudsAdvancedPefab, transform, false);
+                        gobj.name = "astrolabeCloudsAdvancedShape";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f);;
                         gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
                     }
                 }

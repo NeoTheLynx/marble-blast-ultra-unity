@@ -157,6 +157,9 @@ public class GameUIManager : MonoBehaviour
             case PowerupType.Gyrocopter:
                 powerupHUD.texture = powerupIcon[5];
                 break;
+            case PowerupType.MegaMarble:
+                powerupHUD.texture = powerupIcon[5];
+                break;
             default:
                 powerupHUD.texture = powerupIcon[0];
                 break;

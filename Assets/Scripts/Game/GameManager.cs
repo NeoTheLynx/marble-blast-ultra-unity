@@ -132,8 +132,10 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool superBounceIsActive = false;
     [HideInInspector] public bool shockAbsorberIsActive = false;
     [HideInInspector] public bool gyrocopterIsActive = false;
+    [HideInInspector] public bool megaIsActive = false;
     [HideInInspector] public float sbsaActiveTime;
     [HideInInspector] public float gyroActiveTime;
+    [HideInInspector] public float megaActiveTime;
     [HideInInspector] public float timeTravelStartTime;
     [HideInInspector] public float timeTravelBonus;
 
@@ -284,6 +286,12 @@ public class GameManager : MonoBehaviour
         {
             if (Time.time - gyroActiveTime > 5f)
                 Marble.instance.CancelGyrocopter();
+        }
+
+        if (megaIsActive)
+        {
+            if (Time.time - megaActiveTime > 10f)
+                Marble.instance.CancelMegaMarble();
         }
 
         //Handle Time travel timer
@@ -585,6 +593,8 @@ public class GameManager : MonoBehaviour
         Marble.instance.ToggleGyrocopterBlades(false);
         if (gyrocopterIsActive)
             Marble.instance.CancelGyrocopter();
+        if (megaIsActive)
+            Marble.instance.CancelMegaMarble();
         Marble.instance.InactivateTimeTravel();
     }
 
