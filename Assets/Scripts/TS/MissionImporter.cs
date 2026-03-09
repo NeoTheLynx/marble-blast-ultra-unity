@@ -40,6 +40,9 @@ namespace TS
         public GameObject signUpPrefab;
         public GameObject signUpSidePrefab;
         public GameObject astrolabePrefab;
+        public GameObject cloudsBeginnerPefab;
+        public GameObject cloudsIntermediatePefab;
+        public GameObject cloudsAdvancedPefab;
         [Space]
         public GameObject gemPrefab;
         public GameObject antiGravityPrefab;
@@ -51,6 +54,8 @@ namespace TS
         public GameObject timeTravelPrefab;
         public GameObject randomPowerupPrefab;
         public GameObject easterEggPrefab;
+        public GameObject megaMarblePrefab;
+        public GameObject blastItemPrefab;
         [Space]
         public GameObject trapdoorPrefab;
         public GameObject roundBumperPrefab;
@@ -288,6 +293,52 @@ namespace TS
                         gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
                     }
 
+                    else if (objectName == "MegaMarbleItem")
+                    {
+                        var gobj = Instantiate(megaMarblePrefab, transform, false);
+                        gobj.name = "MegaMarbleItem";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        string showInfo = obj.GetField("showHelpOnPickup");
+                        if (!string.IsNullOrEmpty(showInfo))
+                        {
+                            bool showInfotutorial = int.Parse(showInfo) == 1;
+                            gobj.GetComponent<Powerups>().showHelpOnPickup = showInfotutorial;
+                        }
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+
+                    else if (objectName == "BlastItem")
+                    {
+                        var gobj = Instantiate(blastItemPrefab, transform, false);
+                        gobj.name = "BlastItem";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")), false);
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        string showInfo = obj.GetField("showHelpOnPickup");
+                        if (!string.IsNullOrEmpty(showInfo))
+                        {
+                            bool showInfotutorial = int.Parse(showInfo) == 1;
+                            gobj.GetComponent<Powerups>().showHelpOnPickup = showInfotutorial;
+                        }
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+
                     else if (objectName == "TimeTravelItem")
                     {
                         var gobj = Instantiate(timeTravelPrefab, transform, false);
@@ -495,6 +546,51 @@ namespace TS
                     {
                         var gobj = Instantiate(astrolabePrefab, transform, false);
                         gobj.name = "astrolabeShape";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f);
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "astrolabeCloudsBeginnerShape")
+                    {
+                        var gobj = Instantiate(cloudsBeginnerPefab, transform, false);
+                        gobj.name = "astrolabeCloudsBeginnerShape";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f);;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "astrolabeCloudsIntermediateShape")
+                    {
+                        var gobj = Instantiate(cloudsIntermediatePefab, transform, false);
+                        gobj.name = "astrolabeCloudsIntermediateShape";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(90f, 0f, 0f);;
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if (objectName == "astrolabeCloudsAdvancedShape")
+                    {
+                        var gobj = Instantiate(cloudsAdvancedPefab, transform, false);
+                        gobj.name = "astrolabeCloudsAdvancedShape";
 
                         var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
                         var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
@@ -903,7 +999,7 @@ namespace TS
                         cp.name = string.IsNullOrEmpty(obj.Name) ? "Checkpoint" : obj.Name;
 
                         Vector3 position = ConvertPoint(ParseVectorString(obj.GetField("position")));
-                        Quaternion rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        Quaternion rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation"))) * Quaternion.Euler(90f, 0f, 0f);
                         Vector3 scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
 
                         var checkpoint = cp.transform.Find("Mesh").Find("pCylinder").GetComponent<Checkpoint>();

@@ -94,6 +94,12 @@ MonoBehaviour:
     type: 3}
   astrolabePrefab: {fileID: 3109652929854068506, guid: 5f601217b2f3ba140aa7e32c2b91d9fd,
     type: 3}
+  cloudsBeginnerPefab: {fileID: 4627839210536208403, guid: 03bf5015a3640c243828ca0797863ee9,
+    type: 3}
+  cloudsIntermediatePefab: {fileID: 4627839210536208403, guid: 1ae34fcdf7ced454193cc1f2cf91d560,
+    type: 3}
+  cloudsAdvancedPefab: {fileID: 4627839210536208403, guid: 673080a0a54ff4f41b819847f119f310,
+    type: 3}
   gemPrefab: {fileID: 2975894190698141840, guid: 247b70f391126b045a8d5964a576fa3f,
     type: 3}
   antiGravityPrefab: {fileID: 979331172554361627, guid: 32f4bca312c973e42a502f3dbe577f3d,
@@ -113,6 +119,10 @@ MonoBehaviour:
   randomPowerupPrefab: {fileID: 2635297985114716253, guid: 1fd067327edc1d24c950697650cacd85,
     type: 3}
   easterEggPrefab: {fileID: 5555881499082582540, guid: 138c4f5b581953a4f8644738c217beea,
+    type: 3}
+  megaMarblePrefab: {fileID: 6795438874697058231, guid: 6a770f64dd8407a45880bfc3b7082d3b,
+    type: 3}
+  blastItemPrefab: {fileID: 6795438874697058231, guid: ac5a0b9e0bac73d4f8023c6e7a031aa8,
     type: 3}
   trapdoorPrefab: {fileID: 9139224675971453187, guid: 57833f265137b4147a0045febde57f3e,
     type: 3}
