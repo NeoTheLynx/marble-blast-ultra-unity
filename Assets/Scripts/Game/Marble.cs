@@ -238,8 +238,8 @@ public class Marble : MonoBehaviour
         Debug.Log("Using Mega Marble");
         //ToggleGyrocopterBlades(true);
         GameManager.instance.megaIsActive = true;
-        PlaySound(PowerupType.MegaMarble);
-        movement.gravity = movement.gravity * 0.25f;
+        //PlaySound(PowerupType.MegaMarble);
+        //Movement.instance.gameObject.transform.localScale = Movement.instance.gameObject.transform.localScale * 2.25f;
     }
 
     public void CancelMegaMarble()
@@ -247,8 +247,9 @@ public class Marble : MonoBehaviour
         //ToggleGyrocopterBlades(false);
         Debug.Log("Cancel Mega Marble");
         GameManager.instance.megaIsActive = false;
-        StopSound(PowerupType.MegaMarble);
-        movement.gravity = movement.gravity * 4;
+        //StopSound(PowerupType.MegaMarble);
+        Movement.instance.gameObject.transform.localScale = Movement.instance.gameObject.transform.localScale / 2.25f;
+        Movement.instance.marbleRadius = Movement.instance.marbleRadius / 2.25f;
     }
 
     public void ActivateTimeTravel(float _timeBonus)
