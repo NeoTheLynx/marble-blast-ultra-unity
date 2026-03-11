@@ -46,9 +46,16 @@ public class Translations : MonoBehaviour
         stringTable.Add("$Text::LevelName48", "Upward Spiral");
         stringTable.Add("$Text::LevelName57", "Three-Fold Maze");
         stringTable.Add("$Text::LevelName101", "The Road Less Traveled");
-        stringTable.Add("$Text::LevelName104", "Divergence");
         stringTable.Add("$Text::LevelName107", "Urban Jungle");
         stringTable.Add("$Text::LevelName103", "Black Diamond");
+        stringTable.Add("$Text::LevelName108", "Mountaintop Retreat");
+        stringTable.Add("$Text::LevelName40", "Gauntlet");
+        stringTable.Add("$Text::LevelName69", "Around the World");
+        stringTable.Add("$Text::LevelName77", "Skyscraper");
+        stringTable.Add("$Text::LevelName102", "Timely Ascent");
+        stringTable.Add("$Text::LevelName86", "Duality");
+        stringTable.Add("$Text::LevelName81", "Sledding");
+        stringTable.Add("$Text::LevelName104", "Divergence");
         stringTable.Add("$Text::LevelName88", "Ordeal");
         //Help Texts
         stringTable.Add("$Text::LevelStartHelp1", "Welcome to Marble Blast Ultra!\nUse the left stick to roll the marble.");

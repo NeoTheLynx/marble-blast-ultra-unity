@@ -7,6 +7,7 @@ public class MessageBox : MonoBehaviour
     public static MessageBox instance;
     public TextMeshProUGUI messageText;
     public Button messageOkButton;
+    public bool isMessageBoxShown;
     //private static bool isInDemoMode;
 
     void Awake()
@@ -25,6 +26,7 @@ public class MessageBox : MonoBehaviour
     void Start()
     {
         messageOkButton.onClick.AddListener(() => hideMessageBox());
+        isMessageBoxShown = false;
     }
 
     // Update is called once per frame
@@ -38,9 +40,11 @@ public class MessageBox : MonoBehaviour
     public void showMessageBox(string message){
         messageText.text = message;
         this.gameObject.GetComponent<Canvas>().enabled = true;
+        isMessageBoxShown = true;
     }
 
     public void hideMessageBox(){
         this.gameObject.GetComponent<Canvas>().enabled = false;
+        isMessageBoxShown = false;
     }
 }

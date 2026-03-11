@@ -1290,10 +1290,15 @@ MonoBehaviour:
   setImage: {fileID: 2874802097139011022}
   goImage: {fileID: 4561579525085108790}
   outOfBoundsImage: {fileID: 4900436770953219194}
-  oobInsultMenu: {fileID: 7860239516799025589}
-  oobInsultTitleText: {fileID: 7572668606099122366}
-  oobInsultCaptionText: {fileID: 373561123373086439}
-  oobInsultCloseButton: {fileID: 1244967536543644809}
+  mbuPowerupImages:
+  - {fileID: 21300000, guid: 49ca54cdbd4bea54f88b5aeed5e3f14d, type: 3}
+  - {fileID: 21300000, guid: fa0b68242b66a1d4e87fe752f1b19639, type: 3}
+  - {fileID: 21300000, guid: de87184a7dc93fc4fb5baab2e2c227bf, type: 3}
+  - {fileID: 21300000, guid: e883c23ce25407d46863ce759b91a5cb, type: 3}
+  - {fileID: 21300000, guid: 49ca54cdbd4bea54f88b5aeed5e3f14d, type: 3}
+  - {fileID: 21300000, guid: 46392e288f295fd4b95c6ec01efda306, type: 3}
+  - {fileID: 21300000, guid: 472d50087d4a93245a200a7fe7e8733a, type: 3}
+  mbuPowerupWindow: {fileID: 834483270906282325}
   isInitialized: 0
 --- !u!1 &1990976706546575606
 GameObject:
@@ -9171,18 +9176,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1969283639468554256}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1244967536543644809 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 726010180165256345, guid: 7e97ac5490aa5d54884df4f56d4bf0b4,
-    type: 3}
-  m_PrefabInstance: {fileID: 1969283639468554256}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2220603590974625434
 PrefabInstance:
   m_ObjectHideFlags: 0

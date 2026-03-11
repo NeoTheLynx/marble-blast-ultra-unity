@@ -22,6 +22,7 @@ public class MainSplashManager : MonoBehaviour
 
     private void Update()
     {
+      if(!MessageBox.instance.isMessageBoxShown){
         if(Input.GetKey(KeyCode.Space))
           startGame();
 
@@ -30,6 +31,7 @@ public class MainSplashManager : MonoBehaviour
 
         if(Input.GetKey(KeyCode.A))
           startGame();
+      }
     }
 
     void startGame(){
@@ -40,6 +42,7 @@ public class MainSplashManager : MonoBehaviour
     public void Start()
     {
         aButton.onClick.AddListener(() => startGame());
+        MessageBox.instance.showMessageBox("This is an early demo for Marble Blast Ultra In Unity. Not every feature from the original MBU is present in this build.");
     }
 
 }
