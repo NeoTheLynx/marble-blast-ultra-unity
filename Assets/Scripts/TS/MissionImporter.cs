@@ -70,7 +70,12 @@ namespace TS
         public GameObject teleportPad;
         public GameObject checkpointPrefab;
         [Space]
+        public GameObject glass_3;
+        public GameObject glass_6;
         public GameObject glass_9;
+        public GameObject glass_12;
+        public GameObject glass_15;
+        public GameObject glass_18;
         [Space]
         public GameObject[] staticShapes;
 
@@ -495,7 +500,7 @@ namespace TS
 
                         cpMesh.transform.localRotation = rotation;
                         cpMesh.transform.parent = cp.transform;
-                        spawnPos.transform.localRotation = Quaternion.Euler(spawnPos.transform.localRotation.eulerAngles.x, spawnPos.transform.localRotation.eulerAngles.y, -cpMesh.transform.localRotation.eulerAngles.z + 180);
+                        spawnPos.transform.localRotation = Quaternion.Euler(spawnPos.transform.localRotation.eulerAngles.x, spawnPos.transform.localRotation.eulerAngles.y, -cpMesh.transform.localRotation.eulerAngles.z + 180) * Quaternion.Euler(-90f, 90f, 90f);
                         checkpoint.checkpointGravityDir = -checkpoint.transform.up;
 
                         cpTrigger.GetComponent<BoxCollider>().enabled = false;
@@ -527,9 +532,79 @@ namespace TS
                         checkpoint.InitCheckpoint();
                         checkpoints.Add(cp);
                     }
+                    if(objectName == "glass_3shape"){
+                        GameObject gobj = Instantiate(glass_3, transform, false);
+                        gobj.name = "glass_3shape";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(-90f, 90f, 90f);
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if(objectName == "glass_6shape"){
+                        GameObject gobj = Instantiate(glass_6, transform, false);
+                        gobj.name = "glass_6shape";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(-90f, 90f, 90f);
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
                     else if(objectName == "glass_9shape"){
                         GameObject gobj = Instantiate(glass_9, transform, false);
                         gobj.name = "glass_9shape";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(-90f, 90f, 90f);
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if(objectName == "glass_12shape"){
+                        GameObject gobj = Instantiate(glass_12, transform, false);
+                        gobj.name = "glass_12shape";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(-90f, 90f, 90f);
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if(objectName == "glass_15shape"){
+                        GameObject gobj = Instantiate(glass_15, transform, false);
+                        gobj.name = "glass_15shape";
+
+                        var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
+                        var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));
+                        var scale = ConvertScale(ParseVectorString(obj.GetField("scale")));
+
+                        var localScale = gobj.transform.localScale;
+
+                        gobj.transform.localPosition = position;
+                        gobj.transform.localRotation = rotation * Quaternion.Euler(-90f, 90f, 90f);
+                        gobj.transform.localScale = new Vector3(scale.x * localScale.x, scale.y * localScale.y, scale.z * localScale.z);
+                    }
+                    else if(objectName == "glass_18shape"){
+                        GameObject gobj = Instantiate(glass_18, transform, false);
+                        gobj.name = "glass_18shape";
 
                         var position = ConvertPoint(ParseVectorString(obj.GetField("position")));
                         var rotation = ConvertRotation(ParseVectorString(obj.GetField("rotation")));

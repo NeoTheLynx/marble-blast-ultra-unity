@@ -39,7 +39,8 @@ public class MegaMarble : Powerups
     {
         Marble.instance.UseMegaMarble();
         GameManager.instance.megaActiveTime = Time.time;
-
-        Movement.instance.marbleVelocity += -GravitySystem.GravityDir.normalized * megaMArbleBoost;
+        Movement.instance.gameObject.transform.localScale = Movement.instance.gameObject.transform.localScale * 2.25f;
+        Movement.instance.marbleRadius = Movement.instance.marbleRadius * 2.25f;
+        //Movement.instance.marbleVelocity += -GravitySystem.GravityDir.normalized * megaMArbleBoost;
     }
 }

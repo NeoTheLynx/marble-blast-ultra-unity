@@ -24,6 +24,14 @@ public class MainMenuButtonList : MonoBehaviour
 
     void Start()
     {   
+        if(RootControl.instance.getDemoMode()){
+            menuOptions = new List<KeyValuePair<int, string>>() { 
+                new KeyValuePair<int, string>(0, "Play Demo"),
+                new KeyValuePair<int, string>(0, "SPACER"),
+                //new KeyValuePair<int, string>(1, "Help & Options"),
+                new KeyValuePair<int, string>(2, "Exit Game"),
+            };
+        }
         PopulateMenuItems();
         GameObject previewController = GameObject.Find("PreviewRoot");
         Material updateCurrentSky = previewController.GetComponent<Preview>().getCurrentSky();
@@ -57,40 +65,66 @@ public class MainMenuButtonList : MonoBehaviour
     void OnButtonClick(int btnIndex)
     {
         //Debug.Log("Clicked on button for: " + btnIndex.ToString());
-        switch(btnIndex)
-        {
-            case 0:
-                SceneManager.LoadScene("DifficultySelect");
-                break;
+        if(RootControl.instance.getDemoMode()){
+            switch(btnIndex)
+            {
+                case 0:
+                    SceneManager.LoadScene("DifficultySelect");
+                    break;
 
-            case 1:
-                Debug.Log("<color=red>Multiplayer Not Implemented</color>");
-                break;
+                case 1:
+                    SceneManager.LoadScene("Options");
+                    break;
 
-            case 2:
-                Debug.Log("<color=red>Leaderboards Not Implemented</color>");
-                break;
+                case 2:
+                    Application.Quit();
+                    break;     
 
-            case 3:
-                Debug.Log("<color=red>Achivements Not Implemented</color>");
-                break;
+                default:
+                    Debug.Log("<color=yellow>No Menu Index</color>");
+                    break;
+                }
+        } else {
+            switch(btnIndex)
+            {
+                case 0:
+                    SceneManager.LoadScene("DifficultySelect");
+                    break;
 
-            case 4:
-                SceneManager.LoadScene("Options");
-                break;
+                case 1:
+                    MessageBox.instance.showMessageBox("Multiplayer Not Implemented");
+                    Debug.Log("<color=red>Multiplayer Not Implemented</color>");
+                    break;
 
-            case 5:
-                Debug.Log("<color=red>Download Content Not Implemented</color>");
-                break;
+                case 2:
+                    MessageBox.instance.showMessageBox("Leaderboards Not Implemented");
+                    Debug.Log("<color=red>Leaderboards Not Implemented</color>");
+                    break;
 
-            case 6:
-                Application.Quit();
-                break;        
+                case 3:
+                    MessageBox.instance.showMessageBox("Achievements Not Implemented");
+                    Debug.Log("<color=red>Achivements Not Implemented</color>");
+                    break;
 
-            default:
-                Debug.Log("<color=yellow>No Menu Index</color>");
-                break;
+                case 4:
+                    SceneManager.LoadScene("Options");
+                    break;
+
+                case 5:
+                    MessageBox.instance.showMessageBox("Download Content Not Implemented");
+                    Debug.Log("<color=red>Download Content Not Implemented</color>");
+                    break;
+
+                case 6:
+                    Application.Quit();
+                    break;        
+
+                default:
+                    Debug.Log("<color=yellow>No Menu Index</color>");
+                    break;
+            }
         }
+        
         // Add your specific game logic here
     }
 }

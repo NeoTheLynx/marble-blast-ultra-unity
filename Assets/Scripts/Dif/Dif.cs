@@ -26,7 +26,7 @@ public class Dif : MonoBehaviour {
 
     //fork this
     private Material get_material(string matnam){
-        Debug.Log("Tile Count: " + tileMats.Length.ToString());
+        //Debug.Log("Tile Count: " + tileMats.Length.ToString());
         if(matnam == "tile_intermediate") {
             return tileMats[0];
         } else if(matnam == "tile_intermediate_green") {
@@ -65,7 +65,9 @@ public class Dif : MonoBehaviour {
             return tileMats[17];
         } else if(matnam == "friction_low_shadow") {
             return tileMats[18];
-        } else {
+        } else if(matnam == "stripe_caution") {
+            return tileMats[19];
+        }  else {
             return DefaultMaterial;
         }
     }
@@ -217,7 +219,7 @@ public class Dif : MonoBehaviour {
         if (string.IsNullOrEmpty(materialName))
             return DefaultMaterial;
 
-        Debug.Log("Material: " + materialName);
+        //Debug.Log("Material: " + materialName);
 
         return get_material(materialName);
 

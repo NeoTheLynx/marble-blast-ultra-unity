@@ -95,7 +95,12 @@ public class Preview : MonoBehaviour
 
                 tempMissions.Clear();
                 //GameObject previewInteriorPrefab = Resources.Load<GameObject>("Prefabs/Interior");
+                GameObject previewGlass3Prefab = Resources.Load<GameObject>("Prefabs/Structures/glass_3_mbu");
+                GameObject previewGlass6Prefab = Resources.Load<GameObject>("Prefabs/Structures/glass_6_mbu");
                 GameObject previewGlass9Prefab = Resources.Load<GameObject>("Prefabs/Structures/glass_9_mbu");
+                GameObject previewGlass12Prefab = Resources.Load<GameObject>("Prefabs/Structures/glass_12_mbu");
+                GameObject previewGlass15Prefab = Resources.Load<GameObject>("Prefabs/Structures/glass_15_mbu");
+                GameObject previewGlass18Prefab = Resources.Load<GameObject>("Prefabs/Structures/glass_18_mbu");
                 GameObject begCloud = Resources.Load<GameObject>("Prefabs/Structures/cloudsbeginner");
                 GameObject intCloud = Resources.Load<GameObject>("Prefabs/Structures/cloudsintermediate");
                 GameObject advCloud = Resources.Load<GameObject>("Prefabs/Structures/cloudsadvanced");
@@ -117,7 +122,12 @@ public class Preview : MonoBehaviour
 
                     
                     emptyLevelObject.GetComponent<MissionImporterPreview>().setInteriorPrefab(previewInteriorPrefab);
+                    emptyLevelObject.GetComponent<MissionImporterPreview>().setGlass3Prefab(previewGlass3Prefab);
+                    emptyLevelObject.GetComponent<MissionImporterPreview>().setGlass6Prefab(previewGlass6Prefab);
                     emptyLevelObject.GetComponent<MissionImporterPreview>().setGlass9Prefab(previewGlass9Prefab);
+                    emptyLevelObject.GetComponent<MissionImporterPreview>().setGlass12Prefab(previewGlass12Prefab);
+                    emptyLevelObject.GetComponent<MissionImporterPreview>().setGlass15Prefab(previewGlass15Prefab);
+                    emptyLevelObject.GetComponent<MissionImporterPreview>().setGlass18Prefab(previewGlass18Prefab);
 
                     emptyLevelObject.GetComponent<MissionImporterPreview>().setBeginnerClouds(begCloud);
                     emptyLevelObject.GetComponent<MissionImporterPreview>().setIntermediateClouds(intCloud);
