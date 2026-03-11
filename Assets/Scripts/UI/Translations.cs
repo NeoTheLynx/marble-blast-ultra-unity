@@ -44,10 +44,18 @@ public class Translations : MonoBehaviour
         stringTable.Add("$Text::LevelName39", "Half-Pipe");
         stringTable.Add("$Text::LevelName82", "Jump Jump Jump!");
         stringTable.Add("$Text::LevelName48", "Upward Spiral");
+        stringTable.Add("$Text::LevelName57", "Three-Fold Maze");
+        stringTable.Add("$Text::LevelName101", "The Road Less Traveled");
         stringTable.Add("$Text::LevelName104", "Divergence");
         stringTable.Add("$Text::LevelName107", "Urban Jungle");
         stringTable.Add("$Text::LevelName103", "Black Diamond");
+        stringTable.Add("$Text::LevelName88", "Ordeal");
         //Help Texts
+        stringTable.Add("$Text::LevelStartHelp1", "Welcome to Marble Blast Ultra!\nUse the left stick to roll the marble.");
+        stringTable.Add("$Text::TriggerText1_0", "Use the right stick to change the camera view.");
+        stringTable.Add("$Text::TriggerText1_1", "Press A or pull the left trigger to jump!");
+        stringTable.Add("$Text::TriggerText1_2", "Be careful not to fall off the ledge!");
+        stringTable.Add("$Text::TriggerText1_3", "Roll to the finish pad to complete the level!");
         //translationList.Add("", "Learning To Roll");
     }
 

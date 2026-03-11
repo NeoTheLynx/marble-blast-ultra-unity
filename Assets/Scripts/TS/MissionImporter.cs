@@ -500,7 +500,7 @@ namespace TS
 
                         cpMesh.transform.localRotation = rotation;
                         cpMesh.transform.parent = cp.transform;
-                        spawnPos.transform.localRotation = Quaternion.Euler(spawnPos.transform.localRotation.eulerAngles.x, spawnPos.transform.localRotation.eulerAngles.y, -cpMesh.transform.localRotation.eulerAngles.z + 180) * Quaternion.Euler(-90f, 90f, 90f);
+                        spawnPos.transform.localRotation = Quaternion.Euler(spawnPos.transform.localRotation.eulerAngles.x, spawnPos.transform.localRotation.eulerAngles.y, -cpMesh.transform.localRotation.eulerAngles.z + 180);
                         checkpoint.checkpointGravityDir = -checkpoint.transform.up;
 
                         cpTrigger.GetComponent<BoxCollider>().enabled = false;

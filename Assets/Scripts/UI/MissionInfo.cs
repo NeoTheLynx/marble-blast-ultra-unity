@@ -224,7 +224,7 @@ public class MissionInfo : MonoBehaviour
                         newMission.realLevelNumber = 0;
                     }
 
-                    Debug.Log("Loaded Level #: " + _level.ToString());    
+                    //Debug.Log("Loaded Level #: " + _level.ToString() + " - " + obj.GetField("name"));    
 
                     newMission.artist = (obj.GetField("artist"));
 
@@ -290,20 +290,31 @@ public class MissionInfo : MonoBehaviour
             if (difficulty == Type.beginner)
                 missionsUltraBeginner = SortMissionsByLevelNumber(missionsUltraBeginner);
             else if (difficulty == Type.intermediate)
-                missionsUltraIntermediate = SortMissionsByLevelNumber(missionsUltraIntermediate);
+                missionsUltraIntermediate = SortMissionsByLevelNumber(missionsUltraIntermediate, "intermediate");
             else if (difficulty == Type.advanced)
-                missionsUltraAdvanced = SortMissionsByLevelNumber(missionsUltraAdvanced);
+                missionsUltraAdvanced = SortMissionsByLevelNumber(missionsUltraAdvanced, "advanced");
             else if (difficulty == Type.custom)
                 missionsUltraCustom = SortMissionsByLevelNumber(missionsUltraCustom);
         }
     }
 
-    public static List<Mission> SortMissionsByLevelNumber(List<Mission> missions)
+    public static List<Mission> SortMissionsByLevelNumber(List<Mission> missions, string difficulty = "none")
     {
         if (missions == null || missions.Count == 0)
             return new List<Mission>();
 
         int maxIndex = missions.Count - 1;
+
+        if(difficulty == "none"){
+
+        } else if(difficulty == "intermediate") {
+            maxIndex = maxIndex + 20;
+        }
+        else if(difficulty == "advanced") {
+            maxIndex = maxIndex + 40;
+        }
+
+        Debug.Log("Sort Mission Count: " + missions.Count.ToString());
 
         var sortable = missions
             .Where(m => m != null)
@@ -344,7 +355,7 @@ public class MissionInfo : MonoBehaviour
         }
 
         for (int i = 0; i < result.Count; i++)
-            result[i].realLevelNumber = (i + 1);
+            result[i].levelNumber = (i + 1);
 
         return result;
     }

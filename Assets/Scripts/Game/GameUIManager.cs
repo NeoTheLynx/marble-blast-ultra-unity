@@ -24,15 +24,11 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] Image[] currentGem;
     [SerializeField] GameObject gemCountUI;
     [Space]
+    [SerializeField] TextMeshProUGUI stateImage;
     [SerializeField] GameObject readyImage;
     [SerializeField] GameObject setImage;
     [SerializeField] GameObject goImage;
     [SerializeField] GameObject outOfBoundsImage;
-    [Space]
-    public GameObject oobInsultMenu;
-    [SerializeField] TextMeshProUGUI oobInsultTitleText;
-    [SerializeField] TextMeshProUGUI oobInsultCaptionText;
-    [SerializeField] Button oobInsultCloseButton;
 
     Tween centerTextFade;
     Tween bottomTextFade;
@@ -49,13 +45,14 @@ public class GameUIManager : MonoBehaviour
     public void Init()
     {
         timerColor = new Sprite[numbers.Length];
-        oobInsultCloseButton.onClick.AddListener(() => {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+//        oobInsultMenu.SetActive(false);
+        // oobInsultCloseButton.onClick.AddListener(() => {
+        //     Cursor.lockState = CursorLockMode.Locked;
+        //     Cursor.visible = false;
 
-            Time.timeScale = 1;
-            oobInsultMenu.SetActive(false);
-        });
+        //     Time.timeScale = 1;
+        //     oobInsultMenu.SetActive(false);
+        // });
         isInitialized = true;
     }
 
@@ -250,17 +247,18 @@ public class GameUIManager : MonoBehaviour
 
     public void SetCenterImage(int index)
     {
-        readyImage.SetActive(false);
-        setImage.SetActive(false);
-        goImage.SetActive(false);
-        outOfBoundsImage.SetActive(false);
+        stateImage.text = "";
+        //readyImage.SetActive(false);
+        //setImage.SetActive(false);
+        //goImage.SetActive(false);
+        //outOfBoundsImage.SetActive(false);
 
         switch (index)
         {
-            case 0: readyImage.SetActive(true); break;
-            case 1: setImage.SetActive(true); break;
-            case 2: goImage.SetActive(true); break;
-            case 3: outOfBoundsImage.SetActive(true); break;
+            case 0: stateImage.text = "Ready"; break;
+            case 1: stateImage.text = "Set"; break;
+            case 2: stateImage.text = "Go!"; break;
+            case 3: stateImage.text = "Out Of Bounds"; break;
         }
     }
 }

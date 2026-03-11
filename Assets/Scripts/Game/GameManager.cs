@@ -362,8 +362,8 @@ public class GameManager : MonoBehaviour
 
     public void TogglePause()
     {
-        if (GameUIManager.instance.isInitialized && GameUIManager.instance.oobInsultMenu.activeSelf)
-            return;
+        // if (GameUIManager.instance.isInitialized && GameUIManager.instance.oobInsultMenu.activeSelf)
+        //     return;
 
         isPaused = !isPaused;
         if (isPaused)
@@ -458,7 +458,7 @@ public class GameManager : MonoBehaviour
             //Checkpoint is spawnpad
         } else {
             //reset active material
-            GameObject MBUCheckPad = activeCheckpoint.parent.gameObject.transform.parent.gameObject.transform.Find("mbucheck").gameObject;
+            GameObject MBUCheckPad = activeCheckpoint.parent.gameObject.transform.parent.gameObject.transform.Find("Mesh").gameObject.transform.Find("mbucheck").gameObject;
             thisActiveCheckpointRenderer = MBUCheckPad.GetComponent<MeshRenderer>();
             StartCoroutine(FadeEmissionRoutine());
         }
@@ -512,7 +512,7 @@ public class GameManager : MonoBehaviour
             //Checkpoint is spawnpad
         } else {
             //reset active material
-            GameObject MBUCheckPad = activeCheckpoint.parent.gameObject.transform.parent.gameObject.transform.Find("mbucheck").gameObject;
+            GameObject MBUCheckPad = activeCheckpoint.parent.gameObject.transform.parent.gameObject.transform.Find("Mesh").transform.Find("mbucheck").gameObject;
             MBUCheckPad.GetComponent<MeshRenderer>().sharedMaterial = activeCheckpoint.parent.gameObject.transform.parent.gameObject.transform.Find("Mesh").transform.Find("pCylinder").GetComponent<Checkpoint>().visualStates[0];
             //thisActiveCheckpointRenderer = MBUCheckPad.GetComponent<MeshRenderer>();
             //StartCoroutine(FadeEmissionRoutine());

@@ -109,7 +109,7 @@ public class Preview : MonoBehaviour
                 //for (int index = 0; index < 73; index++)
                 for (int index = 0; index < previewMissions.Count; index++)
                 {
-                    Debug.Log("Adding Mission To Preview: " + (previewMissions[index].directory));
+                    //Debug.Log("Adding Mission To Preview: " + (previewMissions[index].directory));
                     // Creates an empty GameObject named "MyEmptyObject"
                     GameObject emptyLevelObject = new GameObject("Level_" + (previewMissions[index].missionName));
                     emptyLevelObject.gameObject.tag = "PreviewLevelGroup";
