@@ -67,6 +67,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 03a613dbfc460684383b1c28f3db514d, type: 2}
   - {fileID: 2100000, guid: 9122f1a232652714eb0507be2f0a650e, type: 2}
   - {fileID: 2100000, guid: 5fd2d94eb9062984f849ce0446ea4b2f, type: 2}
+  - {fileID: 2100000, guid: 1cfd1ba12a957334ba90cf2d069a2773, type: 2}
   maxTrianglesPerChunk: 1000
 --- !u!114 &8893658547553830780
 MonoBehaviour:

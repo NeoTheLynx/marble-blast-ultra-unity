@@ -423,12 +423,13 @@ public class PlayMissionManager : MonoBehaviour
             play.interactable = false;
 
             bestTimesText.text = string.Empty;
+            bestTimesText.text = Utils.FormatTime(-1);
             for (int i = 0; i < 3; i++)
             {
-                string _name = "Matan W.";
-                float _time = -1;
-                bestTimesText.text += (i + 1) + ". " + _name;
-                bestTimesText.text += "\t" + Utils.FormatTime(_time) + "\n";
+                //string _name = "Matan W.";
+                //float _time = -1;
+                //bestTimesText.text += (i + 1) + ". " + _name;
+                //b//estTimesText.text += "\t" + Utils.FormatTime(_time) + "\n";
             }
 
             return;
@@ -485,7 +486,7 @@ public class PlayMissionManager : MonoBehaviour
         //Debug.LogError(stringTable.getValue(missions[number].levelName));
 
         currentLevelText.text = stringTable.getValue(missions[number].levelName);
-        currentLevelNumber.text = "Level " + (number + 1);
+        currentLevelNumber.text = "Level " + missions[number].realLevelNumber;
         notQualifiedImage.SetActive(qualifiedLevel < number);
         notQualifiedText.SetActive(qualifiedLevel < number);
 

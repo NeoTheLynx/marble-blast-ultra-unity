@@ -19,7 +19,7 @@ public class CheckpointTrigger : MonoBehaviour
     {
         CancelInvoke();
         GameManager.onReachCheckpoint?.Invoke(baseCheckpoint.spawn, baseCheckpoint.checkpointGravityDir);
-        GameObject MBUCheckPad = baseCheckpoint.transform.parent.gameObject.transform.parent.gameObject.transform.Find("mbucheck").gameObject;
+        GameObject MBUCheckPad = baseCheckpoint.transform.parent.gameObject.transform.parent.gameObject.transform.Find("Mesh").transform.Find("mbucheck").gameObject;
         //MBUCheckPad.SetActive(false);
         thisRenderer = MBUCheckPad.GetComponent<MeshRenderer>();
         thisRenderer.sharedMaterial = baseCheckpoint.visualStates[1];

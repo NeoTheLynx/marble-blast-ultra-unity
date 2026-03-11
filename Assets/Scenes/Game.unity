@@ -774,8 +774,10 @@ MonoBehaviour:
   superBounceIsActive: 0
   shockAbsorberIsActive: 0
   gyrocopterIsActive: 0
+  megaIsActive: 0
   sbsaActiveTime: 0
   gyroActiveTime: 0
+  megaActiveTime: 0
   timeTravelStartTime: 0
   timeTravelBonus: 0
   finishParticles: {fileID: 8285649748157849879, guid: e154bf5a1b0c7ad4a8468754518554b6,

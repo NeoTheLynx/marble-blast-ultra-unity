@@ -434,9 +434,8 @@ new SimGroup(MissionGroup) {
          foundOnCheckpointSeq = "0";
          checkPointConfirmationNumber = "0";
    };
-   new SimGroup(check012) {
 
-      new Trigger(check12) {
+      new Trigger() {
          position = "-40.7986 23.6177 -34.0635";
          rotation = "1 0 0 0";
          scale = "8 8 8";
@@ -444,25 +443,25 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "1";
+            respawnPoint = "check12";
       };
-      new StaticShape(pad12) {
+      new StaticShape(check12) {
          position = "-36.9901 19.0056 -31.9981";
          rotation = "0 0 1 89.9544";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
-   new SimGroup(check015) {
 
-      new StaticShape(pad15) {
+      new StaticShape(check015) {
          position = "-36.9058 -44.9887 -7.99345";
          rotation = "0 0 -1 89.9544";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
+         
       };
-      new Trigger(check15) {
+      new Trigger() {
          position = "-41.2082 -39.9978 -10.5196";
          rotation = "1 0 0 0";
          scale = "8 8 8";
@@ -470,18 +469,17 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "1";
+            respawnPoint = "check015";
       };
-   };
-   new SimGroup(check011) {
 
-      new StaticShape(pad11) {
+      new StaticShape(check011) {
          position = "-15.9898 43.0172 36.9958";
          rotation = "0.577197 -0.577657 0.577197 119.974";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-      new Trigger(check11) {
+      new Trigger() {
          position = "-16.1471 48.0184 39.8456";
          rotation = "0 -1 0 90";
          scale = "8 8 3.18331";
@@ -489,11 +487,11 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "1";
+            respawnPoint = "check011";
       };
-   };
-   new SimGroup(check5) {
 
-      new Trigger(check17) {
+
+      new Trigger() {
          position = "-16.0856 -39.9537 15.8296";
          rotation = "0 -1 0 90";
          scale = "8 8 3.18331";
@@ -501,25 +499,24 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "1";
+            respawnPoint = "check5";
       };
-      new StaticShape(pad17) {
+      new StaticShape(check5) {
          position = "-15.9283 -44.9549 12.9798";
          rotation = "0.577197 -0.577657 0.577197 119.974";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
-   new SimGroup(check5) {
 
-      new StaticShape(pad16) {
+      new StaticShape(check4) {
          position = "21.0532 2.9291 -15.9861";
          rotation = "0 0 -1 89.9544";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-      new Trigger(check16) {
+      new Trigger() {
          position = "16.7508 7.92 -16.1201";
          rotation = "1 0 0 0";
          scale = "6.91454 8 3.66323";
@@ -527,11 +524,10 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "1";
+            respawnPoint = "check4";
       };
-   };
-   new SimGroup(check5) {
 
-      new Trigger(check13) {
+      new Trigger() {
          position = "11.1151 -0.026913 -23.5526";
          rotation = "1 0 0 180";
          scale = "6.91454 8 3.66323";
@@ -539,18 +535,16 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "1";
+            respawnPoint = "check13";
       };
-      new StaticShape(pad13) {
+      new StaticShape(check13) {
          position = "14.9913 5.00506 -24.0029";
          rotation = "1 0 0 180";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
-   new SimGroup(check5) {
-
-      new Trigger(check14) {
+      new Trigger() {
          position = "-31.7528 -34.0262 -7.55546";
          rotation = "1 0 0 180";
          scale = "5.88828 8 3.66323";
@@ -558,15 +552,15 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "1";
+            respawnPoint = "check14";
       };
-      new StaticShape(pad14) {
+      new StaticShape(check14) {
          position = "-28.9029 -28.9942 -8.00576";
          rotation = "1 0 0 180";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
    new SpawnSphere() {
       position = "40.8598 -14.4854 29.4129";
       rotation = "0.357158 0.201853 -0.911972 63.5744";
