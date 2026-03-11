@@ -29,6 +29,9 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] GameObject setImage;
     [SerializeField] GameObject goImage;
     [SerializeField] GameObject outOfBoundsImage;
+    [Space]
+    [SerializeField] Sprite[] mbuPowerupImages;
+    [SerializeField] Image mbuPowerupWindow;
 
     Tween centerTextFade;
     Tween bottomTextFade;
@@ -137,28 +140,36 @@ public class GameUIManager : MonoBehaviour
         switch (_powerUp)
         {
             case PowerupType.None:
-                powerupHUD.texture = powerupIcon[0];
+                mbuPowerupWindow.sprite = mbuPowerupImages[0];
+                //powerupHUD.texture = powerupIcon[0];
                 break;
             case PowerupType.SuperJump:
-                powerupHUD.texture = powerupIcon[1];
+                mbuPowerupWindow.sprite = mbuPowerupImages[1];
+                //powerupHUD.texture = powerupIcon[1];
                 break;
             case PowerupType.SuperSpeed:
-                powerupHUD.texture = powerupIcon[2];
+                mbuPowerupWindow.sprite = mbuPowerupImages[2];
+                //powerupHUD.texture = powerupIcon[2];
                 break;
             case PowerupType.SuperBounce:
-                powerupHUD.texture = powerupIcon[3];
+                mbuPowerupWindow.sprite = mbuPowerupImages[3];
+                //powerupHUD.texture = powerupIcon[3];
                 break;
             case PowerupType.ShockAbsorber:
-                powerupHUD.texture = powerupIcon[4];
+                mbuPowerupWindow.sprite = mbuPowerupImages[4];
+                //powerupHUD.texture = powerupIcon[4];
                 break;
             case PowerupType.Gyrocopter:
-                powerupHUD.texture = powerupIcon[5];
+                mbuPowerupWindow.sprite = mbuPowerupImages[5];
+                //powerupHUD.texture = powerupIcon[5];
                 break;
             case PowerupType.MegaMarble:
-                powerupHUD.texture = powerupIcon[5];
+                mbuPowerupWindow.sprite = mbuPowerupImages[6];
+                //powerupHUD.texture = powerupIcon[5];
                 break;
             default:
-                powerupHUD.texture = powerupIcon[0];
+                mbuPowerupWindow.sprite = mbuPowerupImages[0];
+                //powerupHUD.texture = powerupIcon[0];
                 break;
         }
     }

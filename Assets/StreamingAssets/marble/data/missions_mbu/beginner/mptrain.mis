@@ -713,9 +713,8 @@ new SimGroup(MissionGroup) {
       indoorWeight = "100";
       outdoorWeight = "100";
    };
-   new SimGroup(check2) {
 
-      new Trigger(check2) {
+      new Trigger() {
          position = "-43.9897 31.2557 11.9118";
          rotation = "1 0 0 0";
          scale = "18.0231 17.211 3.18429";
@@ -723,15 +722,15 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "1";
+            respawnPoint = "check2";
       };
-      new StaticShape() {
+      new StaticShape(check2) {
          position = "-35.0055 24.9916 12.0118";
          rotation = "0 0 1 90.5273";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
 };
 //--- OBJECT WRITE END ---
 

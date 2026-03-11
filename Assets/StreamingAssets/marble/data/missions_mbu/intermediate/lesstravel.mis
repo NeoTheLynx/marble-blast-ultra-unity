@@ -1,9 +1,9 @@
 //--- OBJECT WRITE BEGIN ---
 new SimGroup(MissionGroup) {
 
-   new SimGroup(check3) {
+   
 
-      new Trigger(check3) {
+      new Trigger() {
          position = "26.8302 15.3957 17.7545";
          rotation = "0 0 1 183.965";
          scale = "9 1 5";
@@ -11,18 +11,18 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "5";
+            respawnPoint = "check3";
       };
-      new StaticShape() {
+      new StaticShape(check3) {
          position = "20.5445 14.476 18.0064";
          rotation = "0 0 -1 90.5273";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
-   new SimGroup(check2) {
 
-      new Trigger(check2) {
+
+      new Trigger() {
          position = "-45.9917 -5.38815 9.79048";
          rotation = "0 0 -1 90";
          scale = "9 1 5";
@@ -30,15 +30,15 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "3";
+            respawnPoint = "check2";
       };
-      new StaticShape() {
+      new StaticShape(check2) {
          position = "-44.0449 -1.49583 10.0011";
          rotation = "0 0 1 90.5273";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
     new ScriptObject(MissionInfo) {
          type = "Intermediate";
          desc = "A diabolical XBox bonus level!";
@@ -471,9 +471,8 @@ new SimGroup(MissionGroup) {
       permanent = "0";
          foundOnCheckpointSeq = "0";
    };
-   new SimGroup(check1) {
 
-      new Trigger(check1) {
+      new Trigger() {
          position = "24.4265 3.68777 5.7791";
          rotation = "0 0 1 90";
          scale = "9 1 5";
@@ -481,15 +480,16 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "2";
+            respawnPoint = "check1";
       };
-      new StaticShape() {
+      new StaticShape(check1) {
          position = "21.518 -1.4748 6.0036";
          rotation = "0 0 -1 89.9543";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
+
    new SpawnSphere() {
       position = "58.6625 -25.3945 11.9679";
       rotation = "0.091892 0.0482879 -0.994597 55.6985";

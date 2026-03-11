@@ -263,11 +263,13 @@ public class PlayMissionManager : MonoBehaviour
     }
 
     void PlayLevel(){
-        if(RootControl.instance.getDemoMode() && MissionInfo.instance.isDemoUnlocked == 0){
-            MessageBox.instance.showMessageBox("Level Not Included In Demo Build");
-            Debug.LogError("Level Not Playable In Demo");
-        } else {
-            SceneManager.LoadScene("Loading");
+        if(!MessageBox.instance.isMessageBoxShown){
+            if(RootControl.instance.getDemoMode() && MissionInfo.instance.isDemoUnlocked == 0){
+                MessageBox.instance.showMessageBox("Level Not Included In Demo Build");
+                Debug.LogError("Level Not Playable In Demo");
+            } else {
+                SceneManager.LoadScene("Loading");
+            }
         }
         
     }

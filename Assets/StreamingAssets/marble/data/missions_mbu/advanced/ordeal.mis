@@ -1022,9 +1022,8 @@ new SimGroup(MissionGroup) {
       dataBlock = "ArrowSide";
    };
 
-   new SimGroup(check3) {
 
-      new Trigger(check3) {
+      new Trigger() {
          position = "50.599 23.6853 5.2";
          rotation = "1 0 0 0";
          scale = "5 5 5";
@@ -1032,18 +1031,17 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "3";
+            respawnPoint = "check1";
       };
-      new StaticShape() {
+      new StaticShape(check1) {
          position = "53.0295 20.9989 5.51184";
          rotation = "0 0 1 90.5273";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
-   new SimGroup(check2) {
 
-      new Trigger(check2) {
+      new Trigger() {
          position = "11.7501 14.095 6.9086";
          rotation = "0 0 1 90";
          scale = "5 7.18036 5";
@@ -1051,18 +1049,17 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "1";
+            respawnPoint = "check2";
       };
-      new StaticShape() {
+      new StaticShape(check2) {
          position = "9.00805 11.9841 7.51429";
          rotation = "0 0 1 89.9544";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
-   new SimGroup(check2) {
 
-      new Trigger(check3) {
+      new Trigger() {
          position = "27.7619 2.93499 -4.54204";
          rotation = "0 -1 0 90";
          scale = "4.23003 4.35783 2.58703";
@@ -1070,15 +1067,15 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "2";
+            respawnPoint = "check3";
       };
-      new StaticShape() {
+      new StaticShape(check3) {
          position = "28.021 1.00859 -6.49771";
          rotation = "0 -1 0 90";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
    new SpawnSphere() {
       position = "-7.21065 -11.5043 7.98637";
       rotation = "0.242197 -0.135918 0.96066 60.5842";

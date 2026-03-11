@@ -13,9 +13,8 @@ new SimGroup(MissionGroup) {
          hasEggIndex = "6";
          guid = "{AF781BFC-B941-4335-86C6-B7CE542AA4CE}";
    };
-   new SimGroup(check2) {
 
-      new Trigger(check2) {
+      new Trigger() {
          position = "-15.3631 18.1936 25.5623";
          rotation = "0 0 1 180";
          scale = "5 1 5";
@@ -23,15 +22,15 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "4";
+            respawnPoint = "check2";
       };
-      new StaticShape() {
+      new StaticShape(check2) {
          position = "-18.0043 16.0015 26.0099";
          rotation = "0 0 -1 90";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
    new Sky(Sky) {
       position = "336 136 0";
       rotation = "1 0 0 0";
@@ -622,9 +621,8 @@ new SimGroup(MissionGroup) {
          easterEggIndex = "6";
          foundOnCheckpointSeq = "0";
    };
-   new SimGroup(check1) {
 
-      new Trigger(check1) {
+      new Trigger() {
          position = "-32.7364 48.4797 8.7409";
          rotation = "0 0 1 90";
          scale = "5 1 5";
@@ -632,15 +630,15 @@ new SimGroup(MissionGroup) {
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "2";
+            respawnPoint = "check1";
       };
-      new StaticShape() {
+      new StaticShape(check1) {
          position = "-32.0053 46.0023 10.0036";
          rotation = "0 0 1 90.5273";
          scale = "1 1 1";
          hidden = "0";
          dataBlock = "checkPointShape";
       };
-   };
    new SpawnSphere() {
       position = "2.43003 11.3092 23.3634";
       rotation = "-0.038939 -0.0164295 -0.999107 45.7893";
