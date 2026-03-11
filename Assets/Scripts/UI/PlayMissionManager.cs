@@ -27,6 +27,7 @@ public class Mission
     public bool hasEgg;
     public int renderDistance;
     public int isDemoUnlocked;
+    public int realLevelNumber;
 
     
 
@@ -104,7 +105,7 @@ public class PlayMissionManager : MonoBehaviour
 
     private Translations stringTable;
 
-    private bool isInDemo = true;
+    //private bool isInDemo = true;
 
     public void Update()
     {
@@ -262,7 +263,8 @@ public class PlayMissionManager : MonoBehaviour
     }
 
     void PlayLevel(){
-        if(isInDemo && MissionInfo.instance.isDemoUnlocked == 0){
+        if(RootControl.instance.getDemoMode() && MissionInfo.instance.isDemoUnlocked == 0){
+            MessageBox.instance.showMessageBox("Level Not Included In Demo Build");
             Debug.LogError("Level Not Playable In Demo");
         } else {
             SceneManager.LoadScene("Loading");
@@ -308,28 +310,6 @@ public class PlayMissionManager : MonoBehaviour
                 missions = MissionInfo.instance.missionsUltraAdvanced;
             else if (difficulty == Type.custom)
                 missions = MissionInfo.instance.missionsUltraCustom;
-        // if (game == Game.gold)
-        // {
-        //     if (difficulty == Type.beginner)
-        //         missions = MissionInfo.instance.missionsGoldBeginner;
-        //     else if (difficulty == Type.intermediate)
-        //         missions = MissionInfo.instance.missionsGoldIntermediate;
-        //     else if (difficulty == Type.advanced)
-        //         missions = MissionInfo.instance.missionsGoldAdvanced;
-        //     else if (difficulty == Type.custom)
-        //         missions = MissionInfo.instance.missionsGoldCustom;
-        // }
-        // else if (game == Game.platinum)
-        // {
-        //     if (difficulty == Type.beginner)
-        //         missions = MissionInfo.instance.missionsPlatinumBeginner;
-        //     else if (difficulty == Type.intermediate)
-        //         missions = MissionInfo.instance.missionsPlatinumIntermediate;
-        //     else if (difficulty == Type.advanced)
-        //         missions = MissionInfo.instance.missionsPlatinumAdvanced;
-        //     else if (difficulty == Type.expert)
-        //         missions = MissionInfo.instance.missionsPlatinumExpert;
-        // }
 
         if (difficulty == Type.custom)
             statisticsButton.gameObject.SetActive(false);
@@ -523,6 +503,7 @@ public class PlayMissionManager : MonoBehaviour
         MissionInfo.instance.hasEgg = missions[number].hasEgg;
         MissionInfo.instance.renderDistance = missions[number].renderDistance;
         MissionInfo.instance.isDemoUnlocked = missions[number].isDemoUnlocked;
+        MissionInfo.instance.realLevelNumber = missions[number].realLevelNumber;
 
         string musicName = missions[number].music;
         musicName = string.IsNullOrEmpty(musicName) ? string.Empty : Path.GetFileNameWithoutExtension(musicName.Trim());
@@ -594,7 +575,7 @@ public class PlayMissionManager : MonoBehaviour
             eggImage.gameObject.SetActive(false);
         }
         //ShowDemoLockIfInDemo
-        if(isInDemo && MissionInfo.instance.isDemoUnlocked == 0){
+        if(RootControl.instance.getDemoMode() && MissionInfo.instance.isDemoUnlocked == 0){
             demoLock.enabled = true;
         } else {
             demoLock.enabled = false;

@@ -73,6 +73,13 @@ public class LoadingManager : MonoBehaviour
 
     private void Update()
     {
+
+        GameObject previewController = GameObject.Find("PreviewRoot");
+        Material updateCurrentSky = previewController.GetComponent<Preview>().getCurrentSky();
+        RenderSettings.skybox = updateCurrentSky;
+                             //Update the ambient lighting and reflection probes to match the new skybox
+                           DynamicGI.UpdateEnvironment();
+
         if (Input.GetKeyDown(KeyCode.Escape))
             CancelLoading();
     }
@@ -90,4 +97,5 @@ public class LoadingManager : MonoBehaviour
         EnablePreviews();
         SceneManager.LoadScene("PlayMission", LoadSceneMode.Single);
     }
+
 }

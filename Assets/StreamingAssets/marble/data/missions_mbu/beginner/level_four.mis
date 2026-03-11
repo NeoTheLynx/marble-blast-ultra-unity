@@ -299,8 +299,9 @@ text  =  $Text::TriggerText6_0;
       polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
 text  =  $Text::TriggerText6_1;
    };
+   new SimGroup(check1) {
 
-      new Trigger(checkpoint1) {
+      new Trigger(check1) {
          position = "45.9647 -2.47166 19.049";
          rotation = "1 0 0 0";
          scale = "15 15 5";
@@ -309,9 +310,8 @@ text  =  $Text::TriggerText6_1;
          dataBlock = "CheckPointTrigger";
          polyhedron = "0.0000000 0.0000000 0.0000000 1.0000000 0.0000000 0.0000000 0.0000000 -1.0000000 0.0000000 0.0000000 0.0000000 1.0000000";
             sequence = "1";
-            respawnPoint = "checkpoint1";
       };
-      new StaticShape(checkpoint1) {
+      new StaticShape() {
          position = "55.0185 -8.9832 20.004";
          rotation = "0 0 1 179.336";
          scale = "1 1 1";
@@ -319,6 +319,7 @@ text  =  $Text::TriggerText6_1;
          reanderShadow = "1";
          dataBlock = "checkPointShape";
       };
+   };
    new StaticShape() {
       position = "-3 -11.75 13.75";
       rotation = "1 0 0 0";

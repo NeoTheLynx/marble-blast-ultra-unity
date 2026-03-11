@@ -38,6 +38,7 @@ public class MissionInfo : MonoBehaviour
     [TextArea(2, 10)] public string description;
     [TextArea(2, 10)] public string startHelpText;
     public int level;
+    public int realLevelNumber;
     public string artist;
     public int goldTime;
     public int ultimateTime;
@@ -215,10 +216,15 @@ public class MissionInfo : MonoBehaviour
                         newMission.startHelpText = Regex.Unescape(startHelpText);
 
                     int _level = 0;
-                    if (int.TryParse(obj.GetField("level"), out _level))
+                    if (int.TryParse(obj.GetField("level"), out _level)) {
                         newMission.levelNumber = _level;
-                    else
+                        newMission.realLevelNumber = _level;
+                    } else {
                         newMission.levelNumber = 0;
+                        newMission.realLevelNumber = 0;
+                    }
+
+                    Debug.Log("Loaded Level #: " + _level.ToString());    
 
                     newMission.artist = (obj.GetField("artist"));
 
@@ -338,7 +344,7 @@ public class MissionInfo : MonoBehaviour
         }
 
         for (int i = 0; i < result.Count; i++)
-            result[i].levelNumber = (i + 1);
+            result[i].realLevelNumber = (i + 1);
 
         return result;
     }

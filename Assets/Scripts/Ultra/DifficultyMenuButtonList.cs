@@ -26,6 +26,13 @@ public class DifficultyMenuButtonList : MonoBehaviour
 
     void Start()
     {   
+        if(RootControl.instance.getDemoMode()){
+            menuOptions = new List<KeyValuePair<int, string>>() { 
+                new KeyValuePair<int, string>(0, "Beginner Levels"),
+                new KeyValuePair<int, string>(1, "Intermediate Levels"),
+                new KeyValuePair<int, string>(2, "Advanced Levels"),
+            };
+        }
         PopulateMenuItems();
         GameObject previewController = GameObject.Find("PreviewRoot");
         Material updateCurrentSky = previewController.GetComponent<Preview>().getCurrentSky();
